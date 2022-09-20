@@ -1,49 +1,35 @@
 package com.seollem.server.member.entity;
 
-import com.seollem.server.memberAuthority.entity.MemberAuthority;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+
+@Data
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class Member {
 
     @Id
-    @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long memberId;
-
-    private String name;
-
-    private String password;
 
     @Column(unique = true)
     private String email;
 
-    private boolean activated;
+    private String name;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<MemberAuthority> memberAuthorities = new ArrayList<>();
+    private String password;
+    private String roles;
 
 
+    public List<String> getRoleList() {
+        if(this.roles.length() > 0) {
+            return Arrays.asList(this.roles.split(","));
+        }
+        return new ArrayList<>();
+    }
 
-//    private MemberRole role;
-//    public enum MemberRole{
-//
-//        USER("회원입니다"),
-//        ADMIN("관리자입니다");
-//
-//        @Getter
-//        private String role;
-//
-//        MemberRole(String role) {
-//            this.role = role;
-//        }
-//    }
 }
