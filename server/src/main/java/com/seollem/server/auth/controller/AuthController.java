@@ -1,4 +1,4 @@
-package com.seollem.server.auth;
+package com.seollem.server.auth.controller;
 
 import com.seollem.server.member.entity.Member;
 import com.seollem.server.member.repository.MemberRepository;

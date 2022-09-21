@@ -35,13 +35,13 @@ public class SecurityConfig {
                 .apply(new CustomDsl()) // 추가
                 .and()
                 .authorizeRequests()
-                .antMatchers("/members/user/**")
-                .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-                .antMatchers("/api/v1/manager/**")
-                .access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-                .antMatchers("/api/v1/admin/**")
-                .access("hasRole('ROLE_ADMIN')")
-                .anyRequest().permitAll();
+                .antMatchers("/join")
+                .permitAll()
+                .antMatchers("/login")
+                .permitAll()
+//                .antMatchers("/api/v1/admin/**")
+//                .access("hasRole('ROLE_ADMIN')")
+                .anyRequest().access("hasRole('ROLE_USER')");
         return http.build();
     }
 

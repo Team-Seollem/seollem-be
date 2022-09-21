@@ -51,11 +51,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
 
         String jwtToken = JWT.create()
-                .withSubject("cos jwt token")
+                .withSubject("seollem jwt token")
                 .withExpiresAt(new Date(System.currentTimeMillis() + (60 * 1000 * 60))) //1시간
                 .withClaim("id", principalDetails.getMember().getMemberId())
                 .withClaim("email", principalDetails.getMember().getEmail())
-                .sign(Algorithm.HMAC512("cos_jwt_token"));
+                .sign(Algorithm.HMAC512("d2VzZW9sbGVtdGVhbXNlcnZpY2VzdXNlcnNvd25saWJyYXJ5bWFuYWdlbWVudHdlaG9wZW91cnNlcnZpY2V0b2JldXNlZnVs"));
         response.addHeader("Authorization", "Bearer " + jwtToken);
     }
 }
