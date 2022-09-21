@@ -16,7 +16,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Date;
 
@@ -29,8 +28,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
             ObjectMapper om = new ObjectMapper();
+            /*
+                ObjectMapper 를 통해 convert JSON to JAVA OBJECT
+                실제 들어오는 request 타입은 org.apache.catalina.connector.RequestFacade
+            */
             Member member = om.readValue(request.getInputStream(), Member.class);
-
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(member.getEmail(), member.getPassword());
 
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
@@ -50,7 +52,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String jwtToken = JWT.create()
                 .withSubject("cos jwt token")
-                .withExpiresAt(new Date(System.currentTimeMillis() + (60 * 1000 * 10)))
+                .withExpiresAt(new Date(System.currentTimeMillis() + (60 * 1000 * 60))) //1시간
                 .withClaim("id", principalDetails.getMember().getMemberId())
                 .withClaim("email", principalDetails.getMember().getEmail())
                 .sign(Algorithm.HMAC512("cos_jwt_token"));

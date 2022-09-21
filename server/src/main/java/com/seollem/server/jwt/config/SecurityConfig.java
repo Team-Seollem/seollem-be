@@ -21,15 +21,13 @@ import org.springframework.web.filter.CorsFilter;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-
     private final CorsFilter corsFilter;
     private final MemberRepository memberRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // http.addFilterBefore(new FirstFilter(), SecurityContextHolderFilter.class); // 주석 처리 or 제거
         http.csrf().disable();
-        http.headers().frameOptions().disable();
+        http.headers().frameOptions().disable(); // x-frame-option
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .formLogin().disable()
@@ -55,7 +53,7 @@ public class SecurityConfig {
             builder
                     .addFilter(corsFilter)
                     .addFilter(new JwtAuthenticationFilter(authenticationManager))
-                    .addFilter(new JwtAuthorizationFilter(authenticationManager, memberRepository)); // 추가
+                    .addFilter(new JwtAuthorizationFilter(authenticationManager, memberRepository));
         }
     }
 }
