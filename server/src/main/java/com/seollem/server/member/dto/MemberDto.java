@@ -28,10 +28,11 @@ public class MemberDto {
         private String email;
 
         @NotBlank(message = "공백은 허용되지 않습니다..")
-        @Pattern(regexp = "^(?=.[A-Za-z])(?=.\\d)(?=.[$@$!%#?&])[A-Za-z\\d$@$!%*#?&]{6,}$")
         private String name;
 
         @NotBlank(message = "공백은 허용되지 않습니다.")
+        @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{6,}$",
+                message = "비밀번호는 알파벳, 숫자, 특수문자 포함 6자 이상이어야 합니다.")
         private String password;
     }
     @Getter
