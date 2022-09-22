@@ -14,6 +14,9 @@ Backend(팀장) | Backend | Frontend | Frontend
 김형섭 | 김주현 | 이슬 | 한성욱
 |<img src="https://avatars.githubusercontent.com/u/104135974?v=4" width="100" height="100"/> |<img src="https://avatars.githubusercontent.com/u/104332880?v=4" width="100" height="100"/> | <img src="https://avatars.githubusercontent.com/u/96093996?v=4" width="100" height="100"/> | <img src="https://avatars.githubusercontent.com/u/27681985?v=4" width="100" height="100"/>
 ## ✨기술 스택
+### 🔧 Frontend </br>
+<img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=black"> <img src="https://img.shields.io/badge/styled_components-DB7093?style=for-the-badge&logo=styled-components&logoColor=black"> <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/redux-764ABC?style=for-the-badge&logo=redux&logoColor=black">
+### 🔧 Backend </br>
 
 ## ✨프로젝트 아키텍쳐
 
