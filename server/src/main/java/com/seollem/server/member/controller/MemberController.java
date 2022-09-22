@@ -36,8 +36,23 @@ public class MemberController {
         String email = tokenDecodeService.findEmail(token);
         Member member = memberService.findMemberByEmail(email);
 
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(memberMapper.memberToMemberResponse(member)), HttpStatus.OK);
+        return new ResponseEntity<>(memberMapper.memberToMemberResponse(member), HttpStatus.OK);
+    }
+
+    @PatchMapping("/me")
+    public ResponseEntity patchMember(@RequestHeader Map<String, Object> requestHeader,
+                                      @Valid @RequestBody MemberDto.Patch requestBody){
+        String token = requestHeader.get("authorization").toString();
+        String email = tokenDecodeService.findEmail(token);
+
+        Member findMember = memberService.findMemberByEmail(email);
+        Member patchMember = memberMapper.memberPatchToMember(requestBody);
+
+        patchMember.setEmail(findMember.getEmail());
+
+        Member member = memberService.updateMember(patchMember);
+
+        return new ResponseEntity<>(memberMapper.memberToMemberPatchResponse(member), HttpStatus.OK);
     }
 
 }

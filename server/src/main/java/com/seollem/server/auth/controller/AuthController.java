@@ -1,10 +1,13 @@
 package com.seollem.server.auth.controller;
 
+import com.seollem.server.dto.SingleResponseDto;
 import com.seollem.server.member.dto.MemberDto;
 import com.seollem.server.member.entity.Member;
 import com.seollem.server.member.mapper.MemberMapper;
 import com.seollem.server.member.repository.MemberRepository;
 import com.seollem.server.member.service.MemberService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,12 +22,10 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final MemberService memberService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final MemberMapper memberMapper;
 
-    public AuthController(MemberService memberService, BCryptPasswordEncoder bCryptPasswordEncoder, MemberMapper memberMapper) {
+    public AuthController(MemberService memberService, MemberMapper memberMapper) {
         this.memberService = memberService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.memberMapper = memberMapper;
     }
 
@@ -35,11 +36,10 @@ public class AuthController {
 
 
     @PostMapping("/join")
-    public String join(@Valid @RequestBody MemberDto.Post requestBody) {
+    public ResponseEntity join(@Valid @RequestBody MemberDto.Post requestBody) {
         Member member = memberMapper.memberPostToMember(requestBody);
-        member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
-        member.setRoles("ROLE_USER");
+
         memberService.creatMember(member);
-        return "회원 가입 완료";
+        return new ResponseEntity<>("회원 가입 성공", HttpStatus.CREATED);
     }
 }
