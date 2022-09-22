@@ -42,15 +42,17 @@ public class MemberService {
     }
 
 
+    public void deleteMember(String email){
+        Member findMember = findVerifiedMemberByEmail(email);
+        memberRepository.delete(findMember);
+    }
+
     public void verifyExistsEmail(String email){
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
         if(optionalMember.isPresent())
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
     }
 
-    public Member findMemberByEmail(String email){
-        return findVerifiedMemberByEmail(email);
-    }
 
     public Member findVerifiedMemberByEmail(String email){
         Optional<Member> optionalMember = memberRepository.findByEmail(email);

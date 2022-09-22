@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
+import java.time.LocalDateTime;
 
 
 public class MemberDto {
@@ -49,7 +50,8 @@ public class MemberDto {
     @AllArgsConstructor
     public static class PatchResponse{
 
+        private String email;
         private String name;
-        private String password;
+        private LocalDateTime updatedAt;
     }
 }
