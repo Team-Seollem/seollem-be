@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 
 public class MemberDto {
@@ -14,14 +15,28 @@ public class MemberDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Get{
-        @NotBlank(message = "Null이나 공백이 없어야 합니다.")
+        @NotBlank(message = "공백은 허용되지 않습니다.")
         @Email(message = "이메일 형식이어야 합니다.")
         private String email;
     }
 
     @Getter
     @AllArgsConstructor
-    public static class Patch{
+    public static class Post{
+        @NotBlank(message = "공백은 허용되지 않습니다.")
+        @Email(message = "이메일 형식이어야 합니다.")
+        private String email;
+
+        @NotBlank(message = "공백은 허용되지 않습니다..")
+        @Pattern(regexp = "^(?=.[A-Za-z])(?=.\\d)(?=.[$@$!%#?&])[A-Za-z\\d$@$!%*#?&]{6,}$")
+        private String name;
+
+        @NotBlank(message = "공백은 허용되지 않습니다.")
+        private String password;
+    }
+    @Getter
+    @AllArgsConstructor
+    public static class Patch {
 
     }
 

@@ -33,7 +33,6 @@ public class MemberController {
     @GetMapping(path = "/me")
     public ResponseEntity getMember(@RequestHeader Map<String, Object> requestHeader) {
         String token = requestHeader.get("authorization").toString(); // 헤더의 모든 값은 소문자로 받아진다.
-        System.out.println(token);
         String email = tokenDecodeService.findEmail(token);
         Member member = memberService.findMemberByEmail(email);
 

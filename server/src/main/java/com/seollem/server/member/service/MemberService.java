@@ -18,6 +18,20 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
+    public Member creatMember(Member member){
+        verifyExistsEmail(member.getEmail());
+
+        Member savedMember = memberRepository.save(member);
+
+        return savedMember;
+    }
+
+    public void verifyExistsEmail(String email){
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+        if(optionalMember.isPresent())
+            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+    }
+
     public Member findMemberByEmail(String email){
         return findVerifiedMemberByEmail(email);
     }
