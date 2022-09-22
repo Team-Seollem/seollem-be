@@ -39,7 +39,7 @@ public class MemberDto {
 
     @Getter
     @AllArgsConstructor
-    public static class Response{
+    public static class GetResponse{
 
         private String email;
         private String name;

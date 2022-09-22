@@ -36,7 +36,7 @@ public class MemberController {
         String email = tokenDecodeService.findEmail(token);
         Member member = memberService.findMemberByEmail(email);
 
-        return new ResponseEntity<>(memberMapper.memberToMemberResponse(member), HttpStatus.OK);
+        return new ResponseEntity<>(memberMapper.memberToMemberGetResponse(member), HttpStatus.OK);
     }
 
     @PatchMapping("/me")
