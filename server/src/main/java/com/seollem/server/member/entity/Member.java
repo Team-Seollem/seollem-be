@@ -15,14 +15,10 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long memberId;
-
     @Column(unique = true)
     private String email;
-
     private String name;
-
     private String password;
-
     private String roles;
 
 

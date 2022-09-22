@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.seollem.server.jwt.oauth.PrincipalDetails;
 import com.seollem.server.member.entity.Member;
 import com.seollem.server.member.repository.MemberRepository;
+import com.seollem.server.member.service.MemberService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,11 +20,11 @@ import java.io.IOException;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private MemberRepository memberRepository;
+    private MemberService memberService;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, MemberRepository memberRepository) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, MemberService memberService) {
         super(authenticationManager);
-        this.memberRepository = memberRepository;
+        this.memberService = memberService;
     }
 
     @Override
@@ -43,7 +44,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         ).build().verify(jwtToken).getClaim("email").asString();
 
         if (email != null) {
-            Member memberEntity = memberRepository.findByEmail(email);
+            Member memberEntity = memberService.findVerifiedMemberByEmail(email);
 
             PrincipalDetails principalDetails = new PrincipalDetails(memberEntity);
             Authentication authentication = new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());
@@ -51,6 +52,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
             chain.doFilter(request, response);
         }
-        super.doFilterInternal(request, response, chain);
+//        super.doFilterInternal(request, response, chain);
     }
 }

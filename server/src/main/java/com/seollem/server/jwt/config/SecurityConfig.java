@@ -3,6 +3,7 @@ package com.seollem.server.jwt.config;
 import com.seollem.server.jwt.filter.JwtAuthenticationFilter;
 import com.seollem.server.jwt.filter.JwtAuthorizationFilter;
 import com.seollem.server.member.repository.MemberRepository;
+import com.seollem.server.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig {
 
     private final CorsFilter corsFilter;
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -53,7 +54,7 @@ public class SecurityConfig {
             builder
                     .addFilter(corsFilter)
                     .addFilter(new JwtAuthenticationFilter(authenticationManager))
-                    .addFilter(new JwtAuthorizationFilter(authenticationManager, memberRepository));
+                    .addFilter(new JwtAuthorizationFilter(authenticationManager, memberService));
         }
     }
 }

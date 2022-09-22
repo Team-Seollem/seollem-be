@@ -59,3 +59,4 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.addHeader("Authorization", "Bearer " + jwtToken);
     }
 }
+
