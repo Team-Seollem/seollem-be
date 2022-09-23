@@ -49,7 +49,7 @@ public class GlobalExceptionAdvice {
     public ErrorResponse handleHttpRequestMethodNotSupportedException(
             HttpRequestMethodNotSupportedException e) {
 
-        final ErrorResponse response = ErrorResponse.of(HttpStatus.METHOD_NOT_ALLOWED, "Required request body is missing");
+        final ErrorResponse response = ErrorResponse.of(HttpStatus.METHOD_NOT_ALLOWED, "request body 가 없습니다.");
 
         return response;
     }
@@ -75,6 +75,7 @@ public class GlobalExceptionAdvice {
 
         return response;
     }
+
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
