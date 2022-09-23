@@ -39,7 +39,7 @@ public class AuthController {
     public ResponseEntity join(@Valid @RequestBody MemberDto.Post requestBody) {
         Member member = memberMapper.memberPostToMember(requestBody);
 
-        memberService.creatMember(member);
+        memberService.createMember(member);
         return new ResponseEntity<>("회원 가입 성공", HttpStatus.CREATED);
     }
 }

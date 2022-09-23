@@ -21,7 +21,7 @@ public class MemberService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public Member creatMember(Member member){
+    public Member createMember(Member member){
         verifyExistsEmail(member.getEmail());
         member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
         member.setRoles("ROLE_USER");
