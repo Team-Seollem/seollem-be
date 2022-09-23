@@ -1,5 +1,6 @@
 package com.seollem.server.jwt.config;
 
+import com.seollem.server.jwt.decoder.TokenDecodeService;
 import com.seollem.server.jwt.filter.JwtAuthenticationFilter;
 import com.seollem.server.jwt.filter.JwtAuthorizationFilter;
 import com.seollem.server.member.repository.MemberRepository;
@@ -24,6 +25,7 @@ public class SecurityConfig {
 
     private final CorsFilter corsFilter;
     private final MemberService memberService;
+    private final TokenDecodeService tokenDecodeService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -54,7 +56,7 @@ public class SecurityConfig {
             builder
                     .addFilter(corsFilter)
                     .addFilter(new JwtAuthenticationFilter(authenticationManager))
-                    .addFilter(new JwtAuthorizationFilter(authenticationManager, memberService));
+                    .addFilter(new JwtAuthorizationFilter(authenticationManager, memberService, tokenDecodeService));
         }
     }
 }

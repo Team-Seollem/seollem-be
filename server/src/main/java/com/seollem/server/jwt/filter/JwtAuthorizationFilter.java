@@ -2,10 +2,12 @@ package com.seollem.server.jwt.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.seollem.server.jwt.decoder.TokenDecodeService;
 import com.seollem.server.jwt.oauth.PrincipalDetails;
 import com.seollem.server.member.entity.Member;
 import com.seollem.server.member.repository.MemberRepository;
 import com.seollem.server.member.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,10 +23,12 @@ import java.io.IOException;
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private MemberService memberService;
+    private TokenDecodeService tokenDecodeService;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, MemberService memberService) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, MemberService memberService, TokenDecodeService tokenDecodeService) {
         super(authenticationManager);
         this.memberService = memberService;
+        this.tokenDecodeService = tokenDecodeService;
     }
 
     @Override
@@ -36,12 +40,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             chain.doFilter(request, response);
             return;
         }
-
-        String jwtToken = jwtHeader.replace("Bearer ", "");
-
-        String email = JWT.require(Algorithm.HMAC512
-                ("d2VzZW9sbGVtdGVhbXNlcnZpY2VzdXNlcnNvd25saWJyYXJ5bWFuYWdlbWVudHdlaG9wZW91cnNlcnZpY2V0b2JldXNlZnVs")
-        ).build().verify(jwtToken).getClaim("email").asString();
+        String email = tokenDecodeService.findEmail(jwtHeader);
 
         if (email != null) {
             Member memberEntity = memberService.findVerifiedMemberByEmail(email);

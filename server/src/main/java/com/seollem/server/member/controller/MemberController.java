@@ -32,13 +32,43 @@ public class MemberController {
 
     @GetMapping(path = "/me")
     public ResponseEntity getMember(@RequestHeader Map<String, Object> requestHeader) {
-        String token = requestHeader.get("authorization").toString(); // 헤더의 모든 값은 소문자로 받아진다.
-        System.out.println(token);
-        String email = tokenDecodeService.findEmail(token);
-        Member member = memberService.findMemberByEmail(email);
+        String email = getEmailFromHeaderToken(requestHeader);
+        Member member = memberService.findVerifiedMemberByEmail(email);
 
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(memberMapper.memberToMemberResponse(member)), HttpStatus.OK);
+        return new ResponseEntity<>(memberMapper.memberToMemberGetResponse(member), HttpStatus.OK);
+    }
+
+    @PatchMapping("/me")
+    public ResponseEntity patchMember(@RequestHeader Map<String, Object> requestHeader,
+                                      @Valid @RequestBody MemberDto.Patch requestBody){
+        String email = getEmailFromHeaderToken(requestHeader);
+
+        Member findMember = memberService.findVerifiedMemberByEmail(email);
+        Member patchMember = memberMapper.memberPatchToMember(requestBody);
+
+        patchMember.setEmail(findMember.getEmail());
+
+        Member member = memberService.updateMember(patchMember);
+
+        return new ResponseEntity<>(memberMapper.memberToMemberPatchResponse(member), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/me")
+    public ResponseEntity patchMember(@RequestHeader Map<String, Object> requestHeader) {
+        String email = getEmailFromHeaderToken(requestHeader);
+
+        memberService.deleteMember(email);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+    }
+
+
+    public String getEmailFromHeaderToken(Map<String, Object> requestHeader){
+        String token = requestHeader.get("authorization").toString();
+        String email = tokenDecodeService.findEmail(token);
+
+        return email;
     }
 
 }

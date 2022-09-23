@@ -1,5 +1,6 @@
 package com.seollem.server.member.entity;
 
+import com.seollem.server.audit.Auditable;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,9 +9,12 @@ import java.util.Arrays;
 import java.util.List;
 
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-public class Member {
+public class Member extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
