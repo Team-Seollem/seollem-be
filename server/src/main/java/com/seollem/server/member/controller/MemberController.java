@@ -6,13 +6,23 @@ import com.seollem.server.member.entity.Member;
 import com.seollem.server.member.mapper.MemberMapper;
 import com.seollem.server.member.service.MemberService;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.lang.reflect.Array;
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -22,17 +32,17 @@ public class MemberController {
 
     private final MemberMapper memberMapper;
     private final MemberService memberService;
-    private final GetEmailFromHeaderTokenUtil getEmailFromHeaderToken;
+    private final GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil;
 
-    public MemberController(MemberMapper memberMapper, MemberService memberService, GetEmailFromHeaderTokenUtil getEmailFromHeaderToken) {
+    public MemberController(MemberMapper memberMapper, MemberService memberService, GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil) {
         this.memberMapper = memberMapper;
         this.memberService = memberService;
-        this.getEmailFromHeaderToken = getEmailFromHeaderToken;
+        this.getEmailFromHeaderTokenUtil = getEmailFromHeaderTokenUtil;
     }
 
     @GetMapping(path = "/me")
     public ResponseEntity getMember(@RequestHeader Map<String, Object> requestHeader) {
-        String email = getEmailFromHeaderToken.getEmailFromHeaderToken(requestHeader);
+        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
         Member member = memberService.findVerifiedMemberByEmail(email);
 
         return new ResponseEntity<>(memberMapper.memberToMemberGetResponse(member), HttpStatus.OK);
@@ -41,7 +51,7 @@ public class MemberController {
     @PatchMapping("/me")
     public ResponseEntity patchMember(@RequestHeader Map<String, Object> requestHeader,
                                       @Valid @RequestBody MemberDto.Patch requestBody){
-        String email = getEmailFromHeaderToken.getEmailFromHeaderToken(requestHeader);
+        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
 
         Member findMember = memberService.findVerifiedMemberByEmail(email);
         Member patchMember = memberMapper.memberPatchToMember(requestBody);
@@ -55,12 +65,49 @@ public class MemberController {
 
     @DeleteMapping("/me")
     public ResponseEntity patchMember(@RequestHeader Map<String, Object> requestHeader) {
-        String email = getEmailFromHeaderToken.getEmailFromHeaderToken(requestHeader);
+        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
 
         memberService.deleteMember(email);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
+
+//    @GetMapping("/ext-lib/best-seller")
+//    public ResponseEntity bestSeller() throws org.json.JSONException {
+//        RestTemplate restTemplate = new RestTemplate();
+//
+//        UriComponents uriComponents =
+//                UriComponentsBuilder
+//                        .newInstance()
+//                        .scheme("http")
+//                        .host("www.aladin.co.kr")
+//                        .path("/ttb/api/ItemList.aspx")
+//                        .queryParam("ttbkey", "ttbii123210947001")
+//                        .queryParam("QueryType", "Bestseller")
+//                        .queryParam("SearchTarget", "Book")
+//                        .queryParam("output", "JS")
+//                        .queryParam("Version", "20131101")
+//                        .encode()
+//                        .build();
+//        URI uri = uriComponents.toUri();
+//        String result = restTemplate.getForObject(uri, String.class);
+//        JSONObject jsonResult = new JSONObject(result);
+//        JSONArray jsonArray = jsonResult.getJSONArray("item");
+//
+//        ArrayList<JSONObject> arrayList = new ArrayList<>();
+//        JSONObject temp;
+//        for(int i=0; i<jsonArray.length(); i++){
+//            temp = new JSONObject((String)jsonArray.get(i));
+//            arrayList.add(temp);
+//        }
+//
+//
+//
+//
+////        String opet = result2.getJSONArray("item").getJSONObject(3).get("isbn").toString();
+//
+//        return new ResponseEntity<>(result, HttpStatus.OK);
+//    }
 
 }
