@@ -1,10 +1,14 @@
 package com.seollem.server.externalLibrary.controller;
 
+import com.seollem.server.externalLibrary.config.RestTemplateConfig;
+import com.seollem.server.externalLibrary.config.RestTemplateInterceptor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,14 +18,21 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/ext-lib")
 public class ExternalLibraryController {
 
+    private final RestTemplateConfig restTemplateConfig;
+
+    public ExternalLibraryController(RestTemplateConfig restTemplateConfig) {
+        this.restTemplateConfig = restTemplateConfig;
+    }
+
     @GetMapping("best-seller")
     public ResponseEntity getBestSeller() throws JSONException {
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = restTemplateConfig.restTemplate();
 
         UriComponents uriComponents =
                 UriComponentsBuilder
@@ -64,7 +75,6 @@ public class ExternalLibraryController {
             temp.put("itemPage", itemPageJson.getString("itemPage"));
             responseBody.put(temp);
         }
-        System.out.println(responseBody);
 
         return new ResponseEntity(responseBody.toString(),HttpStatus.OK);
     }
@@ -74,7 +84,18 @@ public class ExternalLibraryController {
 
     // 전체 쪽수(itemPage)를 JSONObject 로 반환하는 메서드
     public JSONObject findItemPageJson(String isbn) throws JSONException {
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = restTemplateConfig.restTemplate();
+        /*
+            Logging 위한 interceptor 설정
+         */
+        List<ClientHttpRequestInterceptor> interceptorList = restTemplate.getInterceptors();
+        if(CollectionUtils.isEmpty(interceptorList)){
+            interceptorList = new ArrayList<>();
+        }
+
+        interceptorList.add(new RestTemplateInterceptor());
+        restTemplate.setInterceptors(interceptorList);
+
 
         UriComponents uriComponents =
                 UriComponentsBuilder
@@ -99,7 +120,6 @@ public class ExternalLibraryController {
         JSONObject result = new JSONObject();
         result.put("itemPage",itemArr.getJSONObject(0).getJSONObject("subInfo").getString("itemPage"));
 
-        System.out.println(result);
         return result;
     }
 }
