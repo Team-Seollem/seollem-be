@@ -1,4 +1,4 @@
-package com.seollem.server.dto;
+package com.seollem.server.globaldto;
 
 import lombok.Getter;
 import org.springframework.data.domain.Page;

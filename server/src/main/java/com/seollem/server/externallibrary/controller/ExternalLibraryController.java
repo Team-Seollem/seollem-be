@@ -1,7 +1,7 @@
-package com.seollem.server.externalLibrary.controller;
+package com.seollem.server.externallibrary.controller;
 
-import com.seollem.server.externalLibrary.config.RestTemplateConfig;
-import com.seollem.server.externalLibrary.config.RestTemplateInterceptor;
+import com.seollem.server.externallibrary.config.RestTemplateConfig;
+import com.seollem.server.externallibrary.config.RestTemplateInterceptor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

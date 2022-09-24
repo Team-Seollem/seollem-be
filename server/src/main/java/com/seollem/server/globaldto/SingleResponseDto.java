@@ -1,4 +1,4 @@
-package com.seollem.server.dto;
+package com.seollem.server.globaldto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

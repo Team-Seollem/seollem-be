@@ -1,4 +1,4 @@
-package com.seollem.server.externalLibrary.config;
+package com.seollem.server.externallibrary.config;
 
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -14,8 +14,8 @@ public class RestTemplateConfig{
     @Bean
     public RestTemplate restTemplate(){
         HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
-        httpComponentsClientHttpRequestFactory.setReadTimeout(3000); // read Timeout millisec
-        httpComponentsClientHttpRequestFactory.setConnectTimeout(3000); // connection Timeout millisec
+        httpComponentsClientHttpRequestFactory.setReadTimeout(300); // read Timeout millisec
+        httpComponentsClientHttpRequestFactory.setConnectTimeout(300); // connection Timeout millisec
         CloseableHttpClient httpClient = HttpClientBuilder.create()
                 .setMaxConnTotal(500)
                 .setMaxConnPerRoute(100)
