@@ -6,7 +6,7 @@ public enum ExceptionCode {
 
     MEMBER_NOT_FOUND(404, "Member not found"),
     MEMBER_EXISTS(400, "Member already exists"),
-    QUESTION_NOT_FOUND(404, "Question not found"),
+    BOOK_NOT_FOUND(404, "Book not found"),
     QUESTION_EXISTS(409,"Question already exists"),
     ANSWER_NOT_FOUND_BY_ID(404, "Answer not found"),
 //    ANSWER_NOT_FOUND_BY_BODY(404, "Answer not found, by Body"),

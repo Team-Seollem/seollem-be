@@ -73,41 +73,4 @@ public class MemberController {
 
     }
 
-//    @GetMapping("/ext-lib/best-seller")
-//    public ResponseEntity bestSeller() throws org.json.JSONException {
-//        RestTemplate restTemplate = new RestTemplate();
-//
-//        UriComponents uriComponents =
-//                UriComponentsBuilder
-//                        .newInstance()
-//                        .scheme("http")
-//                        .host("www.aladin.co.kr")
-//                        .path("/ttb/api/ItemList.aspx")
-//                        .queryParam("ttbkey", "ttbii123210947001")
-//                        .queryParam("QueryType", "Bestseller")
-//                        .queryParam("SearchTarget", "Book")
-//                        .queryParam("output", "JS")
-//                        .queryParam("Version", "20131101")
-//                        .encode()
-//                        .build();
-//        URI uri = uriComponents.toUri();
-//        String result = restTemplate.getForObject(uri, String.class);
-//        JSONObject jsonResult = new JSONObject(result);
-//        JSONArray jsonArray = jsonResult.getJSONArray("item");
-//
-//        ArrayList<JSONObject> arrayList = new ArrayList<>();
-//        JSONObject temp;
-//        for(int i=0; i<jsonArray.length(); i++){
-//            temp = new JSONObject((String)jsonArray.get(i));
-//            arrayList.add(temp);
-//        }
-//
-//
-//
-//
-////        String opet = result2.getJSONArray("item").getJSONObject(3).get("isbn").toString();
-//
-//        return new ResponseEntity<>(result, HttpStatus.OK);
-//    }
-
 }
