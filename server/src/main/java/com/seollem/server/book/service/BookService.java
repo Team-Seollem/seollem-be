@@ -81,6 +81,13 @@ public class BookService {
             throw new BusinessLogicException(ExceptionCode.BOOK_EXISTS);
     }
 
+    public void verifyMemberHasBook(long bookId, long memberId){
+        Book book = findVerifiedBookById(bookId);
+        if(book.getMember().getMemberId()!=memberId){
+            throw new BusinessLogicException(ExceptionCode.NOT_MEMBER_BOOK);
+        }
+    }
+
     // bookStatus에 따른 readStartDate, readEndDate 처리
     public Book verifyBookStatus(Book book){
         if(book.getBookStatus()==null){

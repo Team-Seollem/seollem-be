@@ -13,7 +13,8 @@ public enum ExceptionCode {
     ANSWER_EXISTS(409, "Answer already exists"),
     TAG_NOT_FOUND(404,"Tag not found"),
 
-    BOOK_STATUS_WRONG(400, "Wrong value in bookStatus and readDate");
+    BOOK_STATUS_WRONG(400, "Wrong value in bookStatus and readDate"),
+    NOT_MEMBER_BOOK(400,"Not member's book");
 
 
 

@@ -81,7 +81,10 @@ public class BookController {
         String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
         Member member = memberService.findVerifiedMemberByEmail(email);
 
+        bookService.verifyMemberHasBook(bookId, member.getMemberId());
+
         Book book = bookService.findVerifiedBookById(bookId);
+
         //Book.setMemo(); 구현 필요
 
         return new ResponseEntity(bookMapper.BookToBookDetailResponse(book),HttpStatus.OK);
@@ -104,11 +107,18 @@ public class BookController {
 
     //책 수정
     @PatchMapping("/{book-id}")
-    public ResponseEntity patchBook(@PathVariable("book-id") long bookId,
+    public ResponseEntity patchBook(@RequestHeader Map<String, Object> requestHeader,
+                                    @PathVariable("book-id") long bookId,
                                     @Valid @RequestBody BookDto.Patch requestBody){
+        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+        Member member = memberService.findVerifiedMemberByEmail(email);
+
         Book book = bookMapper.BookPatchToBook(requestBody);
-        book.setBookId(bookId);
+
         Book verifiedBookStatusBook = bookService.verifyBookStatus(book);
+        bookService.verifyMemberHasBook(bookId, member.getMemberId());
+
+        verifiedBookStatusBook.setBookId(bookId);
         Book updatedBook = bookService.updateBook(verifiedBookStatusBook);
 
         return new ResponseEntity(bookMapper.BookToBookPatchResponse(updatedBook), HttpStatus.OK);
