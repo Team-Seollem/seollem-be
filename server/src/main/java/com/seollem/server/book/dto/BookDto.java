@@ -24,7 +24,7 @@ public class BookDto {
         private int currentPage;
         private String publisher;
         private Book.BookStatus bookStatus;
-        private LocalDateTime readStarDate;
+        private LocalDateTime readStartDate;
         private LocalDateTime readEndDate;
     }
 
@@ -38,7 +38,7 @@ public class BookDto {
         private int currentPage;
         private String publisher;
         private Book.BookStatus bookStatus;
-        private LocalDateTime readStarDate;
+        private LocalDateTime readStartDate;
         private LocalDateTime readEndDate;
         private int star;
     }
