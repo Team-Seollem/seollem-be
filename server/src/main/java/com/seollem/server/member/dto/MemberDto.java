@@ -3,6 +3,7 @@ package com.seollem.server.member.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
@@ -10,8 +11,10 @@ import java.time.LocalDateTime;
 
 public class MemberDto {
 
+    @Setter
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Post{
 
         @NotBlank(message = "공백은 허용되지 않습니다.")
@@ -27,6 +30,7 @@ public class MemberDto {
         private String password;
     }
 
+    @Setter
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
@@ -40,16 +44,20 @@ public class MemberDto {
         private String password;
     }
 
+    @Setter
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class GetResponse{
 
         private String email;
         private String name;
     }
 
+    @Setter
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class PatchResponse{
 
         private String email;

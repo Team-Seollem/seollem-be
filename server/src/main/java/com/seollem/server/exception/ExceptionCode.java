@@ -11,7 +11,9 @@ public enum ExceptionCode {
     ANSWER_NOT_FOUND_BY_ID(404, "Answer not found"),
 //    ANSWER_NOT_FOUND_BY_BODY(404, "Answer not found, by Body"),
     ANSWER_EXISTS(409, "Answer already exists"),
-    TAG_NOT_FOUND(404,"Tag not found");
+    TAG_NOT_FOUND(404,"Tag not found"),
+
+    BOOK_STATUS_WRONG(400, "Wrong value in bookStatus and readDate");
 
 
 

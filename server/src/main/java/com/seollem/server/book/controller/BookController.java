@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
@@ -47,7 +48,7 @@ public class BookController {
     //책 등록
     @PostMapping
     public ResponseEntity postBook(@RequestHeader Map<String, Object> requestHeader,
-                                   @RequestBody BookDto.Post requestBody){
+                                   @Valid @RequestBody BookDto.Post requestBody){
         String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
         Member member = memberService.findVerifiedMemberByEmail(email);
         Book book = bookMapper.BookPostToBook(requestBody);
@@ -56,6 +57,17 @@ public class BookController {
         Book createdBook = bookService.createBook(book);
 
         return new ResponseEntity(bookMapper.BookToBookPostResponse(createdBook), HttpStatus.CREATED);
+    }
 
+    //책 수정
+    @PatchMapping("/{book-id}")
+    public ResponseEntity patchBook(@PathVariable("book-id") long bookId,
+                                    @Valid @RequestBody BookDto.Patch requestBody){
+        Book book = bookMapper.BookPatchToBook(requestBody);
+        book.setBookId(bookId);
+        Book verifiedBookStatusBook = bookService.verifyBookStatus(book);
+        Book updatedBook = bookService.updateBook(verifiedBookStatusBook);
+
+        return new ResponseEntity(bookMapper.BookToBookPatchResponse(updatedBook), HttpStatus.OK);
     }
 }

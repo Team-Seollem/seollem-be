@@ -9,8 +9,11 @@ import org.mapstruct.ReportingPolicy;
 public interface BookMapper {
 
     Book BookPostToBook(BookDto.Post requestBody);
+    Book BookPatchToBook(BookDto.Patch requestBody);
+    BookDto.PostResponse BookToBookPostResponse(Book book);
+    BookDto.PatchResponse BookToBookPatchResponse(Book book);
 
     BookDto.DetailResponse BookToBookDetailResponse(Book book);
 
-    BookDto.PostResponse BookToBookPostResponse(Book book);
+
 }

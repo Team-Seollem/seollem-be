@@ -19,19 +19,18 @@ public class Book extends Auditable {
     @Column(nullable = false, unique = true)
     private String title;
     private String cover;
-    private String authors;
+    private String author;
     private String publisher;
     private int currentPage;
     private int itemPage;
     private int star;
-    private int bookCount;
     private BookStatus bookStatus;
     private LocalDateTime readStartDate;
     private LocalDateTime readEndDate;
 
     @Getter
     public enum BookStatus{
-        YET, ING, DONE;
+        YET, ING, DONE
 
     }
 
