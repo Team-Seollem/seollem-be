@@ -45,6 +45,7 @@ public class MemberController {
         String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
         Member member = memberService.findVerifiedMemberByEmail(email);
 
+
         return new ResponseEntity<>(memberMapper.memberToMemberGetResponse(member), HttpStatus.OK);
     }
 

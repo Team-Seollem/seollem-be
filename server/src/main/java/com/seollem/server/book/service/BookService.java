@@ -22,11 +22,23 @@ public class BookService {
     }
 
     public Book findVerifiedBookById(long bookId){
-        Optional<Book> optionalBook = bookRepository.findById(bookId);
-        Book book = optionalBook.orElseThrow(()->
+        Optional<Book> optionalBookDetail = bookRepository.findById(bookId);
+        Book book = optionalBookDetail.orElseThrow(()->
                 new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND));
 
         return book;
+    }
+
+    public Book createBook(Book book){
+        verifyExistBookByTitle(book.getTitle());
+        Book savedBook = bookRepository.save(book);
+        return savedBook;
+    }
+
+    public void verifyExistBookByTitle(String title){
+        Optional<Book> optionalBook = bookRepository.findByTitle(title);
+        if(optionalBook.isPresent())
+            throw new BusinessLogicException(ExceptionCode.BOOK_EXISTS);
     }
 
 
