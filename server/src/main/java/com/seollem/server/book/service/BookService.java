@@ -4,6 +4,7 @@ import com.seollem.server.book.entity.Book;
 import com.seollem.server.book.repository.BookRepository;
 import com.seollem.server.exception.BusinessLogicException;
 import com.seollem.server.exception.ExceptionCode;
+import com.seollem.server.member.entity.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -56,6 +57,13 @@ public class BookService {
                 new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND));
 
         return book;
+    }
+
+    public Page<Book> findVerifiedBooksByMember(int page, int size, Member member){
+      Page<Book> books = bookRepository.findAllByMember(PageRequest.of(page, size,
+                Sort.by("bookId").descending()), member);
+
+        return books;
     }
 
     public void verifyExistBookByTitle(String title){

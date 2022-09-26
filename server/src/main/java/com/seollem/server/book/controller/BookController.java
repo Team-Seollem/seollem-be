@@ -4,15 +4,19 @@ import com.seollem.server.book.dto.BookDto;
 import com.seollem.server.book.entity.Book;
 import com.seollem.server.book.mapper.BookMapper;
 import com.seollem.server.book.service.BookService;
+import com.seollem.server.globaldto.MultiResponseDto;
 import com.seollem.server.member.entity.Member;
 import com.seollem.server.member.service.MemberService;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -34,6 +38,19 @@ public class BookController {
     }
 
 
+    @GetMapping("/library")
+    public ResponseEntity getLibrary(@RequestHeader Map<String, Object> requestHeader,
+                                     @Positive @RequestParam int page,
+                                     @Positive @RequestParam int size){
+        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+        Member member = memberService.findVerifiedMemberByEmail(email);
+        Page<Book> pageBooks = bookService.findVerifiedBooksByMember(page-1, size, member);
+        List<Book> books = pageBooks.getContent();
+
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(bookMapper.BooksToBooksResponse(books), pageBooks), HttpStatus.OK);
+    }
+
 
     //책 상세페이지 조회
     @GetMapping("/{book-id}")
@@ -52,9 +69,10 @@ public class BookController {
         String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
         Member member = memberService.findVerifiedMemberByEmail(email);
         Book book = bookMapper.BookPostToBook(requestBody);
-        book.setMember(member);
+        Book verifiedBookStatusBook = bookService.verifyBookStatus(book);
+        verifiedBookStatusBook.setMember(member);
 
-        Book createdBook = bookService.createBook(book);
+        Book createdBook = bookService.createBook(verifiedBookStatusBook);
 
         return new ResponseEntity(bookMapper.BookToBookPostResponse(createdBook), HttpStatus.CREATED);
     }

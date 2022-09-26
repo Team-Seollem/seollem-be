@@ -23,7 +23,6 @@ public class BookDto {
         private int itemPage;
         private int currentPage;
         private String publisher;
-        @NotBlank
         private Book.BookStatus bookStatus;
         private LocalDateTime readStarDate;
         private LocalDateTime readEndDate;
@@ -73,6 +72,8 @@ public class BookDto {
 
     @Setter
     @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class DetailResponse{
         private long bookId;
         private String title;
@@ -83,8 +84,24 @@ public class BookDto {
         private int star;
         private int currentPage;
         private int itemPage;
+        private Book.BookStatus bookStatus;
         private LocalDateTime readStartDate;
         private LocalDateTime readEndDate;
         //메모 구현 필요
+    }
+    @Setter
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class BooksResponse{
+        private long bookId;
+        private String title;
+        private String cover;
+        private String author;
+        private LocalDateTime createdAt;
+        private int star;
+        private int currentPage;
+        private int itemPage;
+        private Book.BookStatus bookStatus;
     }
 }
