@@ -93,7 +93,7 @@ public class BookDto {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class BooksResponse{
+    public static class LibraryResponse{
         private long bookId;
         private String title;
         private String cover;
@@ -103,5 +103,16 @@ public class BookDto {
         private int currentPage;
         private int itemPage;
         private Book.BookStatus bookStatus;
+    }
+
+    @Setter
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CalenderResponse{
+        private long bookId;
+        private LocalDateTime readEndDate;
+        private String cover;
+
     }
 }

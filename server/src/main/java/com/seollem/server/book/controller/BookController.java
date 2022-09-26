@@ -38,23 +38,48 @@ public class BookController {
     }
 
 
+
+    //서재 뷰 조회
     @GetMapping("/library")
     public ResponseEntity getLibrary(@RequestHeader Map<String, Object> requestHeader,
                                      @Positive @RequestParam int page,
-                                     @Positive @RequestParam int size){
+                                     @Positive @RequestParam int size,
+                                     @RequestParam Book.BookStatus bookStatus){
         String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
         Member member = memberService.findVerifiedMemberByEmail(email);
+
         Page<Book> pageBooks = bookService.findVerifiedBooksByMember(page-1, size, member);
         List<Book> books = pageBooks.getContent();
+        List<Book> classifiedBooks = bookService.classifyByBookStatus(books, bookStatus);
 
         return new ResponseEntity<>(
-                new MultiResponseDto<>(bookMapper.BooksToBooksResponse(books), pageBooks), HttpStatus.OK);
+                new MultiResponseDto<>(bookMapper.BooksToLibraryResponse(classifiedBooks), pageBooks), HttpStatus.OK);
+    }
+
+    // 캘린더 뷰 조회
+    @GetMapping("/calender")
+    public ResponseEntity getCalender(@RequestHeader Map<String, Object> requestHeader,
+                                      @Positive @RequestParam int page,
+                                      @Positive @RequestParam int size){
+        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+        Member member = memberService.findVerifiedMemberByEmail(email);
+
+        Page<Book> pageBooks = bookService.findVerifiedBooksByMember(page-1, size, member);
+        List<Book> books = pageBooks.getContent();
+        List<Book> calenderBooks = bookService.findCalenderBooks(books);
+
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(bookMapper.BooksToCalenderResponse(calenderBooks), pageBooks), HttpStatus.OK);
+
     }
 
 
     //책 상세페이지 조회
     @GetMapping("/{book-id}")
-    public ResponseEntity getBookDetail(@PathVariable("book-id") long bookId){
+    public ResponseEntity getBookDetail(@RequestHeader Map<String, Object> requestHeader,
+                                        @PathVariable("book-id") long bookId){
+        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+        Member member = memberService.findVerifiedMemberByEmail(email);
 
         Book book = bookService.findVerifiedBookById(bookId);
         //Book.setMemo(); 구현 필요

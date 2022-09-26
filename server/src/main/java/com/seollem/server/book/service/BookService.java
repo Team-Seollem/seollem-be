@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -66,6 +67,14 @@ public class BookService {
         return books;
     }
 
+    public List<Book> findCalenderBooks(List<Book> books){
+        List<Book> findBooks = books.stream()
+                .filter(book -> book.getBookStatus()== Book.BookStatus.DONE)
+                .collect(Collectors.toList());
+
+        return findBooks;
+    }
+
     public void verifyExistBookByTitle(String title){
         Optional<Book> optionalBook = bookRepository.findByTitle(title);
         if(optionalBook.isPresent())
@@ -89,6 +98,14 @@ public class BookService {
                 throw new BusinessLogicException(ExceptionCode.BOOK_STATUS_WRONG);
         } else throw new BusinessLogicException(ExceptionCode.BOOK_STATUS_WRONG);
         return book;
+    }
+
+    public List<Book> classifyByBookStatus(List<Book> books, Book.BookStatus bookStatus){
+        List<Book> classifiedBooks = books.stream()
+                .filter(book -> book.getBookStatus()==bookStatus)
+                .collect(Collectors.toList());
+
+        return classifiedBooks;
     }
 
 
