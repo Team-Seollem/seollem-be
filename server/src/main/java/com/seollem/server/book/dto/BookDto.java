@@ -115,4 +115,14 @@ public class BookDto {
         private String cover;
 
     }
+    @Setter
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class AbandonResponse{
+        private long bookId;
+        private LocalDateTime createdAt;
+        private String title;
+        private String cover;
+    }
 }

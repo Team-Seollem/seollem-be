@@ -10,6 +10,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -73,6 +76,18 @@ public class BookService {
                 .collect(Collectors.toList());
 
         return findBooks;
+    }
+
+    public List<Book> findAbandonedBooks(List<Book> books){
+        List<Book> yetBooks = books.stream()
+                .filter(book -> book.getBookStatus()== Book.BookStatus.YET)
+                .collect(Collectors.toList());
+
+        List<Book> abandonedBooks = yetBooks.stream()
+                .filter(book -> book.getCreatedAt().toLocalDate().until(LocalDateTime.now().toLocalDate(), ChronoUnit.DAYS)>90)
+                .collect(Collectors.toList());
+
+        return abandonedBooks;
     }
 
     public void verifyExistBookByTitle(String title){

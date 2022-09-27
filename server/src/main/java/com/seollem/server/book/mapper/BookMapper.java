@@ -18,5 +18,7 @@ public interface BookMapper {
     List<BookDto.LibraryResponse> BooksToLibraryResponse(List<Book> books);
     List<BookDto.CalenderResponse> BooksToCalenderResponse(List<Book> books);
 
+    List<BookDto.AbandonResponse> BooksToAbandonResponse(List<Book> books);
+
 
 }

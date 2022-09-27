@@ -73,6 +73,24 @@ public class BookController {
 
     }
 
+    //오래된 책 조회
+    @GetMapping("/abandon")
+    public ResponseEntity getAbandon(@RequestHeader Map<String, Object> requestHeader,
+                                      @Positive @RequestParam int page,
+                                      @Positive @RequestParam int size) {
+        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+        Member member = memberService.findVerifiedMemberByEmail(email);
+
+        Page<Book> pageBooks = bookService.findVerifiedBooksByMember(page-1, size, member);
+        List<Book> books = pageBooks.getContent();
+
+        List<Book> abandonedBooks = bookService.findAbandonedBooks(books);
+
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(bookMapper.BooksToAbandonResponse(abandonedBooks), pageBooks), HttpStatus.OK);
+
+    }
+
 
     //책 상세페이지 조회
     @GetMapping("/{book-id}")
