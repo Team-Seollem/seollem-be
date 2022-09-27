@@ -11,6 +11,7 @@ import java.io.IOException;
 // RestTemplate 로깅
 @Slf4j
 public class RestTemplateInterceptor implements ClientHttpRequestInterceptor {
+    private int count=0;
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] reqBody, ClientHttpRequestExecution execution) throws IOException {
@@ -22,11 +23,13 @@ public class RestTemplateInterceptor implements ClientHttpRequestInterceptor {
     }
 
     private void logRequest(HttpRequest request, byte[] body) throws IOException {
+        count++;
         log.info(
                 "===========================request begin================================================");
         log.info("URI         : {}", request.getURI());
         log.info("Method      : {}", request.getMethod());
         log.info("==========================request end==================================================");
+        System.out.println("Count : " + count);
     }
 
 }

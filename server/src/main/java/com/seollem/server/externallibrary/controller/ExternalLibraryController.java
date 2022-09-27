@@ -22,6 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ext-lib")
+@SuppressWarnings("unchecked")
 public class ExternalLibraryController {
 
     private final RestTemplateConfig restTemplateConfig;
@@ -85,17 +86,6 @@ public class ExternalLibraryController {
     // 전체 쪽수(itemPage)를 JSONObject 로 반환하는 메서드
     public JSONObject findItemPageJson(String isbn) throws JSONException {
         RestTemplate restTemplate = restTemplateConfig.restTemplate();
-        /*
-            Logging 위한 interceptor 설정
-         */
-        List<ClientHttpRequestInterceptor> interceptorList = restTemplate.getInterceptors();
-        if(CollectionUtils.isEmpty(interceptorList)){
-            interceptorList = new ArrayList<>();
-        }
-
-        interceptorList.add(new RestTemplateInterceptor());
-        restTemplate.setInterceptors(interceptorList);
-
 
         UriComponents uriComponents =
                 UriComponentsBuilder

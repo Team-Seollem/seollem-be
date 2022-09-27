@@ -95,7 +95,7 @@ public class BookController {
     //책 상세페이지 조회
     @GetMapping("/{book-id}")
     public ResponseEntity getBookDetail(@RequestHeader Map<String, Object> requestHeader,
-                                        @PathVariable("book-id") long bookId){
+                                        @Positive @PathVariable("book-id") long bookId){
         String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
         Member member = memberService.findVerifiedMemberByEmail(email);
 
@@ -126,7 +126,7 @@ public class BookController {
     //책 수정
     @PatchMapping("/{book-id}")
     public ResponseEntity patchBook(@RequestHeader Map<String, Object> requestHeader,
-                                    @PathVariable("book-id") long bookId,
+                                    @Positive @PathVariable("book-id") long bookId,
                                     @Valid @RequestBody BookDto.Patch requestBody){
         String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
         Member member = memberService.findVerifiedMemberByEmail(email);
@@ -141,4 +141,19 @@ public class BookController {
 
         return new ResponseEntity(bookMapper.BookToBookPatchResponse(updatedBook), HttpStatus.OK);
     }
+
+    //책 삭제
+    @DeleteMapping("/{book-id}")
+    public ResponseEntity deleteBook(@RequestHeader Map<String, Object> requestHeader,
+                                     @Positive @PathVariable("book-id") long bookId){
+        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+        Member member = memberService.findVerifiedMemberByEmail(email);
+
+        bookService.verifyMemberHasBook(bookId, member.getMemberId());
+
+        bookService.deleteBook(bookId);
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
 }

@@ -55,6 +55,11 @@ public class BookService {
         return bookRepository.save(findBook);
     }
 
+    public void deleteBook(long bookId){
+        Book book = findVerifiedBookById(bookId);
+        bookRepository.delete(book);
+    }
+
     public Book findVerifiedBookById(long bookId){
         Optional<Book> optionalBookDetail = bookRepository.findById(bookId);
         Book book = optionalBookDetail.orElseThrow(()->
