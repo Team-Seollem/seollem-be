@@ -1,14 +1,11 @@
 package com.seollem.server.externallibrary.controller;
 
 import com.seollem.server.externallibrary.config.RestTemplateConfig;
-import com.seollem.server.externallibrary.config.RestTemplateInterceptor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +15,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/ext-lib")
