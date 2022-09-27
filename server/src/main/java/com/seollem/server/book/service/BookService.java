@@ -69,8 +69,15 @@ public class BookService {
     }
 
     public Page<Book> findVerifiedBooksByMember(int page, int size, Member member){
-      Page<Book> books = bookRepository.findAllByMember(PageRequest.of(page, size,
-                Sort.by("bookId").descending()), member);
+        Page<Book> books = bookRepository.findAllByMember(member, PageRequest.of(page, size,
+                Sort.by("BOOK_ID").descending()));
+
+        return books;
+    }
+
+    public Page<Book> findVerifiedBooksByMemberAndBookStatus(int page, int size, Member member, Book.BookStatus bookStatus){
+      Page<Book> books = bookRepository.findAllByMemberAndBookStatus(PageRequest.of(page, size,
+                Sort.by("bookId").descending()), member, bookStatus);
 
         return books;
     }
@@ -127,6 +134,8 @@ public class BookService {
         return book;
     }
 
+    /*
+    // NEBER USED
     public List<Book> classifyByBookStatus(List<Book> books, Book.BookStatus bookStatus){
         List<Book> classifiedBooks = books.stream()
                 .filter(book -> book.getBookStatus()==bookStatus)
@@ -134,6 +143,7 @@ public class BookService {
 
         return classifiedBooks;
     }
+    */
 
 
 }

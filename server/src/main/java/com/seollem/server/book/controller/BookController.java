@@ -48,12 +48,13 @@ public class BookController {
         String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
         Member member = memberService.findVerifiedMemberByEmail(email);
 
-        Page<Book> pageBooks = bookService.findVerifiedBooksByMember(page-1, size, member);
+        Page<Book> pageBooks = bookService.findVerifiedBooksByMemberAndBookStatus(page-1, size, member, bookStatus);
         List<Book> books = pageBooks.getContent();
-        List<Book> classifiedBooks = bookService.classifyByBookStatus(books, bookStatus);
+
+//        List<Book> classifiedBooks = bookService.classifyByBookStatus(books, bookStatus);
 
         return new ResponseEntity<>(
-                new MultiResponseDto<>(bookMapper.BooksToLibraryResponse(classifiedBooks), pageBooks), HttpStatus.OK);
+                new MultiResponseDto<>(bookMapper.BooksToLibraryResponse(books), pageBooks), HttpStatus.OK);
     }
 
     // 캘린더 뷰 조회
@@ -64,12 +65,11 @@ public class BookController {
         String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
         Member member = memberService.findVerifiedMemberByEmail(email);
 
-        Page<Book> pageBooks = bookService.findVerifiedBooksByMember(page-1, size, member);
+        Page<Book> pageBooks = bookService.findVerifiedBooksByMemberAndBookStatus(page-1, size, member, Book.BookStatus.DONE);
         List<Book> books = pageBooks.getContent();
-        List<Book> calenderBooks = bookService.findCalenderBooks(books);
 
         return new ResponseEntity<>(
-                new MultiResponseDto<>(bookMapper.BooksToCalenderResponse(calenderBooks), pageBooks), HttpStatus.OK);
+                new MultiResponseDto<>(bookMapper.BooksToCalenderResponse(books), pageBooks), HttpStatus.OK);
 
     }
 
@@ -84,10 +84,10 @@ public class BookController {
         Page<Book> pageBooks = bookService.findVerifiedBooksByMember(page-1, size, member);
         List<Book> books = pageBooks.getContent();
 
-        List<Book> abandonedBooks = bookService.findAbandonedBooks(books);
+//        List<Book> abandonedBooks = bookService.findAbandonedBooks(books);
 
         return new ResponseEntity<>(
-                new MultiResponseDto<>(bookMapper.BooksToAbandonResponse(abandonedBooks), pageBooks), HttpStatus.OK);
+                new MultiResponseDto<>(bookMapper.BooksToAbandonResponse(books), pageBooks), HttpStatus.OK);
 
     }
 
