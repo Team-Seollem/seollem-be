@@ -5,13 +5,16 @@ import lombok.Getter;
 public enum ExceptionCode {
 
     MEMBER_NOT_FOUND(404, "Member not found"),
-    MEMBER_EXISTS(409, "Member already exists"),
-    QUESTION_NOT_FOUND(404, "Question not found"),
-    QUESTION_EXISTS(409,"Question already exists"),
+    MEMBER_EXISTS(400, "Member already exists"),
+    BOOK_NOT_FOUND(404, "Book not found"),
+    BOOK_EXISTS(400,"Book already exists"),
     ANSWER_NOT_FOUND_BY_ID(404, "Answer not found"),
 //    ANSWER_NOT_FOUND_BY_BODY(404, "Answer not found, by Body"),
     ANSWER_EXISTS(409, "Answer already exists"),
-    TAG_NOT_FOUND(404,"Tag not found");
+    TAG_NOT_FOUND(404,"Tag not found"),
+
+    BOOK_STATUS_WRONG(400, "Wrong value in bookStatus and readDate"),
+    NOT_MEMBER_BOOK(400,"Not member's book");
 
 
 

@@ -42,6 +42,8 @@ public class SecurityConfig {
                 .permitAll()
                 .antMatchers("/login")
                 .permitAll()
+                .antMatchers("/ext-lib/**")
+                .permitAll()
 //                .antMatchers("/api/v1/admin/**")
 //                .access("hasRole('ROLE_ADMIN')")
                 .anyRequest().access("hasRole('ROLE_USER')");

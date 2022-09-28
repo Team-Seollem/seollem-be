@@ -12,6 +12,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.ResourceAccessException;
 
 import javax.validation.ConstraintViolationException;
 
@@ -49,7 +50,7 @@ public class GlobalExceptionAdvice {
     public ErrorResponse handleHttpRequestMethodNotSupportedException(
             HttpRequestMethodNotSupportedException e) {
 
-        final ErrorResponse response = ErrorResponse.of(HttpStatus.METHOD_NOT_ALLOWED, "Required request body is missing");
+        final ErrorResponse response = ErrorResponse.of(HttpStatus.METHOD_NOT_ALLOWED, "request body 가 없습니다.");
 
         return response;
     }
@@ -75,6 +76,19 @@ public class GlobalExceptionAdvice {
 
         return response;
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.REQUEST_TIMEOUT)
+    public ErrorResponse handleResourceAccessException(
+            ResourceAccessException e){
+
+        final ErrorResponse response = ErrorResponse.of(HttpStatus.BAD_REQUEST,
+                e.getMessage());
+
+        return response;
+    }
+
+
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

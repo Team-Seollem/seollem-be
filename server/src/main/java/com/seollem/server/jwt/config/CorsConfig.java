@@ -18,6 +18,7 @@ public class CorsConfig {
         config.addAllowedOriginPattern("*"); // addAllowedOrigin 에서 수정함
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
+        config.addExposedHeader("Authorization");
         source.registerCorsConfiguration("/**", config);
 
         return new CorsFilter(source);

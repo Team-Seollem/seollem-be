@@ -1,18 +1,14 @@
 package com.seollem.server.auth.controller;
 
-import com.seollem.server.dto.SingleResponseDto;
 import com.seollem.server.member.dto.MemberDto;
 import com.seollem.server.member.entity.Member;
 import com.seollem.server.member.mapper.MemberMapper;
-import com.seollem.server.member.repository.MemberRepository;
 import com.seollem.server.member.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
