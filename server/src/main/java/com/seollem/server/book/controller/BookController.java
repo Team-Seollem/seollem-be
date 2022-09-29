@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +41,7 @@ public class BookController {
 
 
 
+
     //서재 뷰 조회
     @GetMapping("/library")
     public ResponseEntity getLibrary(@RequestHeader Map<String, Object> requestHeader,
@@ -48,7 +51,7 @@ public class BookController {
         String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
         Member member = memberService.findVerifiedMemberByEmail(email);
 
-        Page<Book> pageBooks = bookService.findVerifiedBooksByMemberAndBookStatus(page-1, size, member, bookStatus);
+        Page<Book> pageBooks = bookService.findVerifiedBooksByMemberAndBookStatus(page-1, size, member, bookStatus, "bookId");
         List<Book> books = pageBooks.getContent();
 
 //        List<Book> classifiedBooks = bookService.classifyByBookStatus(books, bookStatus);
@@ -65,7 +68,7 @@ public class BookController {
         String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
         Member member = memberService.findVerifiedMemberByEmail(email);
 
-        Page<Book> pageBooks = bookService.findVerifiedBooksByMemberAndBookStatus(page-1, size, member, Book.BookStatus.DONE);
+        Page<Book> pageBooks = bookService.findVerifiedBooksByMemberAndBookStatus(page-1, size, member, Book.BookStatus.DONE, "readEndDate");
         List<Book> books = pageBooks.getContent();
 
         return new ResponseEntity<>(
@@ -155,5 +158,6 @@ public class BookController {
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
+
 
 }

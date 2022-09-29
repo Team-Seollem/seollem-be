@@ -13,7 +13,6 @@ public class BookDto {
 
     @Setter
     @Getter
-    @AllArgsConstructor
     @NoArgsConstructor
     public static class Post{
         @NotBlank
