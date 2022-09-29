@@ -32,19 +32,6 @@ public class MemoController {
     private final GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil;
     private final BookService bookService;
 
-//    @PostMapping
-//    public ResponseEntity postMemo(@RequestHeader Map<String, Object> requestHeader,
-//                                   @Valid @RequestBody MemoDto.Post post) {
-//        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
-//        Member member = memberService.findVerifiedMemberByEmail(email);
-//        Memo memoOfBook = mapper.memoPostToMemo(post);
-//        Memo memo = memoService.createMemo(memoOfBook);
-//        memo.setMember(member);
-//        MemoDto.Response response = mapper.memoToMemoResponse(memo);
-//        Book book = memo.getBook();
-//
-//        return new ResponseEntity<>(response, HttpStatus.CREATED);
-//    }
 @PostMapping("/{book-id}")
 public ResponseEntity postMemo(@RequestHeader Map<String, Object> requestHeader,
                                @Valid @RequestBody MemoDto.Post post,
@@ -80,9 +67,6 @@ public ResponseEntity postMemo(@RequestHeader Map<String, Object> requestHeader,
 
         Memo memo = memoService.updateMemo(PatchMemo);
         MemoDto.Response response = mapper.memoToMemoResponse(memo);
-        // patch.setMemoId(memoId);
-        //        Memo memo = memoService.updateMemo(mapper.memoPatchToMemo(patch));
-        //        MemoDto.Response response = mapper.memoToMemoResponse(memo);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
