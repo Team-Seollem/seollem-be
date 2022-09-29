@@ -1,6 +1,7 @@
 package com.seollem.server.book.dto;
 
 import com.seollem.server.book.entity.Book;
+import com.seollem.server.memo.MemoDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class BookDto {
 
@@ -87,6 +89,17 @@ public class BookDto {
         private LocalDateTime readStartDate;
         private LocalDateTime readEndDate;
         //메모 구현 필요
+        private List<MemoDto.Response> memosList;
+        private int memoCount;
+    }
+    @Setter
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MemosOfBook{
+        private long bookId;
+        private List<MemoDto.Response> memosList;
+        private int memoCount;
     }
     @Setter
     @Getter
@@ -102,6 +115,7 @@ public class BookDto {
         private int currentPage;
         private int itemPage;
         private Book.BookStatus bookStatus;
+        private int memoCount;
     }
 
     @Setter

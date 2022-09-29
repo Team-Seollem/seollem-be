@@ -7,6 +7,9 @@ import com.seollem.server.book.service.BookService;
 import com.seollem.server.globaldto.MultiResponseDto;
 import com.seollem.server.member.entity.Member;
 import com.seollem.server.member.service.MemberService;
+import com.seollem.server.memo.Memo;
+import com.seollem.server.memo.MemoDto;
+import com.seollem.server.memo.MemoService;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -32,15 +35,15 @@ public class BookController {
     private final BookService bookService;
     private final BookMapper bookMapper;
 
-    public BookController(GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil, MemberService memberService, BookService bookService, BookMapper bookMapper) {
+    private final MemoService memoService;
+
+    public BookController(GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil, MemberService memberService, BookService bookService, BookMapper bookMapper, MemoService memoService) {
         this.getEmailFromHeaderTokenUtil = getEmailFromHeaderTokenUtil;
         this.memberService = memberService;
         this.bookService = bookService;
         this.bookMapper = bookMapper;
+        this.memoService = memoService;
     }
-
-
-
 
     //서재 뷰 조회
     @GetMapping("/library")
@@ -98,7 +101,7 @@ public class BookController {
     //책 상세페이지 조회
     @GetMapping("/{book-id}")
     public ResponseEntity getBookDetail(@RequestHeader Map<String, Object> requestHeader,
-                                        @Positive @PathVariable("book-id") long bookId){
+                                        @Positive @PathVariable("book-id") long bookId) {
         String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
         Member member = memberService.findVerifiedMemberByEmail(email);
 
@@ -107,8 +110,28 @@ public class BookController {
         Book book = bookService.findVerifiedBookById(bookId);
 
         //Book.setMemo(); 구현 필요
+        List<MemoDto.Response> memosList = memoService.getMemos(book);
+        BookDto.DetailResponse result = bookMapper.BookToBookDetailResponse(book);
+        result.setMemosList(memosList);
 
-        return new ResponseEntity(bookMapper.BookToBookDetailResponse(book),HttpStatus.OK);
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+    //책 메모 조회 - 리스트로
+    @GetMapping("/{book-id}/memos")
+    public ResponseEntity getBookMemos(@RequestHeader Map<String, Object> requestHeader,
+                                       @Positive @PathVariable("book-id") long bookId,
+                                       @RequestParam Memo.MemoType memoType){
+        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+        Member member = memberService.findVerifiedMemberByEmail(email);
+
+        bookService.verifyMemberHasBook(bookId, member.getMemberId());
+        Book book = bookService.findVerifiedBookById(bookId);
+
+        List<MemoDto.Response> memoTypeList = memoService.getBookAndMemoTypes(book,memoType);
+        BookDto.MemosOfBook response = bookMapper.BookToMemosOfBookResponse(book);
+        response.setMemosList(memoTypeList);
+        return new ResponseEntity<>(response,HttpStatus.OK);
+
     }
 
     //책 등록
