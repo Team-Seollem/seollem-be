@@ -48,7 +48,7 @@ public class BookController {
         String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
         Member member = memberService.findVerifiedMemberByEmail(email);
 
-        Page<Book> pageBooks = bookService.findVerifiedBooksByMemberAndBookStatus(page-1, size, member, bookStatus);
+        Page<Book> pageBooks = bookService.findVerifiedBooksByMemberAndBookStatus(page-1, size, member, bookStatus, "bookId");
         List<Book> books = pageBooks.getContent();
 
 //        List<Book> classifiedBooks = bookService.classifyByBookStatus(books, bookStatus);
@@ -65,7 +65,7 @@ public class BookController {
         String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
         Member member = memberService.findVerifiedMemberByEmail(email);
 
-        Page<Book> pageBooks = bookService.findVerifiedBooksByMemberAndBookStatus(page-1, size, member, Book.BookStatus.DONE);
+        Page<Book> pageBooks = bookService.findVerifiedBooksByMemberAndBookStatus(page-1, size, member, Book.BookStatus.DONE, "readEndDate");
         List<Book> books = pageBooks.getContent();
 
         return new ResponseEntity<>(
@@ -155,5 +155,6 @@ public class BookController {
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
+
 
 }

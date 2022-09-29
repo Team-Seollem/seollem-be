@@ -75,9 +75,10 @@ public class BookService {
         return books;
     }
 
-    public Page<Book> findVerifiedBooksByMemberAndBookStatus(int page, int size, Member member, Book.BookStatus bookStatus){
+
+    public Page<Book> findVerifiedBooksByMemberAndBookStatus(int page, int size, Member member, Book.BookStatus bookStatus, String sort){
       Page<Book> books = bookRepository.findAllByMemberAndBookStatus(PageRequest.of(page, size,
-                Sort.by("bookId").descending()), member, bookStatus);
+                Sort.by(sort).descending()), member, bookStatus);
 
         return books;
     }
