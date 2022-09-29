@@ -15,7 +15,9 @@ public enum ExceptionCode {
 
     BOOK_STATUS_WRONG(400, "Wrong value in bookStatus and readDate"),
     NOT_MEMBER_BOOK(400,"Not member's book"),
-    MEMO_NOT_FOUND(404,"Not found memo");
+    MEMO_NOT_FOUND(404,"Memo not found"),
+
+    NOT_MEMBER_MEMO(400,"Not member's memo");
 
 
 

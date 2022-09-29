@@ -43,6 +43,7 @@ public class ExternalLibraryController {
                         .queryParam("SearchTarget", "Book")
                         .queryParam("output", "JS")
                         .queryParam("MaxResults", "10")
+                        .queryParam("Cover", "Big")
                         .queryParam("Version", "20131101")
                         .encode()
                         .build();
@@ -93,6 +94,7 @@ public class ExternalLibraryController {
                         .queryParam("SearchTarget", "Book")
                         .queryParam("output", "JS")
                         .queryParam("MaxResults", "10")
+                        .queryParam("Cover", "Big")
                         .queryParam("Version", "20131101")
                         .encode()
                         .build();
@@ -143,6 +145,7 @@ public class ExternalLibraryController {
                         .queryParam("SearchTarget", "Book")
                         .queryParam("output", "JS")
                         .queryParam("MaxResults", "10")
+                        .queryParam("Cover", "Big")
                         .queryParam("Version", "20131101")
                         .encode()
                         .build();

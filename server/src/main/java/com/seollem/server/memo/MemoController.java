@@ -50,20 +50,17 @@ public ResponseEntity postMemo(@RequestHeader Map<String, Object> requestHeader,
     return new ResponseEntity<>(response, HttpStatus.CREATED);
 }
 
-    @PatchMapping("/{book-id}/{memo-id}")
+    @PatchMapping("/{memo-id}")
     public ResponseEntity patchMemo(@RequestHeader Map<String, Object> requestHeader,
-                                    @Positive @PathVariable("book-id") long bookId,
                                     @PathVariable("memo-id")@Positive long memoId,
                                     @Valid @RequestBody MemoDto.Patch patch){
         String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
         Member member = memberService.findVerifiedMemberByEmail(email);
 
+        memoService.verifyMemberHasMemo(memoId, member.getMemberId());
+
         patch.setMemoId(memoId);
         Memo PatchMemo = mapper.memoPatchToMemo(patch);
-        Book book = bookService.findVerifiedBookById(bookId);
-        PatchMemo.setMember(member);
-        PatchMemo.setBook(book);
-
 
         Memo memo = memoService.updateMemo(PatchMemo);
         MemoDto.Response response = mapper.memoToMemoResponse(memo);
@@ -90,6 +87,8 @@ public ResponseEntity postMemo(@RequestHeader Map<String, Object> requestHeader,
                                      @PathVariable("memo-id")@Positive long memoId){
         String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
         Member member = memberService.findVerifiedMemberByEmail(email);
+
+        memoService.verifyMemberHasMemo(memoId, member.getMemberId());
 
         memoService.deleteMemo(memoId);
 

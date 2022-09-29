@@ -19,7 +19,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Page<Book> findAllByMemberAndBookStatus(Pageable pageable, Member member, Book.BookStatus bookStatus);
 
     @Query(value = "SELECT * FROM BOOK WHERE MEMBER_ID = ?1 AND BOOK_STATUS = 0 AND NOW() > DATE_ADD(CREATED_AT, INTERVAL +3 MONTH)",
-            countQuery = "SELECT count(*) FROM BOOK WHERE MEMBER_ID = ?1 AND BOOK_STATUS = 0 AND CREATED_AT > DATE_ADD(NOW(), INTERVAL -3 MONTH)",
+            countQuery = "SELECT count(*) FROM BOOK WHERE MEMBER_ID = ?1 AND BOOK_STATUS = 0 AND NOW() > DATE_ADD(CREATED_AT, INTERVAL +3 MONTH)",
             nativeQuery = true)
     Page<Book> findAllByMember(Member member, Pageable pageable);
 

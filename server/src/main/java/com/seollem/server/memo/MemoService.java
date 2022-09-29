@@ -93,6 +93,12 @@ public class MemoService {
     }
 
 
+    public void verifyMemberHasMemo(long memoId, long memberId){
+        Memo memo = findVerifiedMemo(memoId);
+        if(memo.getMember().getMemberId()!=memberId){
+            throw new BusinessLogicException(ExceptionCode.NOT_MEMBER_MEMO);
+        }
+    }
 
 
 }
