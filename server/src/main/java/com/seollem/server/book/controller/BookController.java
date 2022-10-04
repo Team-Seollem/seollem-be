@@ -10,7 +10,6 @@ import com.seollem.server.member.service.MemberService;
 import com.seollem.server.memo.Memo;
 import com.seollem.server.memo.MemoDto;
 import com.seollem.server.memo.MemoService;
-import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 

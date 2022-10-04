@@ -92,7 +92,7 @@ public class MemoService {
 
     }
 
-
+    //회원이 있는지 확인
     public void verifyMemberHasMemo(long memoId, long memberId){
         Memo memo = findVerifiedMemo(memoId);
         if(memo.getMember().getMemberId()!=memberId){

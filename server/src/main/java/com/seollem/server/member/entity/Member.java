@@ -24,16 +24,12 @@ public class Member extends Auditable {
     private String email;
     private String name;
     private String password;
-    private String roles;
+
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Book> books = new ArrayList<>();
 
-    public List<String> getRoleList() {
-        if(this.roles.length() > 0) {
-            return Arrays.asList(this.roles.split(","));
-        }
-        return new ArrayList<>();
-    }
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
 
 }
