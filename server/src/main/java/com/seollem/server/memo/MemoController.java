@@ -92,7 +92,7 @@ public ResponseEntity postMemo(@RequestHeader Map<String, Object> requestHeader,
 
         memoService.deleteMemo(memoId);
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT); 
 
     }
 
