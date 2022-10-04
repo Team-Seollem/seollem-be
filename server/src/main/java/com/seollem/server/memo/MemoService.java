@@ -5,6 +5,7 @@ import com.seollem.server.book.entity.Book;
 import com.seollem.server.book.service.BookService;
 import com.seollem.server.exception.BusinessLogicException;
 import com.seollem.server.exception.ExceptionCode;
+import com.seollem.server.member.entity.Member;
 import com.seollem.server.util.CustomBeanUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class MemoService {
             return memoRepository.save(updatingMemo);
     }
 
-    public List<Memo> randomMemo(){
+    public List<Memo> randomMemo(Member member){
         List<Memo> random = memoRepository.findAll();
         return random;
     }

@@ -7,6 +7,7 @@ import com.seollem.server.member.mapper.MemberMapper;
 import com.seollem.server.member.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,17 +22,16 @@ public class MemberController {
 
     private final MemberMapper memberMapper;
     private final MemberService memberService;
-    private final GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil;
 
-    public MemberController(MemberMapper memberMapper, MemberService memberService, GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil) {
+
+    public MemberController(MemberMapper memberMapper, MemberService memberService) {
         this.memberMapper = memberMapper;
         this.memberService = memberService;
-        this.getEmailFromHeaderTokenUtil = getEmailFromHeaderTokenUtil;
     }
 
     @GetMapping(path = "/me")
-    public ResponseEntity getMember(@RequestHeader Map<String, Object> requestHeader) {
-        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+    public ResponseEntity getMember(Authentication authentication) {
+        String email = authentication.getName();
         Member member = memberService.findVerifiedMemberByEmail(email);
 
 
@@ -39,9 +39,9 @@ public class MemberController {
     }
 
     @PatchMapping("/me")
-    public ResponseEntity patchMember(@RequestHeader Map<String, Object> requestHeader,
+    public ResponseEntity patchMember(Authentication authentication,
                                       @Valid @RequestBody MemberDto.Patch requestBody){
-        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+        String email = authentication.getName();
 
         Member findMember = memberService.findVerifiedMemberByEmail(email);
         Member patchMember = memberMapper.memberPatchToMember(requestBody);
@@ -54,8 +54,8 @@ public class MemberController {
     }
 
     @DeleteMapping("/me")
-    public ResponseEntity patchMember(@RequestHeader Map<String, Object> requestHeader) {
-        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+    public ResponseEntity patchMember(Authentication authentication) {
+        String email = authentication.getName();
 
         memberService.deleteMember(email);
 

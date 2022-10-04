@@ -13,6 +13,7 @@ import com.seollem.server.memo.MemoService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,15 +28,14 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public class BookController {
 
-    private final GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil;
+
     private final MemberService memberService;
     private final BookService bookService;
     private final BookMapper bookMapper;
 
     private final MemoService memoService;
 
-    public BookController(GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil, MemberService memberService, BookService bookService, BookMapper bookMapper, MemoService memoService) {
-        this.getEmailFromHeaderTokenUtil = getEmailFromHeaderTokenUtil;
+    public BookController(MemberService memberService, BookService bookService, BookMapper bookMapper, MemoService memoService) {
         this.memberService = memberService;
         this.bookService = bookService;
         this.bookMapper = bookMapper;
@@ -44,11 +44,11 @@ public class BookController {
 
     //서재 뷰 조회
     @GetMapping("/library")
-    public ResponseEntity getLibrary(@RequestHeader Map<String, Object> requestHeader,
+    public ResponseEntity getLibrary(Authentication authentication,
                                      @Positive @RequestParam int page,
                                      @Positive @RequestParam int size,
                                      @RequestParam Book.BookStatus bookStatus){
-        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+        String email = authentication.getName();
         Member member = memberService.findVerifiedMemberByEmail(email);
 
         Page<Book> pageBooks = bookService.findVerifiedBooksByMemberAndBookStatus(page-1, size, member, bookStatus, "bookId");
@@ -62,10 +62,10 @@ public class BookController {
 
     // 캘린더 뷰 조회
     @GetMapping("/calender")
-    public ResponseEntity getCalender(@RequestHeader Map<String, Object> requestHeader,
+    public ResponseEntity getCalender(Authentication authentication,
                                       @Positive @RequestParam int page,
                                       @Positive @RequestParam int size){
-        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+        String email = authentication.getName();
         Member member = memberService.findVerifiedMemberByEmail(email);
 
         Page<Book> pageBooks = bookService.findVerifiedBooksByMemberAndBookStatus(page-1, size, member, Book.BookStatus.DONE, "readEndDate");
@@ -78,10 +78,10 @@ public class BookController {
 
     //오래된 책 조회
     @GetMapping("/abandon")
-    public ResponseEntity getAbandon(@RequestHeader Map<String, Object> requestHeader,
+    public ResponseEntity getAbandon(Authentication authentication,
                                       @Positive @RequestParam int page,
                                       @Positive @RequestParam int size) {
-        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+        String email = authentication.getName();
         Member member = memberService.findVerifiedMemberByEmail(email);
 
         Page<Book> pageBooks = bookService.findVerifiedBooksByMember(page-1, size, member);
@@ -97,9 +97,9 @@ public class BookController {
 
     //책 상세페이지 조회
     @GetMapping("/{book-id}")
-    public ResponseEntity getBookDetail(@RequestHeader Map<String, Object> requestHeader,
+    public ResponseEntity getBookDetail(Authentication authentication,
                                         @Positive @PathVariable("book-id") long bookId) {
-        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+        String email = authentication.getName();
         Member member = memberService.findVerifiedMemberByEmail(email);
 
         bookService.verifyMemberHasBook(bookId, member.getMemberId());
@@ -115,10 +115,10 @@ public class BookController {
     }
     //책 메모 조회 - 리스트로
     @GetMapping("/{book-id}/memos")
-    public ResponseEntity getBookMemos(@RequestHeader Map<String, Object> requestHeader,
+    public ResponseEntity getBookMemos(Authentication authentication,
                                        @Positive @PathVariable("book-id") long bookId,
                                        @RequestParam Memo.MemoType memoType){
-        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+        String email = authentication.getName();
         Member member = memberService.findVerifiedMemberByEmail(email);
 
         bookService.verifyMemberHasBook(bookId, member.getMemberId());
@@ -133,9 +133,9 @@ public class BookController {
 
     //책 등록
     @PostMapping
-    public ResponseEntity postBook(@RequestHeader Map<String, Object> requestHeader,
+    public ResponseEntity postBook(Authentication authentication,
                                    @Valid @RequestBody BookDto.Post requestBody){
-        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+        String email = authentication.getName();
         Member member = memberService.findVerifiedMemberByEmail(email);
         Book book = bookMapper.BookPostToBook(requestBody);
         Book verifiedBookStatusBook = bookService.verifyBookStatus(book);
@@ -148,10 +148,10 @@ public class BookController {
 
     //책 수정
     @PatchMapping("/{book-id}")
-    public ResponseEntity patchBook(@RequestHeader Map<String, Object> requestHeader,
+    public ResponseEntity patchBook(Authentication authentication,
                                     @Positive @PathVariable("book-id") long bookId,
                                     @Valid @RequestBody BookDto.Patch requestBody){
-        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+        String email = authentication.getName();
         Member member = memberService.findVerifiedMemberByEmail(email);
 
         Book book = bookMapper.BookPatchToBook(requestBody);
@@ -167,9 +167,9 @@ public class BookController {
 
     //책 삭제
     @DeleteMapping("/{book-id}")
-    public ResponseEntity deleteBook(@RequestHeader Map<String, Object> requestHeader,
+    public ResponseEntity deleteBook(Authentication authentication,
                                      @Positive @PathVariable("book-id") long bookId){
-        String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+        String email = authentication.getName();
         Member member = memberService.findVerifiedMemberByEmail(email);
 
         bookService.verifyMemberHasBook(bookId, member.getMemberId());

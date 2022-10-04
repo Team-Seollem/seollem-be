@@ -71,7 +71,7 @@ public ResponseEntity postMemo(Authentication authentication,
         String email = authentication.getName();
         Member member = memberService.findVerifiedMemberByEmail(email);
 
-        List<Memo> random = memoService.randomMemo();
+        List<Memo> random = memoService.randomMemo(member);
         List<MemoDto.RandomResponse> responses =
                 random.stream()
                         .map(memo-> mapper.momoToMemoRandom(memo))
