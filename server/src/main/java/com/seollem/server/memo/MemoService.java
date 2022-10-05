@@ -8,6 +8,9 @@ import com.seollem.server.exception.ExceptionCode;
 import com.seollem.server.member.entity.Member;
 import com.seollem.server.util.CustomBeanUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +42,7 @@ public class MemoService {
     }
 
     public List<Memo> randomMemo(Member member){
-        List<Memo> random = memoRepository.findAll();
+        List<Memo> random = memoRepository.findAllByMember(member);
         return random;
     }
 
@@ -57,10 +60,16 @@ public class MemoService {
         return result;
     }
 
-    public List<MemoDto.Response> getBookAndMemoTypes(Book book,Memo.MemoType memoType){
-        List<Memo> memoTypeList = memoRepository.findAllByBookAndMemoType( book,memoType);
-        List<MemoDto.Response> typeList = mapper.memoToMemoResponses(memoTypeList);
-        return typeList;
+//    public List<MemoDto.Response> getBookAndMemoTypes(Book book,Memo.MemoType memoType){
+//        List<Memo> memoTypeList = memoRepository.findAllByBookAndMemoType( book,memoType);
+//        List<MemoDto.Response> typeList = mapper.memoToMemoResponses(memoTypeList);
+//        return typeList;
+//    }
+
+    public Page<Memo> getBookAndMemoTypes(int page, int size, Book book, Memo.MemoType memoType){
+        Page<Memo> memoTypeList = memoRepository.findAllByBookAndMemoType(PageRequest.of(page, size, Sort.by("memoId").descending()),book,memoType);
+//        List<MemoDto.Response> typeList = mapper.memoToMemoResponses(memoTypeList);
+        return memoTypeList;
     }
 
 

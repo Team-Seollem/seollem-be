@@ -9,6 +9,7 @@ import com.seollem.server.member.entity.Member;
 import com.seollem.server.member.service.MemberService;
 import com.seollem.server.memo.Memo;
 import com.seollem.server.memo.MemoDto;
+import com.seollem.server.memo.MemoMapper;
 import com.seollem.server.memo.MemoService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -32,14 +33,16 @@ public class BookController {
     private final MemberService memberService;
     private final BookService bookService;
     private final BookMapper bookMapper;
-
     private final MemoService memoService;
+    private final MemoMapper memoMapper;
 
-    public BookController(MemberService memberService, BookService bookService, BookMapper bookMapper, MemoService memoService) {
+    public BookController( MemberService memberService, BookService bookService, BookMapper bookMapper, MemoService memoService, MemoMapper memoMapper) {
+
         this.memberService = memberService;
         this.bookService = bookService;
         this.bookMapper = bookMapper;
         this.memoService = memoService;
+        this.memoMapper = memoMapper;
     }
 
     //서재 뷰 조회
@@ -94,6 +97,21 @@ public class BookController {
 
     }
 
+    // 나만의 작은 책 전체 조회 (메모 존재하는 책들만 조회)
+    @GetMapping("/memo-books")
+    public ResponseEntity getMemoBooks(Authentication authentication,
+                                       @Positive @RequestParam int page,
+                                       @Positive @RequestParam int size){
+        String email =  authentication.getName();
+        Member member = memberService.findVerifiedMemberByEmail(email);
+
+        Page<Book> pageBooks = bookService.findMemoBooks(page-1, size, member);
+        List<Book> books = pageBooks.getContent();
+
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(bookMapper.BooksToMemoBooksResponse(books), pageBooks), HttpStatus.OK);
+    }
+
 
     //책 상세페이지 조회
     @GetMapping("/{book-id}")
@@ -113,23 +131,44 @@ public class BookController {
 
         return new ResponseEntity(result, HttpStatus.OK);
     }
-    //책 메모 조회 - 리스트로
+
     @GetMapping("/{book-id}/memos")
     public ResponseEntity getBookMemos(Authentication authentication,
                                        @Positive @PathVariable("book-id") long bookId,
+                                       @Positive @RequestParam int page,
+                                       @Positive @RequestParam int size,
                                        @RequestParam Memo.MemoType memoType){
-        String email = authentication.getName();
+        String email =  authentication.getName();
         Member member = memberService.findVerifiedMemberByEmail(email);
 
         bookService.verifyMemberHasBook(bookId, member.getMemberId());
         Book book = bookService.findVerifiedBookById(bookId);
 
-        List<MemoDto.Response> memoTypeList = memoService.getBookAndMemoTypes(book,memoType);
-        BookDto.MemosOfBook response = bookMapper.BookToMemosOfBookResponse(book);
-        response.setMemosList(memoTypeList);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        Page<Memo> memoTypeList = memoService.getBookAndMemoTypes(page-1, size, book, memoType);
+        List<Memo> memos = memoTypeList.getContent();
+//        BookDto.MemosOfBook response = bookMapper.BookToMemosOfBookResponse(book);
+//        response.setMemosList(memoTypeList);
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(memoMapper.memoToMemoResponses(memos), memoTypeList),HttpStatus.OK);
 
     }
+    //책 메모 조회 - 리스트로
+//    @GetMapping("/{book-id}/memos")
+//    public ResponseEntity getBookMemos(Authentication authentication,
+//                                       @Positive @PathVariable("book-id") long bookId,
+//                                       @RequestParam Memo.MemoType memoType){
+//        String email = authentication.getName();
+//        Member member = memberService.findVerifiedMemberByEmail(email);
+//
+//        bookService.verifyMemberHasBook(bookId, member.getMemberId());
+//        Book book = bookService.findVerifiedBookById(bookId);
+//
+//        List<MemoDto.Response> memoTypeList = memoService.getBookAndMemoTypes(book,memoType);
+//        BookDto.MemosOfBook response = bookMapper.BookToMemosOfBookResponse(book);
+//        response.setMemosList(memoTypeList);
+//        return new ResponseEntity<>(response,HttpStatus.OK);
+//
+//    }
 
     //책 등록
     @PostMapping

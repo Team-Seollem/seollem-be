@@ -1,6 +1,9 @@
 package com.seollem.server.memo;
 
 import com.seollem.server.book.entity.Book;
+import com.seollem.server.member.entity.Member;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,10 +15,12 @@ public interface MemoRepository extends JpaRepository<Memo, Long> {
 
     List<Memo> findALLByBook(Book book);
 
-    List<Memo> findAllByBookAndMemoType(Book book, Memo.MemoType memoType);
+//    List<Memo> findAllByBookAndMemoType(Book book, Memo.MemoType memoType);
 
-    @Query(value = "SELECT * FROM MEMO order by RAND() limit 1", nativeQuery = true)
-    List<Memo> findAll();
+    Page<Memo> findAllByBookAndMemoType(Pageable pageable, Book book, Memo.MemoType memoType);
+
+    @Query(value = "SELECT * FROM MEMO WHERE MEMBER_ID = ?1 order by RAND() limit 1", nativeQuery = true)
+    List<Memo> findAllByMember(Member member);
 
 
 }
