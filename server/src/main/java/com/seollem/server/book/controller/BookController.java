@@ -87,7 +87,7 @@ public class BookController {
         String email = authentication.getName();
         Member member = memberService.findVerifiedMemberByEmail(email);
 
-        Page<Book> pageBooks = bookService.findVerifiedBooksByMember(page-1, size, member);
+        Page<Book> pageBooks = bookService.findAbandonedBooks(page-1, size, member);
         List<Book> books = pageBooks.getContent();
 
 //        List<Book> abandonedBooks = bookService.findAbandonedBooks(books);

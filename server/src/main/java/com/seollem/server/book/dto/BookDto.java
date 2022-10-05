@@ -138,4 +138,15 @@ public class BookDto {
         private String title;
         private String cover;
     }
+
+    @Setter
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MemoBooksResponse{
+        private long bookId;
+        private String title;
+        private String cover;
+        private int memoCount;
+    }
 }

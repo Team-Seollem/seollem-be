@@ -22,5 +22,7 @@ public interface BookMapper {
 
     List<BookDto.AbandonResponse> BooksToAbandonResponse(List<Book> books);
 
+    List<BookDto.MemoBooksResponse> BooksToMemoBooksResponse(List<Book> books);
+
 
 }
