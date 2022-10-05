@@ -39,7 +39,8 @@ public class Memo extends Auditable {
         BOOK_CONTENT(1, "book_content"),
         SUMMARY(2, "summary"),
         THOUGHT(3, "thought"),
-        QUESTION(4, "question");
+        QUESTION(4, "question"),
+        All(5,"all");
 
 
         @Getter

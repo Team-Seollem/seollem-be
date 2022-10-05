@@ -26,11 +26,17 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
+
     public Book createBook(Book book){
-        verifyExistBookByTitle(book.getTitle());
+        verifyExistBook(book);
         Book savedBook = bookRepository.save(book);
         return savedBook;
     }
+//    public Book createBook(Book book){
+//        verifyExistBookByTitle(book.getTitle());
+//        Book savedBook = bookRepository.save(book);
+//        return savedBook;
+//    }
 
     public Book updateBook(Book book){
         Book findBook = findVerifiedBookById(book.getBookId());
@@ -99,11 +105,17 @@ public class BookService {
         return books;
     }
 
-    public void verifyExistBookByTitle(String title){
-        Optional<Book> optionalBook = bookRepository.findByTitle(title);
+    public void verifyExistBook(Book book){
+        Optional<Book> optionalBook = bookRepository.findByTitle(book.getTitle(), book.getMember().getMemberId());
         if(optionalBook.isPresent())
             throw new BusinessLogicException(ExceptionCode.BOOK_EXISTS);
     }
+
+//    public void verifyExistBookByTitle(String title){
+//        Optional<Book> optionalBook = bookRepository.findByTitle(title);
+//        if(optionalBook.isPresent())
+//            throw new BusinessLogicException(ExceptionCode.BOOK_EXISTS);
+//    }
 
     public void verifyMemberHasBook(long bookId, long memberId){
         Book book = findVerifiedBookById(bookId);
@@ -131,42 +143,8 @@ public class BookService {
         return book;
     }
 
-    /*
-    // never used
-    public List<Book> findAbandonedBooks(List<Book> books){
-        List<Book> yetBooks = books.stream()
-                .filter(book -> book.getBookStatus()== Book.BookStatus.YET)
-                .collect(Collectors.toList());
-
-        List<Book> abandonedBooks = yetBooks.stream()
-                .filter(book -> book.getCreatedAt().toLocalDate().until(LocalDateTime.now().toLocalDate(), ChronoUnit.DAYS)>90)
-                .collect(Collectors.toList());
-
-        return abandonedBooks;
+    public void modifyCreateDate(LocalDateTime time, long bookId){
+        bookRepository.modifyCreateDate(time, bookId);
     }
-    */
-
-    /*
-    // Never Used
-        public List<Book> findCalenderBooks(List<Book> books){
-        List<Book> findBooks = books.stream()
-                .filter(book -> book.getBookStatus()== Book.BookStatus.DONE)
-                .collect(Collectors.toList());
-
-        return findBooks;
-    }
-     */
-
-    /*
-    // NEBER USED
-    public List<Book> classifyByBookStatus(List<Book> books, Book.BookStatus bookStatus){
-        List<Book> classifiedBooks = books.stream()
-                .filter(book -> book.getBookStatus()==bookStatus)
-                .collect(Collectors.toList());
-
-        return classifiedBooks;
-    }
-    */
-
 
 }

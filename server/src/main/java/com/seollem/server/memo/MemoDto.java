@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 public class MemoDto {
 
@@ -50,6 +51,8 @@ public class MemoDto {
         private String memoContent;
         private Memo.MemoType memoType;
         private int memoBookPage;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
 
     }
 
@@ -57,11 +60,15 @@ public class MemoDto {
     @Getter
     @Setter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Response {
-        //  private long memoId;
+        private long memoId;
         private Memo.MemoType memoType;
         private String memoContent;
         private int memoBookPage;
+
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
 
     }
 }

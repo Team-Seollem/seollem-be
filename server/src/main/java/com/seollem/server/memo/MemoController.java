@@ -2,6 +2,7 @@ package com.seollem.server.memo;
 
 import com.seollem.server.book.entity.Book;
 import com.seollem.server.book.service.BookService;
+import com.seollem.server.file.FileUploadService;
 import com.seollem.server.member.entity.Member;
 import com.seollem.server.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -31,6 +33,8 @@ public class MemoController {
 
     private final BookService bookService;
 
+    private final FileUploadService fileUploadService;
+
 @PostMapping("/{book-id}")
 public ResponseEntity postMemo(Authentication authentication,
                                @Valid @RequestBody MemoDto.Post post,
@@ -48,6 +52,18 @@ public ResponseEntity postMemo(Authentication authentication,
 
     return new ResponseEntity<>(response, HttpStatus.CREATED);
 }
+
+    // 이미지 등록
+    @PostMapping("/image-memo")
+    public ResponseEntity postImageMemo(Authentication authentication,
+                                        @RequestPart MultipartFile file){
+        String email = authentication.getName();
+        Member member = memberService.findVerifiedMemberByEmail(email);
+
+        String url = fileUploadService.createImageMemo(file);
+
+        return new ResponseEntity<>(url,HttpStatus.CREATED);
+    }
 
     @PatchMapping("/{memo-id}")
     public ResponseEntity patchMemo(Authentication authentication,

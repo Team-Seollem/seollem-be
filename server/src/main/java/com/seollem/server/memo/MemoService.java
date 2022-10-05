@@ -72,6 +72,12 @@ public class MemoService {
         return memoTypeList;
     }
 
+    public Page<Memo> getBookAndMemo(int page, int size, Book book){
+        Page<Memo> memoTypeList = memoRepository.findAllByBook(PageRequest.of(page, size,
+                Sort.by("memoId").descending()),book);
+        return memoTypeList;
+    }
+
 
 //    public Page<Memo> findAllByMemoType(int page,int size, Memo.MemoType memoType){
 //        Page<Memo> memos = memoRepository.findAllByMemoType(memoType, PageRequest.of(page, size,

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -90,7 +91,6 @@ public class BookController {
         Page<Book> pageBooks = bookService.findAbandonedBooks(page-1, size, member);
         List<Book> books = pageBooks.getContent();
 
-//        List<Book> abandonedBooks = bookService.findAbandonedBooks(books);
 
         return new ResponseEntity<>(
                 new MultiResponseDto<>(bookMapper.BooksToAbandonResponse(books), pageBooks), HttpStatus.OK);
@@ -124,7 +124,7 @@ public class BookController {
 
         Book book = bookService.findVerifiedBookById(bookId);
 
-        //Book.setMemo(); 구현 필요
+
         List<MemoDto.Response> memosList = memoService.getMemos(book);
         BookDto.DetailResponse result = bookMapper.BookToBookDetailResponse(book);
         result.setMemosList(memosList);
@@ -132,6 +132,7 @@ public class BookController {
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
+    // 책 메모 조회 - 타입별 & 전체 (수정)
     @GetMapping("/{book-id}/memos")
     public ResponseEntity getBookMemos(Authentication authentication,
                                        @Positive @PathVariable("book-id") long bookId,
@@ -144,8 +145,14 @@ public class BookController {
         bookService.verifyMemberHasBook(bookId, member.getMemberId());
         Book book = bookService.findVerifiedBookById(bookId);
 
-        Page<Memo> memoTypeList = memoService.getBookAndMemoTypes(page-1, size, book, memoType);
+        //
+        //Page<Memo> memoTypeList = memoService.getBookAndMemoTypes(page-1, size, book, memoType);
+        Page<Memo> memoTypeList;
+        if(memoType==Memo.MemoType.All)
+            memoTypeList = memoService.getBookAndMemo(page-1, size, book);
+        else memoTypeList = memoService.getBookAndMemoTypes(page-1, size, book, memoType);
         List<Memo> memos = memoTypeList.getContent();
+
 //        BookDto.MemosOfBook response = bookMapper.BookToMemosOfBookResponse(book);
 //        response.setMemosList(memoTypeList);
         return new ResponseEntity<>(
@@ -216,6 +223,16 @@ public class BookController {
         bookService.deleteBook(bookId);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    //책 등록일자 수정 -> '오래된 책' 기능 테스트를 위한 api
+    @PatchMapping("/created-date/{book-id}")
+    public ResponseEntity modifyCreateDate(@RequestBody String time,
+                                           @PathVariable("book-id") long bookId){
+
+        bookService.modifyCreateDate(LocalDateTime.parse(time),bookId);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 
