@@ -8,19 +8,18 @@ import org.springframework.stereotype.Component;
 @Getter
 public class ApiKey {
 
-    @Value("${api-key}")
-    private String key;
+  private static ApiKey instance = new ApiKey();
 
-    private static ApiKey instance = new ApiKey();
+  @Value("${api-key}")
+  private String key;
 
-    private ApiKey() {
+  private ApiKey() {
+  }
+
+  public static ApiKey getInstance() {
+    if (instance == null) {
+      instance = new ApiKey();
     }
-
-    public static ApiKey getInstance() {
-        if (instance == null) {
-            instance = new ApiKey();
-        }
-        return instance;
-    }
-
+    return instance;
+  }
 }

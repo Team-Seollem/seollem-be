@@ -11,5 +11,5 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "cloud.aws.s3")
 public class S3Component {
 
-    private String bucket;
+  private String bucket;
 }
