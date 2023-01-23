@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class EmailService {
 
   private final JavaMailSenderImpl sender;
+  private final EmailRedisUtil redisUtil;
 
   public void send(String email) {
 
@@ -32,6 +33,9 @@ public class EmailService {
       e.printStackTrace();
       throw new RuntimeException(e);
     }
+
+    // redis에 인증번호 유효기간은 5분
+    redisUtil.setDataExpire(email, authenticationCode, 60 * 5L);
 
   }
 }
