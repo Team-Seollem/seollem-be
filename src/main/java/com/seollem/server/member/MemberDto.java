@@ -17,18 +17,21 @@ public class MemberDto {
   @NoArgsConstructor
   public static class Post {
 
-    @NotBlank(message = "공백은 허용되지 않습니다.")
-    @Email(message = "이메일 형식이어야 합니다.")
+    @NotBlank(message = "회원 이메일이 입력되어야 합니다.")
+    @Email(message = "회원 이메일 형식이 아닙니다.")
     private String email;
 
-    @NotBlank(message = "공백은 허용되지 않습니다.")
+    @NotBlank(message = "회원 이름이 입력되어야 합니다.")
     private String name;
 
-    @NotBlank(message = "공백은 허용되지 않습니다.")
+    @NotBlank(message = "회원 비밀번호가 입력되어야 합니다.")
     @Pattern(
         regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{6,}$",
-        message = "비밀번호는 알파벳, 숫자, 특수문자 포함 6자 이상이어야 합니다.")
+        message = "회원 비밀번호는 알파벳, 숫자, 특수문자 포함 6자 이상이어야 합니다.")
     private String password;
+
+    @NotBlank(message = "인증번호가 입력되어야 합니다.")
+    private String authenticationCode;
   }
 
   @Setter

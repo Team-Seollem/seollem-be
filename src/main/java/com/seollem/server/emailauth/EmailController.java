@@ -1,4 +1,4 @@
-package com.seollem.server.email;
+package com.seollem.server.emailauth;
 
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;

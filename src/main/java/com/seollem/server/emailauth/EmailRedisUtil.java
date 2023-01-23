@@ -1,4 +1,4 @@
-package com.seollem.server.email;
+package com.seollem.server.emailauth;
 
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
