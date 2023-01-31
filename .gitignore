@@ -215,5 +215,5 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
-### application-API-KEY.properties ###
-application-API-KEY.properties
+### application-SECRETS.properties ###
+application-SECRETS.properties

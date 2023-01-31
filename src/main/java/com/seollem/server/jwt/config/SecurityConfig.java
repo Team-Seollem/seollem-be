@@ -44,6 +44,8 @@ public class SecurityConfig {
         .permitAll()
         .antMatchers("/ext-lib/**")
         .permitAll()
+        .antMatchers("/email/**")
+        .permitAll()
         //                .antMatchers("/api/v1/admin/**")
         //                .access("hasRole('ROLE_ADMIN')")
         .anyRequest()
