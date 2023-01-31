@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
  * 인증 번호를 Email 로 보내는 역할만 한다.
  */
 @RestController
-@RequestMapping("/email")
+@RequestMapping("/email/join")
 @RequiredArgsConstructor
 public class EmailController {
 
   private final EmailService emailService;
 
   @PostMapping()
-  public ResponseEntity sendEmail(@Valid @RequestBody EmailRequestDto requestedEmail) {
-    emailService.send(requestedEmail.getRequestedEmail());
+  public ResponseEntity sendAuthCodeEmail(@Valid @RequestBody EmailRequestDto requestedEmail) {
+    emailService.send(requestedEmail.getJoinAuthCodeEmail());
 
     return new ResponseEntity(HttpStatus.CREATED);
   }

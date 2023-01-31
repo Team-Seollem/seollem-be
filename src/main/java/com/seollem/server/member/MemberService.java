@@ -61,4 +61,5 @@ public class MemberService {
       throw new BusinessLogicException(ExceptionCode.MEMBER_AUTHENTICATIONCODE_INVALID);
     }
   }
+
 }
