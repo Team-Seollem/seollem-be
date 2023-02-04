@@ -4,6 +4,7 @@ import com.seollem.server.jwt.decoder.TokenDecodeService;
 import com.seollem.server.jwt.filter.JwtAuthenticationFilter;
 import com.seollem.server.jwt.filter.JwtAuthorizationFilter;
 import com.seollem.server.member.MemberService;
+import com.seollem.server.util.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,7 @@ public class SecurityConfig {
   private final CorsFilter corsFilter;
   private final MemberService memberService;
   private final TokenDecodeService tokenDecodeService;
+  private final Keys keys;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -60,7 +62,7 @@ public class SecurityConfig {
       AuthenticationManager authenticationManager =
           builder.getSharedObject(AuthenticationManager.class);
       builder.addFilter(corsFilter)
-          .addFilter(new JwtAuthenticationFilter(authenticationManager))
+          .addFilter(new JwtAuthenticationFilter(authenticationManager, keys))
           .addFilter(
               new JwtAuthorizationFilter(
                   authenticationManager, memberService, tokenDecodeService));

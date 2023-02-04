@@ -2,10 +2,15 @@ package com.seollem.server.jwt.decoder;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.seollem.server.util.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class TokenDecodeService {
+
+  private final Keys keys;
 
   public String findEmail(String token) {
     String jwtToken = token.replace("Bearer ", "");
@@ -13,7 +18,7 @@ public class TokenDecodeService {
     String email =
         JWT.require(
                 Algorithm.HMAC512(
-                    "d2VzZW9sbGVtdGVhbXNlcnZpY2VzdXNlcnNvd25saWJyYXJ5bWFuYWdlbWVudHdlaG9wZW91cnNlcnZpY2V0b2JldXNlZnVs"))
+                    keys.getJwtSecretKey()))
             .build()
             .verify(jwtToken)
             .getClaim("email")
