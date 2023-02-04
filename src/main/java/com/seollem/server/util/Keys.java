@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 @Getter
 public class Keys {
 
-  private static Keys instance = new Keys();
-
   @Value("${api-external-library-key}")
   private String externalLibraryKey;
 
@@ -19,10 +17,4 @@ public class Keys {
   private Keys() {
   }
 
-  public static Keys getInstance() {
-    if (instance == null) {
-      instance = new Keys();
-    }
-    return instance;
-  }
 }
