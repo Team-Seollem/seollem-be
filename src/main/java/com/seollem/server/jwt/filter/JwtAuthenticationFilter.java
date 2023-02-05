@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seollem.server.jwt.oauth.PrincipalDetails;
 import com.seollem.server.member.Member;
+import com.seollem.server.util.Keys;
 import java.io.IOException;
 import java.util.Date;
 import javax.servlet.FilterChain;
@@ -22,6 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
   private final AuthenticationManager authenticationManager;
+  private final Keys keys;
 
   @Override
   public Authentication attemptAuthentication(
@@ -67,7 +69,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             .withClaim("email", principalDetails.getMember().getEmail())
             .sign(
                 Algorithm.HMAC512(
-                    "d2VzZW9sbGVtdGVhbXNlcnZpY2VzdXNlcnNvd25saWJyYXJ5bWFuYWdlbWVudHdlaG9wZW91cnNlcnZpY2V0b2JldXNlZnVs"));
+                    keys.getJwtSecretKey()));
     response.addHeader("Authorization", "Bearer " + jwtToken);
   }
 }
