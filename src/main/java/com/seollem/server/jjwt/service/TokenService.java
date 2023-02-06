@@ -28,7 +28,7 @@ public class TokenService {
   public String delegateAccessToken(Member member) {
     Map<String, Object> claims = new HashMap<>();
     claims.put("username", member.getEmail());
-    claims.put("roles", member.getRoles());
+    claims.put("roles", member.getRoleList());
 
     String subject = member.getEmail();
     Date expiration =
