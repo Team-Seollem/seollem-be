@@ -6,18 +6,24 @@ import com.seollem.server.member.Member;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
 // 토큰을 생성하는 구체적인 로직
 @Service
-@RequiredArgsConstructor
 public class TokenService {
 
+  private final Long DURATION = 60 * 5L;
 
   private final JwtTokenizer jwtTokenizer;
 
+  private final EmailRedisUtil emailRedisUtil;
+
+  public TokenService(JwtTokenizer jwtTokenizer,EmailRedisUtil emailRedisUtil) {
+    this.jwtTokenizer = jwtTokenizer;
+    this.emailRedisUtil = emailRedisUtil;
+
+  }
 
   public String delegateAccessToken(Member member) {
     Map<String, Object> claims = new HashMap<>();
@@ -42,6 +48,7 @@ public class TokenService {
 
     String refreshToken = jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
 
+    emailRedisUtil.setDataExpireDay(member.getEmail(),refreshToken,DURATION);
 
     return refreshToken;
   }
