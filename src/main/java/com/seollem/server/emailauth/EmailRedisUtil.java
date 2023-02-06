@@ -29,6 +29,12 @@ public class EmailRedisUtil {
     valueOperations.set(key, value, expireDuration);
   }
 
+  public void setDataExpireDay(String key, String data, Long duration) {
+    ValueOperations<String, String> values = redisTemplate.opsForValue();
+    Duration expireDuration = Duration.ofDays(duration);
+    values.set(key, data, duration);
+  }
+
   public void deleteData(String key) {
     redisTemplate.delete(key);
   }

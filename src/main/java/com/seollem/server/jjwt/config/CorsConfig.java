@@ -1,4 +1,4 @@
-package com.seollem.server.jwt.config;
+package com.seollem.server.jjwt.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.seollem.server.jwt.decoder;
+package com.seollem.server.jjwt.decoder;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

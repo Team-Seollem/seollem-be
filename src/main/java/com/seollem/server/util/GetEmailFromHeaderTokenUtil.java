@@ -1,6 +1,6 @@
 package com.seollem.server.util;
 
-import com.seollem.server.jwt.decoder.TokenDecodeService;
+import com.seollem.server.jjwt.decoder.TokenDecodeService;
 import java.util.Map;
 import org.springframework.stereotype.Component;
 
