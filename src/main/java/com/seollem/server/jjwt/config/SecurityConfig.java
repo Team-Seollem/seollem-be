@@ -1,7 +1,5 @@
 package com.seollem.server.jjwt.config;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import com.seollem.server.jjwt.filter.JwtAuthenticationFilter;
 import com.seollem.server.jjwt.filter.JwtVerificationFilter;
 import com.seollem.server.jjwt.handler.MemberAccessDeniedHandler;
@@ -20,14 +18,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  private final CorsFilter corsFilter;
+  private final CorsConfig corsConfig;
 
   private final JwtTokenizer jwtTokenizer;
 
@@ -36,15 +33,12 @@ public class SecurityConfig {
   private final TokenService tokenService;
 
 
-
-
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .headers().frameOptions().disable()// x-frame-option
         .and()
         .csrf().disable()
-        .cors(withDefaults())
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .formLogin()
@@ -73,20 +67,25 @@ public class SecurityConfig {
     return http.build();
   }
 
-  public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
+  public class CustomFilterConfigurer
+      extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
+
     @Override
     public void configure(HttpSecurity builder) throws Exception {
-      AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
+      AuthenticationManager authenticationManager =
+          builder.getSharedObject(AuthenticationManager.class);
 
-      JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager,tokenService);
-      jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
-      jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
+      JwtAuthenticationFilter jwtAuthenticationFilter =
+          new JwtAuthenticationFilter(authenticationManager, tokenService);
+      jwtAuthenticationFilter.setAuthenticationSuccessHandler(
+          new MemberAuthenticationSuccessHandler());
+      jwtAuthenticationFilter.setAuthenticationFailureHandler(
+          new MemberAuthenticationFailureHandler());
 
       JwtVerificationFilter
           jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
 
-
-      builder.addFilter(corsFilter)
+      builder.addFilter(corsConfig.corsFilter())
           .addFilter(jwtAuthenticationFilter)
           .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
     }

@@ -19,7 +19,7 @@ public class TokenService {
 
   private final EmailRedisUtil emailRedisUtil;
 
-  public TokenService(JwtTokenizer jwtTokenizer,EmailRedisUtil emailRedisUtil) {
+  public TokenService(JwtTokenizer jwtTokenizer, EmailRedisUtil emailRedisUtil) {
     this.jwtTokenizer = jwtTokenizer;
     this.emailRedisUtil = emailRedisUtil;
 
@@ -31,11 +31,13 @@ public class TokenService {
     claims.put("roles", member.getRoles());
 
     String subject = member.getEmail();
-    Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
+    Date expiration =
+        jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
 
     String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
 
-    String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
+    String accessToken =
+        jwtTokenizer.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
 
     return accessToken;
   }
@@ -43,12 +45,14 @@ public class TokenService {
 
   public String delegateRefreshToken(Member member) {
     String subject = member.getEmail();
-    Date expiration = jwtTokenizer.getRefreshTokenExpiration(jwtTokenizer.getRefreshTokenExpirationDays());
+    Date expiration =
+        jwtTokenizer.getRefreshTokenExpiration(jwtTokenizer.getRefreshTokenExpirationDays());
     String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
 
-    String refreshToken = jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
+    String refreshToken =
+        jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
 
-    emailRedisUtil.setDataExpireDay(member.getEmail(),refreshToken,DURATION);
+    emailRedisUtil.setDataExpireDay(member.getEmail(), refreshToken, DURATION);
 
     return refreshToken;
   }

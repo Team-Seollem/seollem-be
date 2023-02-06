@@ -1,4 +1,3 @@
-
 package com.seollem.server.jjwt.handler;
 
 import com.seollem.server.jjwt.utils.ErrorResponder;
@@ -16,8 +15,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response,
+        AuthenticationException authException) throws IOException, ServletException {
         Exception exception = (Exception) request.getAttribute("exception");
         ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED);
 

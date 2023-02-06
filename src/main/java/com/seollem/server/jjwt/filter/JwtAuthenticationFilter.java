@@ -2,10 +2,8 @@ package com.seollem.server.jjwt.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seollem.server.jjwt.dto.LoginDto;
-import com.seollem.server.jjwt.jwt.JwtTokenizer;
 import com.seollem.server.jjwt.service.TokenService;
 import com.seollem.server.member.Member;
-import com.seollem.server.util.Keys;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -29,7 +27,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
   @SneakyThrows
   @Override
-  public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
+  public Authentication attemptAuthentication(HttpServletRequest request,
+      HttpServletResponse response) {
 
     ObjectMapper objectMapper = new ObjectMapper();    // ObjectMapper인스턴스 생성 (Dto클래스로  역직렬화)
     LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class); //
@@ -38,9 +37,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     UsernamePasswordAuthenticationToken authenticationToken =
         new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
 
-
-
-    return authenticationManager.authenticate(authenticationToken);  // AuthenticationManager에게 전달하면서 인증 처리를 위임
+    return authenticationManager.authenticate(
+        authenticationToken);  // AuthenticationManager에게 전달하면서 인증 처리를 위임
   }
 
 
@@ -58,7 +56,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     response.setHeader("Authorization", "Bearer " + accessToken);
     response.setHeader("Refresh", refreshToken);
-
 
     this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
 

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 @Component // bean등록
 public class JwtTokenizer {
+
     //로그인 인증에 성공한 클라이언트에게 JWT를 생성 및 발급하고 클라이언트의 요청이 들어올 때 마다 전달된 JWT를 검증하는 역할을 합니다.
     //jwt 생성시 필요한 정보
     @Getter
@@ -36,31 +37,31 @@ public class JwtTokenizer {
     }
 
 
-
     public String generateAccessToken(Map<String, Object> claims,
-                                      String subject,
-                                      Date expiration,
-                                      String base64EncodedSecretKey) {
+        String subject,
+        Date expiration,
+        String base64EncodedSecretKey) {
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
 
         return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(Calendar.getInstance().getTime())
-                .setExpiration(expiration)
-                .signWith(key)
-                .compact();
+            .setClaims(claims)
+            .setSubject(subject)
+            .setIssuedAt(Calendar.getInstance().getTime())
+            .setExpiration(expiration)
+            .signWith(key)
+            .compact();
     }
 
-    public String generateRefreshToken(String subject, Date expiration, String base64EncodedSecretKey) {
+    public String generateRefreshToken(String subject, Date expiration,
+        String base64EncodedSecretKey) {
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
 
         return Jwts.builder()
-                .setSubject(subject)
-                .setIssuedAt(Calendar.getInstance().getTime())
-                .setExpiration(expiration)
-                .signWith(key)
-                .compact();
+            .setSubject(subject)
+            .setIssuedAt(Calendar.getInstance().getTime())
+            .setExpiration(expiration)
+            .signWith(key)
+            .compact();
     }
 
 
@@ -68,9 +69,9 @@ public class JwtTokenizer {
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
 
         Jws<Claims> claims = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(jws);
+            .setSigningKey(key)
+            .build()
+            .parseClaimsJws(jws);
         return claims;
     }
 
@@ -80,12 +81,12 @@ public class JwtTokenizer {
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
 
         Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(jws);
+            .setSigningKey(key)
+            .build()
+            .parseClaimsJws(jws);
     }
 
-  //jwt의 만료일시를 지정하기위한 매서드 jwt 생성 시 사용
+    //jwt의 만료일시를 지정하기위한 매서드 jwt 생성 시 사용
     public Date getTokenExpiration(int expirationMinutes) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, expirationMinutes);
@@ -96,7 +97,7 @@ public class JwtTokenizer {
 
     public Date getRefreshTokenExpiration(int expirationDays) {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE,expirationDays);
+        calendar.add(Calendar.DATE, expirationDays);
         Date expiration = calendar.getTime();
 
         return expiration;
