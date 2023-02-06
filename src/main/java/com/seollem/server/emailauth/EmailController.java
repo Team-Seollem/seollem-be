@@ -1,5 +1,6 @@
 package com.seollem.server.emailauth;
 
+import com.seollem.server.member.MemberService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,9 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class EmailController {
 
   private final EmailService emailService;
+  private final MemberService memberService;
 
   @PostMapping()
   public ResponseEntity sendAuthCodeEmail(@Valid @RequestBody EmailRequestDto requestedEmail) {
+    memberService.verifyExistsEmail(requestedEmail.getJoinAuthCodeEmail());
     emailService.send(requestedEmail.getJoinAuthCodeEmail());
 
     return new ResponseEntity(HttpStatus.CREATED);
