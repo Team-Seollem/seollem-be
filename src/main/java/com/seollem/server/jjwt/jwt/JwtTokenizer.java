@@ -96,7 +96,7 @@ public class JwtTokenizer {
 
     public Date getRefreshTokenExpiration(int expirationDays) {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_WEEK, expirationDays);
+        calendar.add(Calendar.DATE,expirationDays);
         Date expiration = calendar.getTime();
 
         return expiration;
