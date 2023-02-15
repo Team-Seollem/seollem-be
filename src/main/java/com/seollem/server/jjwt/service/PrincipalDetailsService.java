@@ -22,8 +22,9 @@ public class PrincipalDetailsService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    //Optional<Member> member = memberService.findVerifiedMemberByEmail(username);
     Member member = memberService.findVerifiedMemberByEmail(username);
-    //  Member findMember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+    // Member findMember = member.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
     return new PrincipalDetails(member);
   }

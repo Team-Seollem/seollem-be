@@ -9,6 +9,7 @@ import com.seollem.server.jjwt.handler.MemberAuthenticationSuccessHandler;
 import com.seollem.server.jjwt.jwt.JwtTokenizer;
 import com.seollem.server.jjwt.service.TokenService;
 import com.seollem.server.jjwt.utils.RoleAuthorityUtils;
+import com.seollem.server.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +32,8 @@ public class SecurityConfig {
   private final RoleAuthorityUtils authorityUtils;
 
   private final TokenService tokenService;
+
+  private final MemberService memberService;
 
 
   @Bean
@@ -83,7 +86,7 @@ public class SecurityConfig {
           new MemberAuthenticationFailureHandler());
 
       JwtVerificationFilter
-          jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
+          jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils, tokenService,memberService);
 
       builder.addFilter(corsConfig.corsFilter())
           .addFilter(jwtAuthenticationFilter)
