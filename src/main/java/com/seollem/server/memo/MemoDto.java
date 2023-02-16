@@ -21,6 +21,8 @@ public class MemoDto {
     private int memoBookPage;
 
     private Memo.MemoType memoType;
+
+    private boolean authority;
   }
 
   @Getter
@@ -64,6 +66,7 @@ public class MemoDto {
     private Memo.MemoType memoType;
     private String memoContent;
     private int memoBookPage;
+    private boolean authority;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
