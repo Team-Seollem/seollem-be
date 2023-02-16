@@ -3,6 +3,8 @@ package com.seollem.server.memo;
 import com.seollem.server.audit.Auditable;
 import com.seollem.server.book.Book;
 import com.seollem.server.member.Member;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +40,8 @@ public class Memo extends Auditable {
 
   private int memoBookPage;
 
+  private Boolean authority;
+
   @ManyToOne
   @JoinColumn(name = "BOOK_ID")
   private Book book;
@@ -44,6 +49,9 @@ public class Memo extends Auditable {
   @ManyToOne
   @JoinColumn(name = "MEMBER_ID")
   private Member member;
+
+  @OneToMany(mappedBy = "memo", cascade = CascadeType.ALL)
+  private List<MemoLikes> memoLikes;
 
   public void setBook(Book book) {
     this.book = book;
