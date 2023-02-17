@@ -40,7 +40,7 @@ public class Memo extends Auditable {
 
   private int memoBookPage;
 
-  private Boolean authority;
+  private Boolean memoAuthority;
 
   @ManyToOne
   @JoinColumn(name = "BOOK_ID")
