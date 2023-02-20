@@ -3,6 +3,7 @@ package com.seollem.server.memo;
 import com.seollem.server.audit.Auditable;
 import com.seollem.server.book.Book;
 import com.seollem.server.member.Member;
+import com.seollem.server.memolikes.MemoLikes;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

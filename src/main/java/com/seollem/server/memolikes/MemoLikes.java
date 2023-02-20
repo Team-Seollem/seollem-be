@@ -1,7 +1,8 @@
-package com.seollem.server.memo;
+package com.seollem.server.memolikes;
 
 import com.seollem.server.audit.Auditable;
 import com.seollem.server.member.Member;
+import com.seollem.server.memo.Memo;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

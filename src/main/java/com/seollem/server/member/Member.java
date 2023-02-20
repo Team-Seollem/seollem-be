@@ -2,7 +2,7 @@ package com.seollem.server.member;
 
 import com.seollem.server.audit.Auditable;
 import com.seollem.server.book.Book;
-import com.seollem.server.memo.MemoLikes;
+import com.seollem.server.memolikes.MemoLikes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
