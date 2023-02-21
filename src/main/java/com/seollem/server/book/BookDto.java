@@ -94,6 +94,7 @@ public class BookDto {
 
     private List<MemoDto.Response> memosList;
     private int memoCount;
+    private long memoLikesCount;
   }
 
   @Setter

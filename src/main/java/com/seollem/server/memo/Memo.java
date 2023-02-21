@@ -41,7 +41,7 @@ public class Memo extends Auditable {
 
   private int memoBookPage;
 
-  private Boolean memoAuthority;
+  private MemoAuthority memoAuthority;
 
   @ManyToOne
   @JoinColumn(name = "BOOK_ID")
@@ -66,13 +66,26 @@ public class Memo extends Auditable {
     ALL(5, "all");
 
     @Getter
-    private final int stepNumber;
+    private final int memoTypeNumber;
     @Getter
-    private final String stepDescription;
+    private final String memoTypeDescription;
 
-    MemoType(int stepNumber, String stepDescription) {
-      this.stepNumber = stepNumber;
-      this.stepDescription = stepDescription;
+    MemoType(int memoTypeNumber, String memoTypeDescription) {
+      this.memoTypeNumber = memoTypeNumber;
+      this.memoTypeDescription = memoTypeDescription;
+    }
+  }
+
+  public enum MemoAuthority {
+    PUBLIC(0),
+    PRIVATE(1),
+    ALL(2);
+
+    @Getter
+    private final int memoAuthorityNumber;
+
+    MemoAuthority(int memoAuthorityNumber) {
+      this.memoAuthorityNumber = memoAuthorityNumber;
     }
   }
 }
