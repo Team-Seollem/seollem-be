@@ -16,6 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,6 +43,8 @@ public class Memo extends Auditable {
 
   private int memoBookPage;
 
+
+  @Enumerated(EnumType.STRING)
   private MemoAuthority memoAuthority;
 
   @ManyToOne
@@ -87,5 +91,12 @@ public class Memo extends Auditable {
     MemoAuthority(int memoAuthorityNumber) {
       this.memoAuthorityNumber = memoAuthorityNumber;
     }
+  }
+
+  @PrePersist
+  @PreUpdate
+  public void prePersistOrUpdate() {
+    this.memoType = this.memoType == null ? MemoType.BOOK_CONTENT : this.memoType;
+    this.memoAuthority = this.memoAuthority == null ? MemoAuthority.PRIVATE : this.memoAuthority;
   }
 }
