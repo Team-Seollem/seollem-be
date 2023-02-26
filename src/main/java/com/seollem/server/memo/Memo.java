@@ -17,7 +17,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -95,8 +94,7 @@ public class Memo extends Auditable {
   }
 
   @PrePersist
-  @PreUpdate
-  public void prePersistOrUpdate() {
+  public void prePersist() {
     this.memoType = this.memoType == null ? MemoType.BOOK_CONTENT : this.memoType;
     this.memoAuthority = this.memoAuthority == null ? MemoAuthority.PRIVATE : this.memoAuthority;
 
