@@ -71,6 +71,7 @@ public class MemoDto {
     private String memoContent;
     private int memoBookPage;
     private MemoAuthority memoAuthority;
+    private long memoLikesCount;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

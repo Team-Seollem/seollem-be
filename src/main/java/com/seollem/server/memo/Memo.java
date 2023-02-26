@@ -43,6 +43,7 @@ public class Memo extends Auditable {
 
   private int memoBookPage;
 
+  private int memoLikesCount;
 
   @Enumerated(EnumType.STRING)
   private MemoAuthority memoAuthority;
@@ -98,5 +99,6 @@ public class Memo extends Auditable {
   public void prePersistOrUpdate() {
     this.memoType = this.memoType == null ? MemoType.BOOK_CONTENT : this.memoType;
     this.memoAuthority = this.memoAuthority == null ? MemoAuthority.PRIVATE : this.memoAuthority;
+
   }
 }

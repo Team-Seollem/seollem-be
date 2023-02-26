@@ -5,6 +5,7 @@ import com.seollem.server.member.Member;
 import com.seollem.server.member.MemberService;
 import com.seollem.server.memo.Memo;
 import com.seollem.server.memo.Memo.MemoAuthority;
+import com.seollem.server.memo.MemoDto;
 import com.seollem.server.memo.MemoMapper;
 import com.seollem.server.memo.MemoService;
 import com.seollem.server.memolikes.MemoLikesService;
@@ -145,8 +146,10 @@ public class BookController {
       memos = memoService.getMemoWithAuthority(memoAuthority);
     }
 
+    memos.stream()
+        .forEach(memo -> memo.setMemoLikesCount(memoLikesService.getMemoLikesCountWithMemo(memo)));
+
     result.setMemosList(memoMapper.memoToMemoResponses(memos));
-    result.setMemoLikesCount(memoLikesService.getMemoLikesCount());
 
     return new ResponseEntity(result, HttpStatus.OK);
   }
@@ -172,10 +175,15 @@ public class BookController {
       memoTypeList = memoService.getBookAndMemoTypes(page - 1, size, book, memoType);
     }
     List<Memo> memos = memoTypeList.getContent();
+    List<MemoDto.Response> memoResponseList = memoMapper.memoToMemoResponses(memos);
+    for (int i = 0; i < memos.size(); i++) {
+      memoResponseList.get(i)
+          .setMemoLikesCount(memoLikesService.getMemoLikesCountWithMemo(memos.get(i)));
+    }
     //        BookDto.MemosOfBook response = bookMapper.BookToMemosOfBookResponse(book);
     //        response.setMemosList(memoTypeList);
     return new ResponseEntity<>(
-        new MultiResponseDto<>(memoMapper.memoToMemoResponses(memos), memoTypeList),
+        new MultiResponseDto<>(memoResponseList, memoTypeList),
         HttpStatus.OK);
   }
 
