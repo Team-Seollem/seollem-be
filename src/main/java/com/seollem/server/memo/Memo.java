@@ -3,6 +3,9 @@ package com.seollem.server.memo;
 import com.seollem.server.audit.Auditable;
 import com.seollem.server.book.Book;
 import com.seollem.server.member.Member;
+import com.seollem.server.memolikes.MemoLikes;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,6 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +42,11 @@ public class Memo extends Auditable {
 
   private int memoBookPage;
 
+  private int memoLikesCount;
+
+  @Enumerated(EnumType.STRING)
+  private MemoAuthority memoAuthority;
+
   @ManyToOne
   @JoinColumn(name = "BOOK_ID")
   private Book book;
@@ -44,6 +54,9 @@ public class Memo extends Auditable {
   @ManyToOne
   @JoinColumn(name = "MEMBER_ID")
   private Member member;
+
+  @OneToMany(mappedBy = "memo", cascade = CascadeType.ALL)
+  private List<MemoLikes> memoLikes;
 
   public void setBook(Book book) {
     this.book = book;
@@ -57,13 +70,33 @@ public class Memo extends Auditable {
     ALL(5, "all");
 
     @Getter
-    private final int stepNumber;
+    private final int memoTypeNumber;
     @Getter
-    private final String stepDescription;
+    private final String memoTypeDescription;
 
-    MemoType(int stepNumber, String stepDescription) {
-      this.stepNumber = stepNumber;
-      this.stepDescription = stepDescription;
+    MemoType(int memoTypeNumber, String memoTypeDescription) {
+      this.memoTypeNumber = memoTypeNumber;
+      this.memoTypeDescription = memoTypeDescription;
     }
+  }
+
+  public enum MemoAuthority {
+    PUBLIC(0),
+    PRIVATE(1),
+    ALL(2);
+
+    @Getter
+    private final int memoAuthorityNumber;
+
+    MemoAuthority(int memoAuthorityNumber) {
+      this.memoAuthorityNumber = memoAuthorityNumber;
+    }
+  }
+
+  @PrePersist
+  public void prePersist() {
+    this.memoType = this.memoType == null ? MemoType.BOOK_CONTENT : this.memoType;
+    this.memoAuthority = this.memoAuthority == null ? MemoAuthority.PRIVATE : this.memoAuthority;
+
   }
 }

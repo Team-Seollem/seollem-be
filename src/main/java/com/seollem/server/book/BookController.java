@@ -4,15 +4,18 @@ import com.seollem.server.globaldto.MultiResponseDto;
 import com.seollem.server.member.Member;
 import com.seollem.server.member.MemberService;
 import com.seollem.server.memo.Memo;
+import com.seollem.server.memo.Memo.MemoAuthority;
 import com.seollem.server.memo.MemoDto;
 import com.seollem.server.memo.MemoMapper;
 import com.seollem.server.memo.MemoService;
+import com.seollem.server.memolikes.MemoLikesService;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/books")
 @Validated
+@RequiredArgsConstructor
 @SuppressWarnings("unchecked")
 public class BookController {
 
@@ -40,21 +44,8 @@ public class BookController {
   private final BookMapper bookMapper;
   private final MemoService memoService;
   private final MemoMapper memoMapper;
+  private final MemoLikesService memoLikesService;
 
-  public BookController(
-      GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil,
-      MemberService memberService,
-      BookService bookService,
-      BookMapper bookMapper,
-      MemoService memoService,
-      MemoMapper memoMapper) {
-    this.getEmailFromHeaderTokenUtil = getEmailFromHeaderTokenUtil;
-    this.memberService = memberService;
-    this.bookService = bookService;
-    this.bookMapper = bookMapper;
-    this.memoService = memoService;
-    this.memoMapper = memoMapper;
-  }
 
   // 서재 뷰 조회
   @GetMapping("/library")
@@ -137,7 +128,8 @@ public class BookController {
   @GetMapping("/{book-id}")
   public ResponseEntity getBookDetail(
       @RequestHeader Map<String, Object> requestHeader,
-      @Positive @PathVariable("book-id") long bookId) {
+      @Positive @PathVariable("book-id") long bookId,
+      @RequestParam Memo.MemoAuthority memoAuthority) {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
 
@@ -145,9 +137,19 @@ public class BookController {
 
     Book book = bookService.findVerifiedBookById(bookId);
 
-    List<MemoDto.Response> memosList = memoService.getMemos(book);
     BookDto.DetailResponse result = bookMapper.BookToBookDetailResponse(book);
-    result.setMemosList(memosList);
+
+    List<Memo> memos;
+    if (memoAuthority == MemoAuthority.ALL) {
+      memos = memoService.getMemos(book);
+    } else {
+      memos = memoService.getMemoWithAuthority(memoAuthority);
+    }
+
+    memos.stream()
+        .forEach(memo -> memo.setMemoLikesCount(memoLikesService.getMemoLikesCountWithMemo(memo)));
+
+    result.setMemosList(memoMapper.memoToMemoResponses(memos));
 
     return new ResponseEntity(result, HttpStatus.OK);
   }
@@ -173,10 +175,15 @@ public class BookController {
       memoTypeList = memoService.getBookAndMemoTypes(page - 1, size, book, memoType);
     }
     List<Memo> memos = memoTypeList.getContent();
+    List<MemoDto.Response> memoResponseList = memoMapper.memoToMemoResponses(memos);
+    for (int i = 0; i < memos.size(); i++) {
+      memoResponseList.get(i)
+          .setMemoLikesCount(memoLikesService.getMemoLikesCountWithMemo(memos.get(i)));
+    }
     //        BookDto.MemosOfBook response = bookMapper.BookToMemosOfBookResponse(book);
     //        response.setMemosList(memoTypeList);
     return new ResponseEntity<>(
-        new MultiResponseDto<>(memoMapper.memoToMemoResponses(memos), memoTypeList),
+        new MultiResponseDto<>(memoResponseList, memoTypeList),
         HttpStatus.OK);
   }
 
