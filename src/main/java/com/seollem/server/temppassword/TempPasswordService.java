@@ -1,6 +1,5 @@
 package com.seollem.server.temppassword;
 
-import java.util.UUID;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +35,28 @@ public class TempPasswordService {
   }
 
   public String createTempPassword() {
-    String tempPassword = UUID.randomUUID().toString().replace("-", ""); // '-'를 제거
-    tempPassword = tempPassword.substring(0, 10); //임시 비밀번호는 10자리 문자열
-    return tempPassword;
+    StringBuilder result = new StringBuilder();
+
+    char[] pwCollectionSpCha = new char[] {'!', '@', '#', '$', '%', '^', '&', '*', '(', ')'};
+    char[] pwCollectionNum = new char[] {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',};
+    char[] pwCollectionEng = new char[] {
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+        'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
+        's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+    return getRandPw(4, pwCollectionEng) + getRandPw(1,
+        pwCollectionSpCha) + getRandPw(4, pwCollectionNum) + getRandPw(2,
+        pwCollectionSpCha);
+  }
+
+  public String getRandPw(int size, char[] pwCollection) {
+    String ranPw = "";
+
+    for (int i = 0; i < size; i++) {
+      int selectRandomPw = (int) (Math.random() * (pwCollection.length));
+      ranPw += pwCollection[selectRandomPw];
+    }
+    return ranPw;
   }
 
 }
