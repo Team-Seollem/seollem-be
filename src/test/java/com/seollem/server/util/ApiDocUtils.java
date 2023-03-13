@@ -12,14 +12,14 @@ public interface ApiDocUtils {
 
   static OperationRequestPreprocessor getDocumentRequest() {
     return preprocessRequest(
-        modifyUris() // (1)
+        modifyUris()
             .scheme("https")
             .host("docs.api.com")
             .removePort(),
-        prettyPrint()); // (2)
+        prettyPrint());
   }
 
   static OperationResponsePreprocessor getDocumentResponse() {
-    return preprocessResponse(prettyPrint()); // (3)
+    return preprocessResponse(prettyPrint());
   }
 }
