@@ -1,4 +1,4 @@
-package com.seollem.server;
+package com.seollem.server.controller;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -11,6 +11,7 @@ import com.seollem.server.auth.controller.AuthController;
 import com.seollem.server.member.MemberMapper;
 import com.seollem.server.member.MemberService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,18 +26,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
-@WebMvcTest(AuthController.class)
-public class ServerApplicationTests {
+
+public class ControllerTests {
 
   @Autowired
   private MockMvc mockMvc;
-
-  @MockBean
-  private MemberService memberService;
-
-  @MockBean
-  private MemberMapper memberMapper;
 
   @BeforeEach
   void setUp(WebApplicationContext webApplicationContext,
@@ -48,15 +42,29 @@ public class ServerApplicationTests {
         .build();
   }
 
-  @Test
-  public void authControllerTest() throws Exception {
+  @Nested
+  @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
+  @WebMvcTest(AuthController.class)
+  class Auth {
 
-    this.mockMvc.perform(MockMvcRequestBuilders.post("/join").accept(MediaType.APPLICATION_JSON))
-        .andExpect(status().is4xxClientError())
-        .andDo(document("index"));
+    @MockBean
+    private MemberService memberService;
+
+    @MockBean
+    private MemberMapper memberMapper;
+
+    @Test
+    public void authControllerTest() throws Exception {
+
+      mockMvc.perform(MockMvcRequestBuilders.post("/join").accept(MediaType.APPLICATION_JSON))
+          .andExpect(status().is4xxClientError())
+          .andDo(document("index"));
 //            requestFields(fieldWithPath("email").description("User Email"),
 //                fieldWithPath("password").description("User Password"))));
+    }
   }
+
+
 
 
 }
