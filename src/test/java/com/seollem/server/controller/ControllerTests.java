@@ -7,14 +7,15 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.google.gson.Gson;
 import com.seollem.server.auth.controller.AuthController;
 import com.seollem.server.member.MemberMapper;
 import com.seollem.server.member.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -26,11 +27,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-
+@RequiredArgsConstructor
 public class ControllerTests {
 
-  @Autowired
   private MockMvc mockMvc;
+
+  private Gson gson;
 
   @BeforeEach
   void setUp(WebApplicationContext webApplicationContext,
