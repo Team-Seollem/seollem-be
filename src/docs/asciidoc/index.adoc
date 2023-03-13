@@ -1,7 +1,7 @@
 = [나만의 설렘] 백엔드 API 문서
 
 .request
-include::{snippets}/index/http-request.adoc[]
+include::{snippets}/Join/http-request.adoc[]
 
 .response
-include::{snippets}/index/http-response.adoc[]
+include::{snippets}/Join/http-response.adoc[]
