@@ -58,7 +58,7 @@ public class ControllerTests {
   @Nested
   @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
   @WebMvcTest(AuthController.class)
-  class Auth {
+  class AuthJoin {
 
     @MockBean
     private MemberService memberService;
@@ -93,5 +93,12 @@ public class ControllerTests {
                       fieldWithPath("authenticationCode").type(JsonFieldType.STRING)
                           .description("인증번호")))));
     }
+  }
+
+  @Nested
+  @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
+  @WebMvcTest(AuthController.class)
+  class AuthLogin {
+
   }
 }
