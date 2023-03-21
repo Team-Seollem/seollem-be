@@ -1,7 +1,6 @@
 package com.seollem.server.restdocs.controller.book;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -76,7 +75,7 @@ public class BookControllerTests extends SetUpUtil {
     @Test
     public void libraryTest() throws Exception {
       //given
-      when(getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(Mockito.anyMap())).thenReturn(
+      given(getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(Mockito.anyMap())).willReturn(
           "abcd@gmail.com");
 
       given(memberService.findVerifiedMemberByEmail(Mockito.anyString())).willReturn(new Member());
@@ -112,7 +111,7 @@ public class BookControllerTests extends SetUpUtil {
           requestHeaders(headerWithName("Authorization").description("Bearer JWT Access Token")),
           requestParameters(
               List.of(parameterWithName("page").description("원하는 page 수"),
-                  parameterWithName("size").description("원하는 페이지 별 책 개수"),
+                  parameterWithName("size").description("페이지 별 책 개수"),
                   parameterWithName("bookStatus").description("BookStatus : YET, ING, DONE"))),
           responseFields(
               fieldWithPath("item[].bookId").type(JsonFieldType.NUMBER).description("Book-id"),

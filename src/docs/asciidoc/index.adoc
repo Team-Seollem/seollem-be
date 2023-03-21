@@ -4,6 +4,9 @@
 .request
 include::{snippets}/Join/http-request.adoc[]
 
+.request fields
+include::{snippets}/Join/request-fields.adoc[]
+
 .response
 include::{snippets}/Join/http-response.adoc[]
 
