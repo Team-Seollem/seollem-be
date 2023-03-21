@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -82,7 +83,7 @@ public class BookControllerTests extends SetUpUtil {
 
       Book book = new Book(1, "title", "cover", "author", "publisher", 1, 1, 1, BookStatus.YET,
           LocalDateTime.now(), LocalDateTime.now(), 1, new Member(), null);
-      PageImpl<Book> bookPage = new PageImpl<>(List.of(book));
+      PageImpl<Book> bookPage = new PageImpl<>(List.of(book), PageRequest.of(1, 10), 0);
       given(bookService.findVerifiedBooksByMemberAndBookStatus(Mockito.anyInt(), Mockito.anyInt(),
           Mockito.any(Member.class), Mockito.any(BookStatus.class),
           Mockito.anyString())).willReturn(bookPage);
