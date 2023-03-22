@@ -17,7 +17,7 @@ include::{snippets}/Library/http-request.adoc[]
 .request headers
 include::{snippets}/Library/request-headers.adoc[]
 
-.request parameters
+.request query string
 include::{snippets}/Library/request-parameters.adoc[]
 
 .response
@@ -25,3 +25,35 @@ include::{snippets}/Library/http-response.adoc[]
 
 .response fields
 include::{snippets}/Library/response-fields.adoc[]
+
+== 책 Calender 조회
+.request
+include::{snippets}/Calender/http-request.adoc[]
+
+.request headers
+include::{snippets}/Calender/request-headers.adoc[]
+
+.request query string
+include::{snippets}/Calender/request-parameters.adoc[]
+
+.response
+include::{snippets}/Calender/http-response.adoc[]
+
+.response fields
+include::{snippets}/Calender/response-fields.adoc[]
+
+== 책 Abandon 조회
+.request
+include::{snippets}/Abandon/http-request.adoc[]
+
+.request headers
+include::{snippets}/Abandon/request-headers.adoc[]
+
+.request query string
+include::{snippets}/Abandon/request-parameters.adoc[]
+
+.response
+include::{snippets}/Abandon/http-response.adoc[]
+
+.response fields
+include::{snippets}/Abandon/response-fields.adoc[]
