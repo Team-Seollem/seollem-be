@@ -6,6 +6,7 @@ import com.seollem.server.book.BookDto;
 import com.seollem.server.book.BookDto.AbandonResponse;
 import com.seollem.server.book.BookDto.CalenderResponse;
 import com.seollem.server.book.BookDto.LibraryResponse;
+import com.seollem.server.book.BookDto.MemoBooksResponse;
 import com.seollem.server.member.Member;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -60,6 +61,17 @@ public class StubDataUtil {
           new AbandonResponse(1, LocalDateTime.now(), "책 제목1", "https://imageurl1.com");
       BookDto.AbandonResponse response2 =
           new AbandonResponse(12, LocalDateTime.now(), "책 제목12", "https://imageurl12.com");
+      Responses.add(response1);
+      Responses.add(response2);
+      return Responses;
+    }
+
+    public static List<BookDto.MemoBooksResponse> getMemoBooksResponse() {
+      List<BookDto.MemoBooksResponse> Responses = new ArrayList<>();
+      BookDto.MemoBooksResponse response1 =
+          new MemoBooksResponse(1, "책 제목1", "https://imageurl1.com", 1);
+      BookDto.MemoBooksResponse response2 =
+          new MemoBooksResponse(12, "책 제목12", "https://imageurl12.com", 5);
       Responses.add(response1);
       Responses.add(response2);
       return Responses;

@@ -57,3 +57,19 @@ include::{snippets}/Abandon/http-response.adoc[]
 
 .response fields
 include::{snippets}/Abandon/response-fields.adoc[]
+
+== 메모가 존재하는 책 조회
+.request
+include::{snippets}/BooksHaveMemo/http-request.adoc[]
+
+.request headers
+include::{snippets}/BooksHaveMemo/request-headers.adoc[]
+
+.request query string
+include::{snippets}/BooksHaveMemo/request-parameters.adoc[]
+
+.response
+include::{snippets}/BooksHaveMemo/http-response.adoc[]
+
+.response fields
+include::{snippets}/BooksHaveMemo/response-fields.adoc[]

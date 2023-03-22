@@ -109,7 +109,7 @@ public class BookController {
 
   // 나만의 작은 책 전체 조회 (메모 존재하는 책들만 조회)
   @GetMapping("/memo-books")
-  public ResponseEntity getMemoBooks(
+  public ResponseEntity getBooksHaveMemo(
       @RequestHeader Map<String, Object> requestHeader,
       @Positive @RequestParam int page,
       @Positive @RequestParam int size) {
