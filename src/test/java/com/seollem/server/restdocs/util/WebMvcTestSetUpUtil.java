@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-public class SetUpUtil {
+public class WebMvcTestSetUpUtil {
 
   protected final String SCHEMA = "https";
   protected final String URI = "seollem.link";

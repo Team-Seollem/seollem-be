@@ -17,7 +17,7 @@ import com.seollem.server.member.Member;
 import com.seollem.server.member.MemberDto;
 import com.seollem.server.member.MemberMapper;
 import com.seollem.server.member.MemberService;
-import com.seollem.server.restdocs.util.SetUpUtil;
+import com.seollem.server.restdocs.util.WebMvcTestSetUpUtil;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-public class AuthControllerTests extends SetUpUtil {
+public class AuthControllerTests extends WebMvcTestSetUpUtil {
 
   @Nested
   @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
