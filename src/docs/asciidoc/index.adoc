@@ -1,6 +1,7 @@
 = [나만의 설렘] 백엔드 API 문서
 
-== 회원 가입
+== 로그인, 회원가입 도메인
+=== 회원 가입
 .request
 include::{snippets}/Join/http-request.adoc[]
 
@@ -10,7 +11,8 @@ include::{snippets}/Join/request-fields.adoc[]
 .response
 include::{snippets}/Join/http-response.adoc[]
 
-== 책 Library 조회
+== 책 도메인
+=== 책 Library 조회
 .request
 include::{snippets}/Library/http-request.adoc[]
 
@@ -26,7 +28,7 @@ include::{snippets}/Library/http-response.adoc[]
 .response fields
 include::{snippets}/Library/response-fields.adoc[]
 
-== 책 Calender 조회
+=== 책 Calender 조회
 .request
 include::{snippets}/Calender/http-request.adoc[]
 
@@ -42,7 +44,7 @@ include::{snippets}/Calender/http-response.adoc[]
 .response fields
 include::{snippets}/Calender/response-fields.adoc[]
 
-== 책 Abandon 조회
+=== 책 Abandon 조회
 .request
 include::{snippets}/Abandon/http-request.adoc[]
 
@@ -58,7 +60,7 @@ include::{snippets}/Abandon/http-response.adoc[]
 .response fields
 include::{snippets}/Abandon/response-fields.adoc[]
 
-== 메모가 존재하는 책 조회
+=== 메모가 존재하는 책 조회
 .request
 include::{snippets}/BooksHaveMemo/http-request.adoc[]
 
@@ -73,3 +75,22 @@ include::{snippets}/BooksHaveMemo/http-response.adoc[]
 
 .response fields
 include::{snippets}/BooksHaveMemo/response-fields.adoc[]
+
+=== 책 상세페이지 조회
+.request
+include::{snippets}/BookDetail/http-request.adoc[]
+
+.request headers
+include::{snippets}/BookDetail/request-headers.adoc[]
+
+.request path parameters
+include::{snippets}/BookDetail/path-parameters.adoc[]
+
+.request query string
+include::{snippets}/BookDetail/request-parameters.adoc[]
+
+.response
+include::{snippets}/BookDetail/http-response.adoc[]
+
+.response fields
+include::{snippets}/BookDetail/response-fields.adoc[]

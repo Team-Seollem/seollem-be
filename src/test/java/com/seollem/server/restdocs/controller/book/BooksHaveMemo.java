@@ -77,7 +77,7 @@ public class BooksHaveMemo extends WebMvcTestSetUpUtil {
         StubDataUtil.MockBook.getBookPage());
 
     given(bookMapper.BooksToMemoBooksResponse(Mockito.any())).willReturn(
-        StubDataUtil.MockBook.getMemoBooksResponse());
+        StubDataUtil.MockBook.getBooksHaveMemoResponse());
 
     //when
     ResultActions resultActions = mockMvc.perform(

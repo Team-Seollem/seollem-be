@@ -152,7 +152,7 @@ public class BookDto {
   @Getter
   @AllArgsConstructor
   @NoArgsConstructor
-  public static class MemoBooksResponse {
+  public static class BooksHaveMemoResponse {
 
     private long bookId;
     private String title;

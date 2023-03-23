@@ -1,5 +1,6 @@
 package com.seollem.server.book;
 
+import com.seollem.server.book.BookDto.BooksHaveMemoResponse;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -25,5 +26,5 @@ public interface BookMapper {
 
   List<BookDto.AbandonResponse> BooksToAbandonResponse(List<Book> books);
 
-  List<BookDto.MemoBooksResponse> BooksToMemoBooksResponse(List<Book> books);
+  List<BooksHaveMemoResponse> BooksToMemoBooksResponse(List<Book> books);
 }
