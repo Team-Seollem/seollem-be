@@ -2,6 +2,7 @@ package com.seollem.server.memo;
 
 import com.seollem.server.book.Book;
 import com.seollem.server.member.Member;
+import com.seollem.server.memo.Memo.MemoAuthority;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -17,10 +18,12 @@ public interface MemoRepository extends JpaRepository<Memo, Long> {
 
   Page<Memo> findAllByBookAndMemoType(Pageable pageable, Book book, Memo.MemoType memoType);
 
+  List<Memo> findAllByMemoAuthority(MemoAuthority memoAuthority);
+
   Page<Memo> findAllByBook(Pageable pageable, Book book);
 
   @Query(
       value = "SELECT * FROM memo WHERE MEMBER_ID = ?1 order by RAND() limit 1",
       nativeQuery = true)
-  List<Memo> findAllByMember(Member member);
+  List<Memo> findRandomMemo(Member member);
 }

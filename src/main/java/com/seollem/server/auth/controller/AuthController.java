@@ -32,8 +32,8 @@ public class AuthController {
   @PostMapping("/join")
   public ResponseEntity join(@Valid @RequestBody MemberDto.Post requestBody) {
     Member member = memberMapper.memberPostToMember(requestBody);
+    memberService.createMember(member, requestBody.getAuthenticationCode());
 
-    memberService.createMember(member);
     return new ResponseEntity<>("회원 가입 성공", HttpStatus.CREATED);
   }
 }

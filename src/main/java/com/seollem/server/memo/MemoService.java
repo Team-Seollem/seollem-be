@@ -5,6 +5,7 @@ import com.seollem.server.book.BookService;
 import com.seollem.server.exception.BusinessLogicException;
 import com.seollem.server.exception.ExceptionCode;
 import com.seollem.server.member.Member;
+import com.seollem.server.memo.Memo.MemoAuthority;
 import com.seollem.server.util.CustomBeanUtils;
 import java.util.List;
 import java.util.Optional;
@@ -40,14 +41,13 @@ public class MemoService {
   }
 
   public List<Memo> randomMemo(Member member) {
-    List<Memo> random = memoRepository.findAllByMember(member);
+    List<Memo> random = memoRepository.findRandomMemo(member);
     return random;
   }
 
-  public List<MemoDto.Response> getMemos(Book book) {
+  public List<Memo> getMemos(Book book) {
     List<Memo> memoList = memoRepository.findAllByBook(book);
-    List<MemoDto.Response> result = mapper.memoToMemoResponses(memoList);
-    return result;
+    return memoList;
   }
 
   public Page<Memo> getBookAndMemoTypes(int page, int size, Book book, Memo.MemoType memoType) {
@@ -65,10 +65,17 @@ public class MemoService {
     return memoTypeList;
   }
 
+  public List<Memo> getMemoWithAuthority(MemoAuthority memoAuthority) {
+    List<Memo> list =
+        memoRepository.findAllByMemoAuthority(memoAuthority);
+    return list;
+  }
+
   public void deleteMemo(long memoId) {
     Memo memo = findVerifiedMemo(memoId);
     Book book = memo.getBook();
     book.setMemoCount(book.getMemoCount() - 1);
+
     memoRepository.delete(memo);
   }
 

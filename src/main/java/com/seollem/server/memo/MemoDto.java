@@ -1,5 +1,6 @@
 package com.seollem.server.memo;
 
+import com.seollem.server.memo.Memo.MemoAuthority;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,8 @@ public class MemoDto {
     private int memoBookPage;
 
     private Memo.MemoType memoType;
+
+    private MemoAuthority memoAuthority;
   }
 
   @Getter
@@ -37,6 +40,9 @@ public class MemoDto {
     private Memo.MemoType memoType;
 
     private int memoBookPage;
+
+    private MemoAuthority memoAuthority;
+
   }
 
   @Getter
@@ -64,6 +70,8 @@ public class MemoDto {
     private Memo.MemoType memoType;
     private String memoContent;
     private int memoBookPage;
+    private MemoAuthority memoAuthority;
+    private long memoLikesCount;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

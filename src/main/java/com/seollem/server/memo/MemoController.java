@@ -5,6 +5,7 @@ import com.seollem.server.book.BookService;
 import com.seollem.server.file.FileUploadService;
 import com.seollem.server.member.Member;
 import com.seollem.server.member.MemberService;
+import com.seollem.server.memolikes.MemoLikesService;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,7 @@ public class MemoController {
   private final GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil;
   private final BookService bookService;
   private final FileUploadService fileUploadService;
+  private final MemoLikesService memoLikesService;
 
   @PostMapping("/{book-id}")
   public ResponseEntity postMemo(

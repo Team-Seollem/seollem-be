@@ -1,21 +1,22 @@
 package com.seollem.server.util;
 
-import com.seollem.server.jwt.decoder.TokenDecodeService;
+import com.seollem.server.jjwt.jwt.JwtTokenizer;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class GetEmailFromHeaderTokenUtil {
 
-  private final TokenDecodeService tokenDecodeService;
+  private final JwtTokenizer jwtTokenizer;
 
-  public GetEmailFromHeaderTokenUtil(TokenDecodeService tokenDecodeService) {
-    this.tokenDecodeService = tokenDecodeService;
-  }
 
   public String getEmailFromHeaderToken(Map<String, Object> requestHeader) {
-    String token = requestHeader.get("authorization").toString();
-    String email = tokenDecodeService.findEmail(token);
+    String jws = requestHeader.get("authorization").toString().replace("Bearer ", "");
+    String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+    Map<String, Object> claims = jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
+    String email = (String) claims.get("email");
 
     return email;
   }

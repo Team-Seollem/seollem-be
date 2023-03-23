@@ -1,31 +1,25 @@
 package com.seollem.server.member;
 
+import com.seollem.server.emailauth.EmailRedisUtil;
 import com.seollem.server.exception.BusinessLogicException;
 import com.seollem.server.exception.ExceptionCode;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class MemberService {
 
   private final MemberRepository memberRepository;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
+  private final EmailRedisUtil redisUtil;
 
-  public MemberService(MemberRepository memberRepository,
-      BCryptPasswordEncoder bCryptPasswordEncoder) {
-    this.memberRepository = memberRepository;
-    this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-  }
-
-  public Member
-
-  createMember(Member member) {
-
+  public Member createMember(Member member, String authenticationCode) {
     verifyExistsEmail(member.getEmail());
-    member.setPassword(bCryptPasswordEncoder.encode(
-
-        member.getPassword()));
+    verifyValidAuthenicationCode(member.getEmail(), authenticationCode);
+    member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
     member.setRoles("ROLE_USER");
     Member savedMember = memberRepository.save(member);
 
@@ -34,7 +28,6 @@ public class MemberService {
 
   public Member updateMember(Member member) {
     Member findMember = findVerifiedMemberByEmail(member.getEmail());
-
     Optional.ofNullable(member.getName()).ifPresent(name -> findMember.setName(name));
     Optional.ofNullable(member.getPassword())
         .ifPresent(password -> findMember.setPassword(bCryptPasswordEncoder.encode(password)));
@@ -61,4 +54,12 @@ public class MemberService {
 
     return member;
   }
+
+  public void verifyValidAuthenicationCode(String email, String authenticationCode) {
+
+    if (!redisUtil.getData(email).equals(authenticationCode)) {
+      throw new BusinessLogicException(ExceptionCode.MEMBER_AUTHENTICATIONCODE_INVALID);
+    }
+  }
+
 }
