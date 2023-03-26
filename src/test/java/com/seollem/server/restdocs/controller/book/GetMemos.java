@@ -1,5 +1,6 @@
 package com.seollem.server.restdocs.controller.book;
 
+
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -43,7 +44,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 @WebMvcTest(BookController.class)
-public class Detail extends WebMvcTestSetUpUtil {
+public class GetMemos extends WebMvcTestSetUpUtil {
 
   @MockBean
   private GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil;
@@ -77,13 +78,11 @@ public class Detail extends WebMvcTestSetUpUtil {
     given(bookService.findVerifiedBookById(Mockito.anyLong())).willReturn(
         StubDataUtil.MockBook.getBook());
 
-    given(bookMapper.BookToBookDetailResponse(Mockito.any())).willReturn(
-        StubDataUtil.MockBook.getBookDetailResponse());
+    given(memoService.getBookAndMemo(Mockito.anyInt(), Mockito.anyInt(), Mockito.any())).willReturn(
+        StubDataUtil.MockMemo.getMemoPage());
 
-    given(memoService.getMemos(Mockito.any())).willReturn(StubDataUtil.MockMemo.getMemos());
-
-    given(memoService.getMemoWithAuthority(Mockito.any())).willReturn(
-        StubDataUtil.MockMemo.getMemos());
+    given(memoService.getBookAndMemoTypes(Mockito.anyInt(), Mockito.anyInt(), Mockito.any(),
+        Mockito.any())).willReturn(StubDataUtil.MockMemo.getMemoPage());
 
     given(memoLikesService.getMemoLikesCountWithMemo(Mockito.any())).willReturn(3);
 
@@ -92,49 +91,49 @@ public class Detail extends WebMvcTestSetUpUtil {
 
     //when
     ResultActions resultActions = mockMvc.perform(
-        RestDocumentationRequestBuilders.get("/books/{book-id}", 1)
-            .accept(MediaType.APPLICATION_JSON)
-            .contentType(MediaType.APPLICATION_JSON).header("Authorization",
+        RestDocumentationRequestBuilders.get("/books/{book-id}/memos", 1)
+            .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON)
+            .header("Authorization",
                 "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZW1haWwiOiJzdGFycnlwcm9AZ21haWwuY29tIiwic3ViIjoic3RhcnJ5cHJvQGdtYWlsLmNvbSIsImlhdCI6MTY3OTQ2MTg0NSwiZXhwIjoxNjc5NDY3ODQ1fQ.ri2B7x4vhgydiJYdXtTTZuD9EZzX-l4coGwiPWYjYDUeWLSunsBDkdslQdzZb9D72qIlArzzP7nCalROkVYOTA")
-            .queryParam("memoAuthority", "PUBLIC"));
+            .queryParam("page", "1")
+            .queryParam("size", "10")
+            .queryParam("memoType", "BOOK_CONTENT"));
 
     //then
-    resultActions.andExpect(status().isOk()).andDo(document("BookDetail",
+    resultActions.andExpect(status().isOk()).andDo(document("GetMemos",
         preprocessRequest(modifyUris().scheme(SCHEMA).host(URI).removePort(), prettyPrint()),
         preprocessResponse(prettyPrint()),
-        requestHeaders(headerWithName("Authorization").description("Bearer JWT Access Token")),
-        pathParameters(parameterWithName("book-id").description("조회할 책 ID")),
+        requestHeaders(
+            headerWithName("Authorization").description("Bearer JWT Access Token")),
+        pathParameters(
+            parameterWithName("book-id").description("조회할 책 ID")),
         requestParameters(
-            parameterWithName("memoAuthority").description("메모의 보기 권한 : PUBLIC, PRIVATE, ALL")),
-        responseFields(fieldWithPath("bookId").type(JsonFieldType.NUMBER).description("Book-id"),
-            fieldWithPath("title").type(JsonFieldType.STRING).description("책 제목"),
-            fieldWithPath("cover").type(JsonFieldType.STRING).description("표지 이미지 URL"),
-            fieldWithPath("author").type(JsonFieldType.STRING).description("저자"),
-            fieldWithPath("publisher").type(JsonFieldType.STRING).description("출판사"),
-            fieldWithPath("createdAt").type(JsonFieldType.STRING).description("등록 일자"),
-            fieldWithPath("star").type(JsonFieldType.NUMBER).description("별점"),
-            fieldWithPath("currentPage").type(JsonFieldType.NUMBER).description("현재 읽고 있는 페이지"),
-            fieldWithPath("itemPage").type(JsonFieldType.NUMBER).description("책 전체 페이지 수"),
-            fieldWithPath("bookStatus").type(JsonFieldType.STRING)
-                .description("책 읽기 상태 : 읽기 전(YET), 읽는 중(ING), 읽기 완료(DONE)"),
-            fieldWithPath("readStartDate").type(JsonFieldType.STRING).description("읽기 시작한 일자"),
-            fieldWithPath("readEndDate").type(JsonFieldType.STRING).description("읽기 완료한 일자"),
-            fieldWithPath("memosList[].memoId").type(JsonFieldType.NUMBER).description("Memo-id"),
-            fieldWithPath("memosList[].memoType").type(JsonFieldType.STRING).description(
+            parameterWithName("page").description("원하는 페이지"),
+            parameterWithName("size").description("페이지 별 책 개수"),
+            parameterWithName("memoType").description(
+                "메모 타입 : BOOK_CONTENT, SUMMARY, THOUGHT, QUESTION, ALL")),
+        responseFields(
+            fieldWithPath("item[].memoId").type(JsonFieldType.NUMBER).description("Memo-id"),
+            fieldWithPath("item[].memoType").type(JsonFieldType.STRING).description(
                 "메모 타입 : 전체(ALL), 책 속 문장(BOOK_CONTENT), 책 내용 요약(SUMMARY), 나만의 생각(THOUGHT), 나만의 질문(QUESTION)"),
-            fieldWithPath("memosList[].memoContent").type(JsonFieldType.STRING)
+            fieldWithPath("item[].memoContent").type(JsonFieldType.STRING)
                 .description("메모 내용"),
-            fieldWithPath("memosList[].memoBookPage").type(JsonFieldType.NUMBER)
+            fieldWithPath("item[].memoBookPage").type(JsonFieldType.NUMBER)
                 .description("메모와 연관된 책의 페이지"),
-            fieldWithPath("memosList[].memoAuthority").type(JsonFieldType.STRING)
+            fieldWithPath("item[].memoAuthority").type(JsonFieldType.STRING)
                 .description("메모 보기 권한 : PUBLIC, PRIVATE"),
-            fieldWithPath("memosList[].memoLikesCount").type(JsonFieldType.NUMBER)
+            fieldWithPath("item[].memoLikesCount").type(JsonFieldType.NUMBER)
                 .description("메모에 달린 좋아요 수"),
-            fieldWithPath("memosList[].createdAt").type(JsonFieldType.STRING)
+            fieldWithPath("item[].createdAt").type(JsonFieldType.STRING)
                 .description("메모 생성 일자"),
-            fieldWithPath("memosList[].updatedAt").type(JsonFieldType.STRING)
+            fieldWithPath("item[].updatedAt").type(JsonFieldType.STRING)
                 .description("메모 수정 일자"),
-            fieldWithPath("memoCount").type(JsonFieldType.NUMBER).description("책에 달린 메모의 총 개수")
+            fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("조회 페이지"),
+            fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("페이지별 책 개수"),
+            fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER)
+                .description("조회된 책의 총 개수"),
+            fieldWithPath("pageInfo.totalPages").type(JsonFieldType.NUMBER)
+                .description("조회된 총 페이지 수")
 
         )));
   }

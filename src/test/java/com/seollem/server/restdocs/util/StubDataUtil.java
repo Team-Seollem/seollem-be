@@ -127,5 +127,12 @@ public class StubDataUtil {
       list.add(memoResponse2);
       return list;
     }
+
+    public static PageImpl<Memo> getMemoPage() {
+      Memo memo =
+          new Memo(1, MemoType.BOOK_CONTENT, "메모4의 내용입니다.", 42, 0, MemoAuthority.PUBLIC,
+              null, null, null);
+      return new PageImpl<>(List.of(memo), PageRequest.of(1, 10), 0);
+    }
   }
 }

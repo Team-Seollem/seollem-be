@@ -102,3 +102,22 @@ include::{snippets}/BookDetail/http-response.adoc[]
 
 .response fields
 include::{snippets}/BookDetail/response-fields.adoc[]
+
+=== 책의 메모 조회
+.request
+include::{snippets}/GetMemos/http-request.adoc[]
+
+.request headers
+include::{snippets}/GetMemos/request-headers.adoc[]
+
+.request path parameters
+include::{snippets}/GetMemos/path-parameters.adoc[]
+
+.request query string
+include::{snippets}/GetMemos/request-parameters.adoc[]
+
+.response
+include::{snippets}/GetMemos/http-response.adoc[]
+
+.response fields
+include::{snippets}/GetMemos/response-fields.adoc[]
