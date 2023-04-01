@@ -14,6 +14,7 @@ public class BookDto {
   @Setter
   @Getter
   @NoArgsConstructor
+  @AllArgsConstructor
   public static class Post {
 
     @NotBlank

@@ -4,10 +4,6 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.modifyUris;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -92,8 +88,6 @@ public class GetLibrary extends WebMvcTestSetUpUtil {
 
     //then
     resultActions.andExpect(status().isOk()).andDo(document("Library",
-        preprocessRequest(modifyUris().scheme(SCHEMA).host(URI).removePort(), prettyPrint()),
-        preprocessResponse(prettyPrint()),
         requestHeaders(headerWithName("Authorization").description("Bearer JWT Access Token")),
         requestParameters(
             List.of(parameterWithName("page").description("원하는 page"),
@@ -109,7 +103,7 @@ public class GetLibrary extends WebMvcTestSetUpUtil {
             fieldWithPath("item[].currentPage").type(JsonFieldType.NUMBER).description("현재 페이지"),
             fieldWithPath("item[].itemPage").type(JsonFieldType.NUMBER).description("전체 페이지 수"),
             fieldWithPath("item[].bookStatus").type(JsonFieldType.STRING)
-                .description("책 상태 : 읽기 전, 읽는 중, 읽기 완료"),
+                .description("읽기 상태 : 읽기 전, 읽는 중, 읽기 완료"),
             fieldWithPath("item[].memoCount").type(JsonFieldType.NUMBER)
                 .description("책에 달린 메모의 개수"),
             fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("조회 페이지"),

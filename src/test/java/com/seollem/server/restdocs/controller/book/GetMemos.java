@@ -6,10 +6,6 @@ import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.modifyUris;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -101,8 +97,6 @@ public class GetMemos extends WebMvcTestSetUpUtil {
 
     //then
     resultActions.andExpect(status().isOk()).andDo(document("GetMemos",
-        preprocessRequest(modifyUris().scheme(SCHEMA).host(URI).removePort(), prettyPrint()),
-        preprocessResponse(prettyPrint()),
         requestHeaders(
             headerWithName("Authorization").description("Bearer JWT Access Token")),
         pathParameters(

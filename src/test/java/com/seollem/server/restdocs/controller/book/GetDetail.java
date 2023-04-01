@@ -5,15 +5,12 @@ import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.modifyUris;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.google.gson.Gson;
@@ -99,9 +96,7 @@ public class GetDetail extends WebMvcTestSetUpUtil {
             .queryParam("memoAuthority", "PUBLIC"));
 
     //then
-    resultActions.andExpect(status().isOk()).andDo(document("BookDetail",
-        preprocessRequest(modifyUris().scheme(SCHEMA).host(URI).removePort(), prettyPrint()),
-        preprocessResponse(prettyPrint()),
+    resultActions.andExpect(status().isOk()).andDo(print()).andDo(document("BookDetail",
         requestHeaders(headerWithName("Authorization").description("Bearer JWT Access Token")),
         pathParameters(parameterWithName("book-id").description("조회할 책 ID")),
         requestParameters(

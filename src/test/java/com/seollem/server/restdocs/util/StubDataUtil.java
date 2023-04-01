@@ -12,6 +12,7 @@ import com.seollem.server.memo.Memo;
 import com.seollem.server.memo.Memo.MemoAuthority;
 import com.seollem.server.memo.Memo.MemoType;
 import com.seollem.server.memo.MemoDto;
+import com.seollem.server.memolikes.MemoLikes;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 public class StubDataUtil {
+
+  static {
+    MemoLikes memoLikes = new MemoLikes();
+  }
 
   public static class MockBook {
 
@@ -86,13 +91,18 @@ public class StubDataUtil {
           LocalDateTime.now(), null, 2);
     }
 
+    public static BookDto.PostResponse getBookPostResponse() {
+      return new BookDto.PostResponse(1, "미움받을 용기", "아들러", "https://imageURL.com", BookStatus.YET);
+    }
+
 
   }
 
   public static class MockMember {
 
     public static Member getMember() {
-      return new Member(1, "starrypro@gmail.com", "김형섭", "password", "ROLE_USER", null, null);
+      return new Member(1, "starrypro@gmail.com", "김형섭", "password", "ROLE_USER",
+          new ArrayList<Book>(), new ArrayList<MemoLikes>());
     }
   }
 
