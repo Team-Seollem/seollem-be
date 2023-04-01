@@ -7,6 +7,7 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.requestHe
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -72,11 +73,15 @@ public class PostBook extends WebMvcTestSetUpUtil {
 
     when(bookService.createBook(Mockito.any())).thenReturn(new Book());
 
+    when(bookMapper.BookToBookPostResponse(Mockito.any())).thenReturn(
+        StubDataUtil.MockBook.getBookPostResponse());
+
     BookDto.Post post =
         new BookDto.Post("미움받을 용기", "아들러", "https://imageurl.com", 481, 12, "한빛출판사", BookStatus.YET,
             LocalDateTime.now(), LocalDateTime.now());
     String content = gson.toJson(post);
 
+    //then
     this.mockMvc.perform(post("/books").content(content).contentType(MediaType.APPLICATION_JSON)
             .characterEncoding(Charset.defaultCharset()).header("Authorization", "Bearer Access Token"))
         .andDo(print())
@@ -95,6 +100,13 @@ public class PostBook extends WebMvcTestSetUpUtil {
                 fieldWithPath("bookStatus").description("읽기 상태 : 읽기 전, 읽는 중, 읽기 완료"),
                 fieldWithPath("readStartDate").description("읽기 시작 일자"),
                 fieldWithPath("readEndDate").description("읽기 완료 일자")
+            ),
+            responseFields(
+                fieldWithPath("bookId").description("Book-id"),
+                fieldWithPath("title").description("책 제목"),
+                fieldWithPath("author").description("저자"),
+                fieldWithPath("cover").description("표지 이미지 URL"),
+                fieldWithPath("bookStatus").description("읽기 상태 : 읽기 전, 읽는 중, 읽기 완료")
             )
         ));
   }
