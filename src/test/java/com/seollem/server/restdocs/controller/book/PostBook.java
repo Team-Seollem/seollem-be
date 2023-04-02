@@ -83,7 +83,8 @@ public class PostBook extends WebMvcTestSetUpUtil {
 
     //when, then
     this.mockMvc.perform(post("/books").content(content).contentType(MediaType.APPLICATION_JSON)
-            .characterEncoding(Charset.defaultCharset()).header("Authorization", "Bearer Access Token"))
+            .characterEncoding(Charset.defaultCharset())
+            .header("Authorization", "Bearer JWT Access Token"))
         .andDo(print())
         .andExpect(status().isCreated())
         .andDo(document("PostBook",

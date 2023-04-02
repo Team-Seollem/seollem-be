@@ -90,7 +90,7 @@ public class PatchBook extends WebMvcTestSetUpUtil {
     this.mockMvc.perform(
             patch("/books/{book-id}", 1).content(content).contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(Charset.defaultCharset())
-                .header("Authorization", "Bearer Access Token"))
+                .header("Authorization", "Bearer JWT Access Token"))
         .andDo(print())
         .andExpect(status().isOk())
         .andDo(document("PatchBook",

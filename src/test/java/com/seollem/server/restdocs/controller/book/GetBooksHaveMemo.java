@@ -79,7 +79,7 @@ public class GetBooksHaveMemo extends WebMvcTestSetUpUtil {
     ResultActions resultActions = mockMvc.perform(
         MockMvcRequestBuilders.get("/books/memo-books").accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON).header("Authorization",
-                "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZW1haWwiOiJzdGFycnlwcm9AZ21haWwuY29tIiwic3ViIjoic3RhcnJ5cHJvQGdtYWlsLmNvbSIsImlhdCI6MTY3OTQ2MTg0NSwiZXhwIjoxNjc5NDY3ODQ1fQ.ri2B7x4vhgydiJYdXtTTZuD9EZzX-l4coGwiPWYjYDUeWLSunsBDkdslQdzZb9D72qIlArzzP7nCalROkVYOTA")
+                "Bearer JWT Access Token")
             .queryParam("page", "1").queryParam("size", "10"));
 
     //then

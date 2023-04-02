@@ -66,7 +66,7 @@ public class DeleteBook extends WebMvcTestSetUpUtil {
 
     //when, then
     this.mockMvc.perform(delete("/books/{book-id}", 1)
-            .header("Authorization", "Bearer Access Token"))
+            .header("Authorization", "Bearer JWT Access Token"))
         .andDo(print())
         .andExpect(status().isNoContent())
         .andDo(document("DeleteBook",
