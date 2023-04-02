@@ -3,10 +3,6 @@ package com.seollem.server.restdocs.controller.auth;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.modifyUris;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -63,14 +59,12 @@ public class AuthControllerTests extends WebMvcTestSetUpUtil {
       //when, then
       mockMvc.perform(MockMvcRequestBuilders.post("/join").accept(MediaType.APPLICATION_JSON)
               .contentType(MediaType.APPLICATION_JSON).content(content)).andExpect(status().isCreated())
-          .andDo(document("Join",
-              preprocessRequest(modifyUris().scheme(SCHEMA).host(URI).removePort(), prettyPrint()),
-              preprocessResponse(prettyPrint()), requestFields(
-                  List.of(fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
-                      fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
-                      fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
-                      fieldWithPath("authenticationCode").type(JsonFieldType.STRING)
-                          .description("인증번호")))));
+          .andDo(document("Join", requestFields(
+              List.of(fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+                  fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
+                  fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
+                  fieldWithPath("authenticationCode").type(JsonFieldType.STRING)
+                      .description("인증번호")))));
     }
   }
 

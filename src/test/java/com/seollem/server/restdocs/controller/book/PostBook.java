@@ -13,7 +13,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.seollem.server.book.Book;
 import com.seollem.server.book.Book.BookStatus;
 import com.seollem.server.book.BookController;
@@ -24,7 +23,7 @@ import com.seollem.server.member.MemberService;
 import com.seollem.server.memo.MemoMapper;
 import com.seollem.server.memo.MemoService;
 import com.seollem.server.memolikes.MemoLikesService;
-import com.seollem.server.restdocs.util.GsonLocalDateTimeAdapter;
+import com.seollem.server.restdocs.util.GsonCustomConfig;
 import com.seollem.server.restdocs.util.StubDataUtil;
 import com.seollem.server.restdocs.util.WebMvcTestSetUpUtil;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
@@ -58,14 +57,15 @@ public class PostBook extends WebMvcTestSetUpUtil {
   @MockBean
   private MemoLikesService memoLikesService;
 
+  private final GsonCustomConfig gsonCustomConfig = new GsonCustomConfig();
+
+
   @Test
   public void postBookTest() throws Exception {
-    GsonBuilder gsonBuilder = new GsonBuilder();
-    gsonBuilder.registerTypeAdapter(LocalDateTime.class, new GsonLocalDateTimeAdapter());
-    Gson gson = gsonBuilder.create();
-    //given
 
-    //when
+    Gson gson = gsonCustomConfig.gsonBuild();
+
+    //given
     when(memberService.findVerifiedMemberByEmail(Mockito.anyString())).thenReturn(
         StubDataUtil.MockMember.getMember());
 
@@ -81,7 +81,7 @@ public class PostBook extends WebMvcTestSetUpUtil {
             LocalDateTime.now(), LocalDateTime.now());
     String content = gson.toJson(post);
 
-    //then
+    //when, then
     this.mockMvc.perform(post("/books").content(content).contentType(MediaType.APPLICATION_JSON)
             .characterEncoding(Charset.defaultCharset()).header("Authorization", "Bearer Access Token"))
         .andDo(print())

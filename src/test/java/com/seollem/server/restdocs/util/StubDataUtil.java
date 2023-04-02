@@ -21,9 +21,7 @@ import org.springframework.data.domain.PageRequest;
 
 public class StubDataUtil {
 
-  static {
-    MemoLikes memoLikes = new MemoLikes();
-  }
+
 
   public static class MockBook {
 
@@ -93,6 +91,11 @@ public class StubDataUtil {
 
     public static BookDto.PostResponse getBookPostResponse() {
       return new BookDto.PostResponse(1, "미움받을 용기", "아들러", "https://imageURL.com", BookStatus.YET);
+    }
+
+    public static BookDto.PatchResponse getBookPatchResponse() {
+      return new BookDto.PatchResponse("김지준", "한빛출판사", 221, LocalDateTime.now(),
+          LocalDateTime.now(), BookStatus.YET, 5, 220);
     }
 
 

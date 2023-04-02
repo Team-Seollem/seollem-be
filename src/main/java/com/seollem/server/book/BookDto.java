@@ -69,7 +69,7 @@ public class BookDto {
     private int itemPage;
     private LocalDateTime readStartDate;
     private LocalDateTime readEndDate;
-    private String bookStatus;
+    private Book.BookStatus bookStatus;
     private int star;
     private int currentPage;
   }

@@ -15,8 +15,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 public class WebMvcTestSetUpUtil {
 
-  protected final String SCHEMA = "https";
-  protected final String URI = "seollem.link";
   @Autowired
   protected MockMvc mockMvc;
 
