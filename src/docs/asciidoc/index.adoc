@@ -156,3 +156,16 @@ include::{snippets}/PatchBook/http-response.adoc[]
 
 .response fields
 include::{snippets}/PatchBook/response-fields.adoc[]
+
+=== 책 삭제
+.request
+include::{snippets}/DeleteBook/http-request.adoc[]
+
+.request headers
+include::{snippets}/DeleteBook/request-headers.adoc[]
+
+.request path parameters
+include::{snippets}/DeleteBook/path-parameters.adoc[]
+
+.response
+include::{snippets}/DeleteBook/http-response.adoc[]
