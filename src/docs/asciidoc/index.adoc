@@ -277,3 +277,16 @@ include::{snippets}/PatchMemo/http-response.adoc[]
 
 .response fields
 include::{snippets}/PatchMemo/response-fields.adoc[]
+
+=== 메모 삭제
+.request
+include::{snippets}/DeleteMemo/http-request.adoc[]
+
+.request headers
+include::{snippets}/DeleteMemo/request-headers.adoc[]
+
+.request path parameters
+include::{snippets}/DeleteMemo/path-parameters.adoc[]
+
+.response
+include::{snippets}/DeleteMemo/http-response.adoc[]
