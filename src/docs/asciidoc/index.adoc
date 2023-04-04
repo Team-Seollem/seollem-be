@@ -242,3 +242,19 @@ include::{snippets}/PostMemo/http-response.adoc[]
 
 .response fields
 include::{snippets}/PostMemo/response-fields.adoc[]
+
+=== 이미지 메모 등록
+.request
+include::{snippets}/PostImageMemo/http-request.adoc[]
+
+.request headers
+include::{snippets}/PostImageMemo/request-headers.adoc[]
+
+.request parts
+include::{snippets}/PostImageMemo/request-parts.adoc[]
+
+.response
+include::{snippets}/PostImageMemo/http-response.adoc[]
+
+.response fields
+include::{snippets}/PostImageMemo/response-fields.adoc[]
