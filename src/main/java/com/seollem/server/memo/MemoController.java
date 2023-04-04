@@ -35,7 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class MemoController {
 
   private final MemoService memoService;
-  private final MemoMapper mapper;
+  private final MemoMapper memoMapper;
   private final MemberService memberService;
   private final GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil;
   private final BookService bookService;
@@ -50,13 +50,13 @@ public class MemoController {
 
     bookService.verifyMemberHasBook(bookId, member.getMemberId());
 
-    Memo memoOfBook = mapper.memoPostToMemo(post);
+    Memo memoOfBook = memoMapper.memoPostToMemo(post);
     Book book = bookService.findVerifiedBookById(bookId);
     memoOfBook.setMember(member);
     memoOfBook.setBook(book);
 
     Memo memo = memoService.createMemo(memoOfBook);
-    MemoDto.Response response = mapper.memoToMemoResponse(memo);
+    MemoDto.Response response = memoMapper.memoToMemoResponse(memo);
 
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
@@ -82,10 +82,10 @@ public class MemoController {
     memoService.verifyMemberHasMemo(memoId, member.getMemberId());
 
     patch.setMemoId(memoId);
-    Memo PatchMemo = mapper.memoPatchToMemo(patch);
+    Memo PatchMemo = memoMapper.memoPatchToMemo(patch);
 
     Memo memo = memoService.updateMemo(PatchMemo);
-    MemoDto.Response response = mapper.memoToMemoResponse(memo);
+    MemoDto.Response response = memoMapper.memoToMemoResponse(memo);
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
@@ -98,7 +98,7 @@ public class MemoController {
 //    List<MemoDto.RandomResponse> responses =
 //        randomMemo.stream().map(memo -> mapper.memoToRandomMemoResponse(memo)).collect(Collectors.toList());
 
-    return new ResponseEntity<>(mapper.memoToRandomMemoResponse(randomMemo), HttpStatus.OK);
+    return new ResponseEntity<>(memoMapper.memoToRandomMemoResponse(randomMemo), HttpStatus.OK);
   }
 
   @DeleteMapping("/{memo-id}")

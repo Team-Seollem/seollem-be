@@ -209,3 +209,17 @@ include::{snippets}/DeleteMember/request-headers.adoc[]
 
 .response
 include::{snippets}/DeleteMember/http-response.adoc[]
+
+== 메모 도메인
+=== 메모 랜덤 조회
+.request
+include::{snippets}/GetRandomMemo/http-request.adoc[]
+
+.request headers
+include::{snippets}/GetRandomMemo/request-headers.adoc[]
+
+.response
+include::{snippets}/GetRandomMemo/http-response.adoc[]
+
+.response fields
+include::{snippets}/GetRandomMemo/response-fields.adoc[]

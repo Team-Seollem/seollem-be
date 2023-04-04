@@ -13,6 +13,7 @@ import com.seollem.server.memo.Memo;
 import com.seollem.server.memo.Memo.MemoAuthority;
 import com.seollem.server.memo.Memo.MemoType;
 import com.seollem.server.memo.MemoDto;
+import com.seollem.server.memo.MemoDto.RandomResponse;
 import com.seollem.server.memolikes.MemoLikes;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -123,12 +124,10 @@ public class StubDataUtil {
     public static List<Memo> getMemos() {
       Memo memo1 =
           new Memo(1, MemoType.BOOK_CONTENT, "메모 1의 메모한 내용입니다.", 24, 3, MemoAuthority.PUBLIC, null,
-              null,
-              null);
+              null, null);
       Memo memo2 =
           new Memo(4, MemoType.QUESTION, "메모 4에 메모한 내용입니다.", 223, 0, MemoAuthority.PUBLIC, null,
-              null,
-              null);
+              null, null);
       List<Memo> list = new ArrayList<>();
       list.add(memo1);
       list.add(memo2);
@@ -138,12 +137,10 @@ public class StubDataUtil {
     public static List<MemoDto.Response> getMemoResponses() {
       MemoDto.Response memoResponse1 =
           new MemoDto.Response(1, MemoType.BOOK_CONTENT, "메모 1의 메모한 내용입니다.", 24,
-              MemoAuthority.PUBLIC, 3, LocalDateTime.now(), LocalDateTime.now()
-          );
+              MemoAuthority.PUBLIC, 3, LocalDateTime.now(), LocalDateTime.now());
       MemoDto.Response memoResponse2 =
-          new MemoDto.Response(4, MemoType.QUESTION, "메모 4에 메모한 내용입니다.", 223,
-              MemoAuthority.PUBLIC, 3, LocalDateTime.now(), LocalDateTime.now()
-          );
+          new MemoDto.Response(4, MemoType.QUESTION, "메모 4에 메모한 내용입니다.", 223, MemoAuthority.PUBLIC,
+              3, LocalDateTime.now(), LocalDateTime.now());
       List<MemoDto.Response> list = new ArrayList<>();
       list.add(memoResponse1);
       list.add(memoResponse2);
@@ -152,9 +149,14 @@ public class StubDataUtil {
 
     public static PageImpl<Memo> getMemoPage() {
       Memo memo =
-          new Memo(1, MemoType.BOOK_CONTENT, "메모4의 내용입니다.", 42, 0, MemoAuthority.PUBLIC,
-              null, null, null);
+          new Memo(1, MemoType.BOOK_CONTENT, "메모4의 내용입니다.", 42, 0, MemoAuthority.PUBLIC, null, null,
+              null);
       return new PageImpl<>(List.of(memo), PageRequest.of(1, 10), 0);
+    }
+
+    public static MemoDto.RandomResponse getRandomMemoResponse() {
+      return new RandomResponse(1, "1번 메모의 내용입니다.", MemoType.BOOK_CONTENT, 15, LocalDateTime.now(),
+          LocalDateTime.now());
     }
   }
 }
