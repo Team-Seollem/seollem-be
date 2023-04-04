@@ -9,6 +9,13 @@
 :docinfo: shared-head
 
 == 로그인, 회원가입 도메인
+=== 회원가입 이메일 인증번호
+.request
+include::{snippets}/JoinAuthCode/http-request.adoc[]
+
+.response
+include::{snippets}/JoinAuthCode/http-response.adoc[]
+
 === 회원 가입
 .request
 include::{snippets}/Join/http-request.adoc[]
@@ -18,6 +25,13 @@ include::{snippets}/Join/request-fields.adoc[]
 
 .response
 include::{snippets}/Join/http-response.adoc[]
+
+=== 임시 비밀번호 요청
+.request
+include::{snippets}/TempPassword/http-request.adoc[]
+
+.response
+include::{snippets}/TempPassword/http-response.adoc[]
 
 == 책 도메인
 === 책 Library 조회
@@ -290,3 +304,4 @@ include::{snippets}/DeleteMemo/path-parameters.adoc[]
 
 .response
 include::{snippets}/DeleteMemo/http-response.adoc[]
+

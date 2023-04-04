@@ -14,7 +14,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.requestP
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.google.gson.Gson;
 import com.seollem.server.book.BookService;
 import com.seollem.server.file.FileUploadService;
 import com.seollem.server.member.MemberService;
@@ -22,7 +21,6 @@ import com.seollem.server.memo.MemoController;
 import com.seollem.server.memo.MemoMapper;
 import com.seollem.server.memo.MemoService;
 import com.seollem.server.memolikes.MemoLikesService;
-import com.seollem.server.restdocs.util.GsonCustomConfig;
 import com.seollem.server.restdocs.util.StubDataUtil;
 import com.seollem.server.restdocs.util.WebMvcTestSetUpUtil;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
@@ -38,7 +36,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @WebMvcTest(value = MemoController.class)
 public class PostImageMemo extends WebMvcTestSetUpUtil {
 
-  private final GsonCustomConfig gsonCustomConfig = new GsonCustomConfig();
   @MockBean
   private MemoService memoService;
   @MockBean
@@ -56,8 +53,6 @@ public class PostImageMemo extends WebMvcTestSetUpUtil {
 
   @Test
   public void postImageMemoTest() throws Exception {
-
-    Gson gson = gsonCustomConfig.gsonBuild();
 
     //given
     when(getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(Mockito.anyMap())).thenReturn(
