@@ -40,8 +40,8 @@ public class MemoService {
     return memoRepository.save(updatingMemo);
   }
 
-  public List<Memo> randomMemo(Member member) {
-    List<Memo> random = memoRepository.findRandomMemo(member);
+  public Memo randomMemo(Member member) {
+    Memo random = memoRepository.findRandomMemo(member);
     return random;
   }
 

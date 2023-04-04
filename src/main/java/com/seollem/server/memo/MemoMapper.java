@@ -11,7 +11,7 @@ public interface MemoMapper {
 
   Memo memoPatchToMemo(MemoDto.Patch patch);
 
-  MemoDto.RandomResponse momoToMemoRandom(Memo memo);
+  MemoDto.RandomResponse memoToRandomMemoResponse(Memo memo);
 
   MemoDto.Response memoToMemoResponse(Memo memo);
 
