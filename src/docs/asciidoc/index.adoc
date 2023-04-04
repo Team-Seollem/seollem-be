@@ -169,3 +169,17 @@ include::{snippets}/DeleteBook/path-parameters.adoc[]
 
 .response
 include::{snippets}/DeleteBook/http-response.adoc[]
+
+== 회원 도메인
+=== 회원 조회
+.request
+include::{snippets}/GetMember/http-request.adoc[]
+
+.request headers
+include::{snippets}/GetMember/request-headers.adoc[]
+
+.response
+include::{snippets}/GetMember/http-response.adoc[]
+
+.response fields
+include::{snippets}/GetMember/response-fields.adoc[]

@@ -8,6 +8,7 @@ import com.seollem.server.book.BookDto.BooksHaveMemoResponse;
 import com.seollem.server.book.BookDto.CalenderResponse;
 import com.seollem.server.book.BookDto.LibraryResponse;
 import com.seollem.server.member.Member;
+import com.seollem.server.member.MemberDto;
 import com.seollem.server.memo.Memo;
 import com.seollem.server.memo.Memo.MemoAuthority;
 import com.seollem.server.memo.Memo.MemoType;
@@ -20,7 +21,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 public class StubDataUtil {
-
 
 
   public static class MockBook {
@@ -107,7 +107,16 @@ public class StubDataUtil {
       return new Member(1, "starrypro@gmail.com", "김형섭", "password", "ROLE_USER",
           new ArrayList<Book>(), new ArrayList<MemoLikes>());
     }
+
+    public static MemberDto.GetResponse getMemberGetResponse() {
+      return new MemberDto.GetResponse("starrypro@gmail.com", "김형섭");
+    }
+
+    public static MemberDto.PatchResponse getMemberPatchResponse() {
+      return new MemberDto.PatchResponse("starrypro@gmail.com", "이슬", LocalDateTime.now());
+    }
   }
+
 
   public static class MockMemo {
 

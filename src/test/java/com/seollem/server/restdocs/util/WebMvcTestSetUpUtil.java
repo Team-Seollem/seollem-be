@@ -27,8 +27,3 @@ public class WebMvcTestSetUpUtil {
   }
 
 }
-//.uris().withScheme("https")
-//    .withHost("example.com")
-//.alwaysDo(
-//    document("{method-name}",preprocessRequest(prettyPrint()),
-//    preprocessResponse(prettyPrint())))
