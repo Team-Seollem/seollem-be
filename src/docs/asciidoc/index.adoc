@@ -183,3 +183,29 @@ include::{snippets}/GetMember/http-response.adoc[]
 
 .response fields
 include::{snippets}/GetMember/response-fields.adoc[]
+
+=== 회원 수정
+.request
+include::{snippets}/PatchMember/http-request.adoc[]
+
+.request headers
+include::{snippets}/PatchMember/request-headers.adoc[]
+
+.request fields
+include::{snippets}/PatchMember/request-fields.adoc[]
+
+.response
+include::{snippets}/PatchMember/http-response.adoc[]
+
+.response fields
+include::{snippets}/PatchMember/response-fields.adoc[]
+
+=== 회원 삭제
+.request
+include::{snippets}/DeleteMember/http-request.adoc[]
+
+.request headers
+include::{snippets}/DeleteMember/request-headers.adoc[]
+
+.response
+include::{snippets}/DeleteMember/http-response.adoc[]
