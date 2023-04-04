@@ -258,3 +258,22 @@ include::{snippets}/PostImageMemo/http-response.adoc[]
 
 .response fields
 include::{snippets}/PostImageMemo/response-fields.adoc[]
+
+=== 메모 수정
+.request
+include::{snippets}/PatchMemo/http-request.adoc[]
+
+.request headers
+include::{snippets}/PatchMemo/request-headers.adoc[]
+
+.request path parameters
+include::{snippets}/PatchMemo/path-parameters.adoc[]
+
+.request fields
+include::{snippets}/PatchMemo/request-fields.adoc[]
+
+.response
+include::{snippets}/PatchMemo/http-response.adoc[]
+
+.response fields
+include::{snippets}/PatchMemo/response-fields.adoc[]
