@@ -14,6 +14,7 @@ import com.seollem.server.memo.Memo.MemoAuthority;
 import com.seollem.server.memo.Memo.MemoType;
 import com.seollem.server.memo.MemoDto;
 import com.seollem.server.memo.MemoDto.RandomResponse;
+import com.seollem.server.memo.MemoDto.Response;
 import com.seollem.server.memolikes.MemoLikes;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -157,6 +158,11 @@ public class StubDataUtil {
     public static MemoDto.RandomResponse getRandomMemoResponse() {
       return new RandomResponse(1, "1번 메모의 내용입니다.", MemoType.BOOK_CONTENT, 15, LocalDateTime.now(),
           LocalDateTime.now());
+    }
+
+    public static MemoDto.Response getMemoResponse() {
+      return new Response(1, MemoType.BOOK_CONTENT, "1번 메모의 내용입니다.", 14, MemoAuthority.PUBLIC, 3,
+          LocalDateTime.now(), LocalDateTime.now());
     }
   }
 }

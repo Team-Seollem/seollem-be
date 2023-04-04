@@ -223,3 +223,22 @@ include::{snippets}/GetRandomMemo/http-response.adoc[]
 
 .response fields
 include::{snippets}/GetRandomMemo/response-fields.adoc[]
+
+=== 메모 등록
+.request
+include::{snippets}/PostMemo/http-request.adoc[]
+
+.request headers
+include::{snippets}/PostMemo/request-headers.adoc[]
+
+.request path parameters
+include::{snippets}/PostMemo/path-parameters.adoc[]
+
+.request fields
+include::{snippets}/PostMemo/request-fields.adoc[]
+
+.response
+include::{snippets}/PostMemo/http-response.adoc[]
+
+.response fields
+include::{snippets}/PostMemo/response-fields.adoc[]
