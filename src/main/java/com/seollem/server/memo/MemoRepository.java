@@ -22,8 +22,6 @@ public interface MemoRepository extends JpaRepository<Memo, Long> {
 
   Page<Memo> findAllByBook(Pageable pageable, Book book);
 
-  @Query(
-      value = "SELECT * FROM memo WHERE MEMBER_ID = ?1 order by RAND() limit 1",
-      nativeQuery = true)
-  List<Memo> findRandomMemo(Member member);
+  @Query(value = "SELECT * FROM memo WHERE MEMBER_ID = ?1 order by RAND() limit 1", nativeQuery = true)
+  Memo findRandomMemo(Member member);
 }

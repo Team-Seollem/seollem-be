@@ -1,0 +1,345 @@
+= [나만의 설렘] 백엔드 API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:sectnums:
+:docinfo: shared-head
+
+== 로그인, 회원가입 도메인
+=== 회원가입 이메일 인증번호
+.request
+include::{snippets}/JoinAuthCode/http-request.adoc[]
+
+.response
+include::{snippets}/JoinAuthCode/http-response.adoc[]
+
+=== 회원 가입
+.request
+include::{snippets}/Join/http-request.adoc[]
+
+.request fields
+include::{snippets}/Join/request-fields.adoc[]
+
+.response
+include::{snippets}/Join/http-response.adoc[]
+
+=== 로그인
+.request
+include::{snippets}/Login/http-request.adoc[]
+
+.request fields
+include::{snippets}/Login/request-fields.adoc[]
+
+.response
+include::{snippets}/Login/http-response.adoc[]
+
+.response headers
+include::{snippets}/Login/response-headers.adoc[]
+
+
+=== 임시 비밀번호 요청
+.request
+include::{snippets}/TempPassword/http-request.adoc[]
+
+.response
+include::{snippets}/TempPassword/http-response.adoc[]
+
+== 책 도메인
+=== 책 Library 조회
+.request
+include::{snippets}/Library/http-request.adoc[]
+
+.request headers
+include::{snippets}/Library/request-headers.adoc[]
+
+.request query string
+include::{snippets}/Library/request-parameters.adoc[]
+
+.response
+include::{snippets}/Library/http-response.adoc[]
+
+.response fields
+include::{snippets}/Library/response-fields.adoc[]
+
+=== 책 Calender 조회
+.request
+include::{snippets}/Calender/http-request.adoc[]
+
+.request headers
+include::{snippets}/Calender/request-headers.adoc[]
+
+.request query string
+include::{snippets}/Calender/request-parameters.adoc[]
+
+.response
+include::{snippets}/Calender/http-response.adoc[]
+
+.response fields
+include::{snippets}/Calender/response-fields.adoc[]
+
+=== 책 Abandon 조회
+.request
+include::{snippets}/Abandon/http-request.adoc[]
+
+.request headers
+include::{snippets}/Abandon/request-headers.adoc[]
+
+.request query string
+include::{snippets}/Abandon/request-parameters.adoc[]
+
+.response
+include::{snippets}/Abandon/http-response.adoc[]
+
+.response fields
+include::{snippets}/Abandon/response-fields.adoc[]
+
+=== 메모가 존재하는 책 조회
+.request
+include::{snippets}/BooksHaveMemo/http-request.adoc[]
+
+.request headers
+include::{snippets}/BooksHaveMemo/request-headers.adoc[]
+
+.request query string
+include::{snippets}/BooksHaveMemo/request-parameters.adoc[]
+
+.response
+include::{snippets}/BooksHaveMemo/http-response.adoc[]
+
+.response fields
+include::{snippets}/BooksHaveMemo/response-fields.adoc[]
+
+=== 책 상세페이지 조회
+.request
+include::{snippets}/BookDetail/http-request.adoc[]
+
+.request headers
+include::{snippets}/BookDetail/request-headers.adoc[]
+
+.request path parameters
+include::{snippets}/BookDetail/path-parameters.adoc[]
+
+.request query string
+include::{snippets}/BookDetail/request-parameters.adoc[]
+
+.response
+include::{snippets}/BookDetail/http-response.adoc[]
+
+.response fields
+include::{snippets}/BookDetail/response-fields.adoc[]
+
+=== 책의 메모 조회
+.request
+include::{snippets}/GetMemos/http-request.adoc[]
+
+.request headers
+include::{snippets}/GetMemos/request-headers.adoc[]
+
+.request path parameters
+include::{snippets}/GetMemos/path-parameters.adoc[]
+
+.request query string
+include::{snippets}/GetMemos/request-parameters.adoc[]
+
+.response
+include::{snippets}/GetMemos/http-response.adoc[]
+
+.response fields
+include::{snippets}/GetMemos/response-fields.adoc[]
+
+=== 책 등록
+.request
+include::{snippets}/PostBook/http-request.adoc[]
+
+.request headers
+include::{snippets}/PostBook/request-headers.adoc[]
+
+.request fields
+include::{snippets}/PostBook/request-fields.adoc[]
+
+.response
+include::{snippets}/PostBook/http-response.adoc[]
+
+.response fields
+include::{snippets}/PostBook/response-fields.adoc[]
+
+=== 책 수정
+.request
+include::{snippets}/PatchBook/http-request.adoc[]
+
+.request headers
+include::{snippets}/PatchBook/request-headers.adoc[]
+
+.request path parameters
+include::{snippets}/PatchBook/path-parameters.adoc[]
+
+.request fields
+include::{snippets}/PatchBook/request-fields.adoc[]
+
+.response
+include::{snippets}/PatchBook/http-response.adoc[]
+
+.response fields
+include::{snippets}/PatchBook/response-fields.adoc[]
+
+=== 책 삭제
+.request
+include::{snippets}/DeleteBook/http-request.adoc[]
+
+.request headers
+include::{snippets}/DeleteBook/request-headers.adoc[]
+
+.request path parameters
+include::{snippets}/DeleteBook/path-parameters.adoc[]
+
+.response
+include::{snippets}/DeleteBook/http-response.adoc[]
+
+== 회원 도메인
+=== 회원 조회
+.request
+include::{snippets}/GetMember/http-request.adoc[]
+
+.request headers
+include::{snippets}/GetMember/request-headers.adoc[]
+
+.response
+include::{snippets}/GetMember/http-response.adoc[]
+
+.response fields
+include::{snippets}/GetMember/response-fields.adoc[]
+
+=== 회원 수정
+.request
+include::{snippets}/PatchMember/http-request.adoc[]
+
+.request headers
+include::{snippets}/PatchMember/request-headers.adoc[]
+
+.request fields
+include::{snippets}/PatchMember/request-fields.adoc[]
+
+.response
+include::{snippets}/PatchMember/http-response.adoc[]
+
+.response fields
+include::{snippets}/PatchMember/response-fields.adoc[]
+
+=== 회원 삭제
+.request
+include::{snippets}/DeleteMember/http-request.adoc[]
+
+.request headers
+include::{snippets}/DeleteMember/request-headers.adoc[]
+
+.response
+include::{snippets}/DeleteMember/http-response.adoc[]
+
+== 메모 도메인
+=== 메모 랜덤 조회
+.request
+include::{snippets}/GetRandomMemo/http-request.adoc[]
+
+.request headers
+include::{snippets}/GetRandomMemo/request-headers.adoc[]
+
+.response
+include::{snippets}/GetRandomMemo/http-response.adoc[]
+
+.response fields
+include::{snippets}/GetRandomMemo/response-fields.adoc[]
+
+=== 메모 등록
+.request
+include::{snippets}/PostMemo/http-request.adoc[]
+
+.request headers
+include::{snippets}/PostMemo/request-headers.adoc[]
+
+.request path parameters
+include::{snippets}/PostMemo/path-parameters.adoc[]
+
+.request fields
+include::{snippets}/PostMemo/request-fields.adoc[]
+
+.response
+include::{snippets}/PostMemo/http-response.adoc[]
+
+.response fields
+include::{snippets}/PostMemo/response-fields.adoc[]
+
+=== 이미지 메모 등록
+.request
+include::{snippets}/PostImageMemo/http-request.adoc[]
+
+.request headers
+include::{snippets}/PostImageMemo/request-headers.adoc[]
+
+.request parts
+include::{snippets}/PostImageMemo/request-parts.adoc[]
+
+.response
+include::{snippets}/PostImageMemo/http-response.adoc[]
+
+.response fields
+include::{snippets}/PostImageMemo/response-fields.adoc[]
+
+=== 메모 수정
+.request
+include::{snippets}/PatchMemo/http-request.adoc[]
+
+.request headers
+include::{snippets}/PatchMemo/request-headers.adoc[]
+
+.request path parameters
+include::{snippets}/PatchMemo/path-parameters.adoc[]
+
+.request fields
+include::{snippets}/PatchMemo/request-fields.adoc[]
+
+.response
+include::{snippets}/PatchMemo/http-response.adoc[]
+
+.response fields
+include::{snippets}/PatchMemo/response-fields.adoc[]
+
+=== 메모 삭제
+.request
+include::{snippets}/DeleteMemo/http-request.adoc[]
+
+.request headers
+include::{snippets}/DeleteMemo/request-headers.adoc[]
+
+.request path parameters
+include::{snippets}/DeleteMemo/path-parameters.adoc[]
+
+.response
+include::{snippets}/DeleteMemo/http-response.adoc[]
+
+== 알라딘 API 조회 도메인
+=== 베스트셀러 조회
+.request
+include::{snippets}/GetAladdinBestSeller/http-request.adoc[]
+
+.response
+include::{snippets}/GetAladdinBestSeller/http-response.adoc[]
+
+=== 주목할만한 신간리스트 조회
+.request
+include::{snippets}/GetAladdinItemNewSpecial/http-request.adoc[]
+
+.response
+include::{snippets}/GetAladdinItemNewSpecial/http-response.adoc[]
+
+=== 책 검색
+.request
+include::{snippets}/GetAladdinSearchedBook/http-request.adoc[]
+
+.request path parameters
+include::{snippets}/GetAladdinSearchedBook/path-parameters.adoc[]
+
+.response
+include::{snippets}/GetAladdinSearchedBook/http-response.adoc[]

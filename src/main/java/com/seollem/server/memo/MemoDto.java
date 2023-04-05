@@ -76,4 +76,13 @@ public class MemoDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
   }
+
+  @Getter
+  @Setter
+  @AllArgsConstructor
+  @NoArgsConstructor
+  public static class ImageMemoResponse {
+
+    private String url;
+  }
 }
