@@ -1,9 +1,8 @@
 package com.seollem.server.externallibrary.controller;
 
-import com.seollem.server.externallibrary.config.RestTemplateConfig;
+import com.seollem.server.externallibrary.AladdinResponseDto;
 import com.seollem.server.externallibrary.service.AladdinService;
 import com.seollem.server.externallibrary.util.BuildAladdinUriUtil;
-import com.seollem.server.util.Keys;
 import java.net.URI;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,10 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/ext-lib")
 @AllArgsConstructor
 @SuppressWarnings("unchecked")
-public class ExternalLibraryController {
+public class AladdinController {
 
-  private final RestTemplateConfig restTemplateConfig;
-  private final Keys keys;
   private final BuildAladdinUriUtil buildAladdinUriUtil;
   private final AladdinService aladdinService;
 
@@ -30,9 +27,9 @@ public class ExternalLibraryController {
 
     URI uri = buildAladdinUriUtil.buildSearchUri(input);
 
-    String response = aladdinService.getResponse(uri);
+    AladdinResponseDto response = aladdinService.getResponse(uri);
 
-    return new ResponseEntity(response, HttpStatus.OK);
+    return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
   @GetMapping("best-seller")
@@ -40,9 +37,9 @@ public class ExternalLibraryController {
 
     URI uri = buildAladdinUriUtil.buildRecommendUri("bestseller");
 
-    String response = aladdinService.getResponse(uri);
+    AladdinResponseDto response = aladdinService.getResponse(uri);
 
-    return new ResponseEntity(response, HttpStatus.OK);
+    return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
 
@@ -51,9 +48,9 @@ public class ExternalLibraryController {
 
     URI uri = buildAladdinUriUtil.buildRecommendUri("ItemNewSpecial");
 
-    String response = aladdinService.getResponse(uri);
+    AladdinResponseDto response = aladdinService.getResponse(uri);
 
-    return new ResponseEntity(response, HttpStatus.OK);
+    return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
 }

@@ -1,5 +1,6 @@
 package com.seollem.server.externallibrary.service;
 
+import com.seollem.server.externallibrary.AladdinResponseDto;
 import com.seollem.server.externallibrary.config.RestTemplateConfig;
 import com.seollem.server.externallibrary.util.BuildAladdinUriUtil;
 import java.net.URI;
@@ -18,7 +19,7 @@ public class AladdinService {
   private final RestTemplateConfig restTemplateConfig;
   private final BuildAladdinUriUtil buildAladdinUriUtil;
 
-  public String getResponse(URI uri) throws Exception {
+  public AladdinResponseDto getResponse(URI uri) throws Exception {
     RestTemplate restTemplate = restTemplateConfig.restTemplate();
     String rawBestSellerDataStr = restTemplate.getForObject(uri, String.class);
 
@@ -45,7 +46,9 @@ public class AladdinService {
       temp.put("itemPage", itemPageJson.getString("itemPage"));
       responseBody.put(temp);
     }
-    return responseBody.toString();
+    String responseBodyString = responseBody.toString().replace("\\", "");
+    AladdinResponseDto aladdinResponseDto = new AladdinResponseDto(responseBodyString);
+    return aladdinResponseDto;
   }
 
   public JSONObject findItemPageJson(String isbn) throws JSONException {

@@ -7,6 +7,7 @@ import com.seollem.server.book.BookDto.AbandonResponse;
 import com.seollem.server.book.BookDto.BooksHaveMemoResponse;
 import com.seollem.server.book.BookDto.CalenderResponse;
 import com.seollem.server.book.BookDto.LibraryResponse;
+import com.seollem.server.externallibrary.AladdinResponseDto;
 import com.seollem.server.member.Member;
 import com.seollem.server.member.MemberDto;
 import com.seollem.server.memo.Memo;
@@ -164,5 +165,16 @@ public class StubDataUtil {
       return new Response(1, MemoType.BOOK_CONTENT, "1번 메모의 내용입니다.", 14, MemoAuthority.PUBLIC, 3,
           LocalDateTime.now(), LocalDateTime.now());
     }
+  }
+
+  public static class MockAladdin {
+
+    public static AladdinResponseDto getBestSeller() {
+      String response =
+          "[{\"cover\":\"https://image.aladin.co.kr/product/30929/51/cover/s302832892_1.jpg\",\"author\":\"세이노 (지은이)\",\"publisher\":\"데이원\",\"title\":\"세이노의 가르침\",\"itemPage\":\"736\"},{\"cover\":\"https://image.aladin.co.kr/product/31337/5/cover/8960519790_1.jpg\",\"author\":\"장하준 (지은이), 김희정 (옮긴이)\",\"publisher\":\"부키\",\"title\":\"장하준의 경제학 레시피 - 마늘에서 초콜릿까지 18가지 재료로 요리한 경제 이야기\",\"itemPage\":\"376\"},{\"cover\":\"https://image.aladin.co.kr/product/31325/1/cover/k832832683_3.jpg\",\"author\":\"김승호 (지은이)\",\"publisher\":\"스노우폭스북스\",\"title\":\"사장학개론\",\"itemPage\":\"438\"},{\"cover\":\"https://image.aladin.co.kr/product/30876/42/cover/k892831289_1.jpg\",\"author\":\"신카이 마코토 (지은이), 민경욱 (옮긴이)\",\"publisher\":\"대원씨아이(단행본)\",\"title\":\"스즈메의 문단속\",\"itemPage\":\"360\"},{\"cover\":\"https://image.aladin.co.kr/product/30995/11/cover/k672831500_2.jpg\",\"author\":\"김미경 (지은이)\",\"publisher\":\"어웨이크북스\",\"title\":\"김미경의 마흔 수업 - 이미 늦었다고 생각하는 당신을 위한\",\"itemPage\":\"300\"},{\"cover\":\"https://image.aladin.co.kr/product/31132/45/cover/8934965908_1.jpg\",\"author\":\"마이클 슈어 (지은이), 염지선 (옮긴이)\",\"publisher\":\"김영사\",\"title\":\"더 좋은 삶을 위한 철학 - 천사와 악마 사이 더 나은 선택을 위한 안내서\",\"itemPage\":\"408\"},{\"cover\":\"https://image.aladin.co.kr/product/31273/7/cover/k542832564_1.jpg\",\"author\":\"김익한 (지은이)\",\"publisher\":\"다산북스\",\"title\":\"거인의 노트 - 인생에서 무엇을 보고 어떻게 기록할 것인가\",\"itemPage\":\"292\"},{\"cover\":\"https://image.aladin.co.kr/product/31413/4/cover/8932474877_1.jpg\",\"author\":\"박찬욱 (지은이), 전영욱 (사진)\",\"publisher\":\"을유문화사\",\"title\":\"헤어질 결심 포토북\",\"itemPage\":\"240\"},{\"cover\":\"https://image.aladin.co.kr/product/31317/26/cover/k772832988_1.jpg\",\"author\":\"이언 매큐언 (지은이), 한정아 (옮긴이)\",\"publisher\":\"복복서가\",\"title\":\"견딜 수 없는 사랑\",\"itemPage\":\"364\"},{\"cover\":\"https://image.aladin.co.kr/product/31250/53/cover/k262832360_1.jpg\",\"author\":\"류이치 사카모토 (Ryuichi Sakamoto) (지은이), 양윤옥 (옮긴이)\",\"publisher\":\"청미래\",\"title\":\"음악으로 자유로워지다\",\"itemPage\":\"298\"}]".replace(
+              "\\", "");
+      return new AladdinResponseDto(response);
+    }
+
   }
 }

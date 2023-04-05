@@ -305,3 +305,11 @@ include::{snippets}/DeleteMemo/path-parameters.adoc[]
 .response
 include::{snippets}/DeleteMemo/http-response.adoc[]
 
+== 알라딘 API 조회 도메인
+=== BestSeller 조회
+.request
+include::{snippets}/GetAladdinBestSeller/http-request.adoc[]
+
+.response
+include::{snippets}/GetAladdinBestSeller/http-response.adoc[]
+
