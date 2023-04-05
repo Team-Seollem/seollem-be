@@ -26,6 +26,20 @@ include::{snippets}/Join/request-fields.adoc[]
 .response
 include::{snippets}/Join/http-response.adoc[]
 
+=== 로그인
+.request
+include::{snippets}/Login/http-request.adoc[]
+
+.request fields
+include::{snippets}/Login/request-fields.adoc[]
+
+.response
+include::{snippets}/Login/http-response.adoc[]
+
+.response headers
+include::{snippets}/Login/response-headers.adoc[]
+
+
 === 임시 비밀번호 요청
 .request
 include::{snippets}/TempPassword/http-request.adoc[]
