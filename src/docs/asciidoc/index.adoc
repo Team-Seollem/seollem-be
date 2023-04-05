@@ -306,10 +306,26 @@ include::{snippets}/DeleteMemo/path-parameters.adoc[]
 include::{snippets}/DeleteMemo/http-response.adoc[]
 
 == 알라딘 API 조회 도메인
-=== BestSeller 조회
+=== 베스트셀러 조회
 .request
 include::{snippets}/GetAladdinBestSeller/http-request.adoc[]
 
 .response
 include::{snippets}/GetAladdinBestSeller/http-response.adoc[]
 
+=== 주목할만한 신간리스트 조회
+.request
+include::{snippets}/GetAladdinItemNewSpecial/http-request.adoc[]
+
+.response
+include::{snippets}/GetAladdinItemNewSpecial/http-response.adoc[]
+
+=== 책 검색
+.request
+include::{snippets}/GetAladdinSearchedBook/http-request.adoc[]
+
+.request path parameters
+include::{snippets}/GetAladdinSearchedBook/path-parameters.adoc[]
+
+.response
+include::{snippets}/GetAladdinSearchedBook/http-response.adoc[]
