@@ -55,7 +55,7 @@ public class Login {
     Gson gson = gsonCustomConfig.gsonBuild();
     //given
     JsonObject jsonObject = new JsonObject();
-    jsonObject.addProperty("email", "seobseoby7@gmail.com");
+    jsonObject.addProperty("email", "starrypro@gmail.com");
     jsonObject.addProperty("password", "Abcd123!");
 
     String content = gson.toJson(jsonObject);
