@@ -13,23 +13,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.google.gson.Gson;
 import com.seollem.server.book.Book.BookStatus;
 import com.seollem.server.book.BookController;
-import com.seollem.server.book.BookMapper;
-import com.seollem.server.book.BookService;
 import com.seollem.server.member.Member;
-import com.seollem.server.member.MemberService;
-import com.seollem.server.memo.MemoMapper;
-import com.seollem.server.memo.MemoService;
-import com.seollem.server.memolikes.MemoLikesService;
 import com.seollem.server.restdocs.util.StubDataUtil;
-import com.seollem.server.restdocs.util.WebMvcTestSetUpUtil;
-import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
+import com.seollem.server.restdocs.util.TestSetUpForBookUtil;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -40,22 +32,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 @WebMvcTest(BookController.class)
-public class GetCalender extends WebMvcTestSetUpUtil {
-
-  @MockBean
-  private GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil;
-  @MockBean
-  private MemberService memberService;
-  @MockBean
-  private BookService bookService;
-  @MockBean
-  private BookMapper bookMapper;
-  @MockBean
-  private MemoService memoService;
-  @MockBean
-  private MemoMapper memoMapper;
-  @MockBean
-  private MemoLikesService memoLikesService;
+public class GetCalender extends TestSetUpForBookUtil {
 
   @Autowired
   private Gson gson;
