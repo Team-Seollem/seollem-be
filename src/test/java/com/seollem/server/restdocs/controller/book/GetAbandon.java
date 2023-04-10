@@ -61,7 +61,7 @@ public class GetAbandon extends TestSetUpForBookUtil {
             .contentType(MediaType.APPLICATION_JSON).header("Authorization",
                 "Bearer JWT Access Token")
             .queryParam("page", "1").queryParam("size", "10")
-            .queryParam("year", "2023").queryParam("month", "9"));
+            .queryParam("year", "2022").queryParam("month", "4"));
 
     //then
     resultActions.andExpect(status().isOk()).andDo(document("Abandon",
