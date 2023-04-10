@@ -4,6 +4,7 @@ import com.seollem.server.exception.BusinessLogicException;
 import com.seollem.server.exception.ExceptionCode;
 import com.seollem.server.member.Member;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -69,10 +70,12 @@ public class BookService {
     return books;
   }
 
-  public Page<Book> findAbandonedBooks(int page, int size, Member member) {
+  public Page<Book> findAbandonedBooks(int page, int size, Member member,
+      ArrayList<LocalDateTime> list) {
     Page<Book> books =
         bookRepository.findAbandon(
-            member, PageRequest.of(page, size, Sort.by("BOOK_ID").descending()));
+            member, list.get(0), list.get(1),
+            PageRequest.of(page, size, Sort.by("BOOK_ID").descending()));
 
     return books;
   }

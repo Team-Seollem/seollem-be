@@ -9,11 +9,15 @@ import com.seollem.server.memo.MemoDto;
 import com.seollem.server.memo.MemoMapper;
 import com.seollem.server.memo.MemoService;
 import com.seollem.server.memolikes.MemoLikesService;
+import com.seollem.server.util.GetAbandonPeriodUtil;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -45,6 +49,7 @@ public class BookController {
   private final MemoService memoService;
   private final MemoMapper memoMapper;
   private final MemoLikesService memoLikesService;
+  private final GetAbandonPeriodUtil getAbandonPeriodUtil;
 
 
   // 서재 뷰 조회
@@ -93,11 +98,15 @@ public class BookController {
   public ResponseEntity getAbandon(
       @RequestHeader Map<String, Object> requestHeader,
       @Positive @RequestParam int page,
-      @Positive @RequestParam int size) {
+      @Positive @RequestParam int size,
+      @Positive @RequestParam int year, @Min(1) @Max(12) @RequestParam int month) {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
 
-    Page<Book> pageBooks = bookService.findAbandonedBooks(page - 1, size, member);
+    ArrayList<LocalDateTime> abandonPeriodList = getAbandonPeriodUtil.getAbandonPeriod(year, month);
+
+    Page<Book> pageBooks =
+        bookService.findAbandonedBooks(page - 1, size, member, abandonPeriodList);
     List<Book> books = pageBooks.getContent();
 
     //        List<Book> abandonedBooks = bookService.findAbandonedBooks(books);
