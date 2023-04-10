@@ -15,7 +15,6 @@ import com.seollem.server.book.BookController;
 import com.seollem.server.member.Member;
 import com.seollem.server.restdocs.util.StubDataUtil;
 import com.seollem.server.restdocs.util.TestSetUpForBookUtil;
-import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -44,9 +43,6 @@ public class GetAbandon extends TestSetUpForBookUtil {
 
     given(memberService.findVerifiedMemberByEmail(Mockito.anyString())).willReturn(
         StubDataUtil.MockMember.getMember());
-
-    given(getAbandonPeriodUtil.getAbandonPeriod(Mockito.anyInt(), Mockito.anyInt())).willReturn(
-        new ArrayList<>());
 
     given(bookService.findAbandonedBooks(Mockito.anyInt(), Mockito.anyInt(),
         Mockito.any(Member.class))).willReturn(

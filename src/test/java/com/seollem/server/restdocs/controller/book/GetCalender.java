@@ -50,7 +50,7 @@ public class GetCalender extends TestSetUpForBookUtil {
     ArrayList<LocalDateTime> tempList = new ArrayList<>();
     tempList.add(LocalDateTime.now());
     tempList.add(LocalDateTime.now());
-    given(getAbandonPeriodUtil.getAbandonPeriod(Mockito.anyInt(), Mockito.anyInt())).willReturn(
+    given(getAbandonPeriodUtil.getCalenderPeriod(Mockito.anyInt(), Mockito.anyInt())).willReturn(
         tempList);
 
     given(bookService.findCalenderBooks(Mockito.anyInt(), Mockito.anyInt(), Mockito.any(),

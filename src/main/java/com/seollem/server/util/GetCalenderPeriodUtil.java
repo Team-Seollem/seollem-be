@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GetAbandonPeriodUtil {
+public class GetCalenderPeriodUtil {
 
-  public ArrayList<LocalDateTime> getAbandonPeriod(int year, int month) {
+  public ArrayList<LocalDateTime> getCalenderPeriod(int year, int month) {
     LocalDate newDate = LocalDate.of(year, month, 1); // 마지막 일자는 형식상 넣어주는 것 뿐 의미없음.
     int lengthOfMon = newDate.lengthOfMonth();
 
