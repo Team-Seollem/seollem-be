@@ -79,13 +79,17 @@ public class BookController {
   public ResponseEntity getCalender(
       @RequestHeader Map<String, Object> requestHeader,
       @Positive @RequestParam int page,
-      @Positive @RequestParam int size) {
+      @Positive @RequestParam int size,
+      @Positive @RequestParam int year, @Min(1) @Max(12) @RequestParam int month) {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
 
+    ArrayList<LocalDateTime> abandonPeriodList = getAbandonPeriodUtil.getAbandonPeriod(year, month);
+
     Page<Book> pageBooks =
-        bookService.findVerifiedBooksByMemberAndBookStatus(
-            page - 1, size, member, Book.BookStatus.DONE, "readEndDate");
+        bookService.findCalenderBooks(
+            page - 1, size, member, abandonPeriodList.get(0), abandonPeriodList.get(1),
+            Book.BookStatus.DONE, "created_at");
     List<Book> books = pageBooks.getContent();
 
     return new ResponseEntity<>(
@@ -98,15 +102,13 @@ public class BookController {
   public ResponseEntity getAbandon(
       @RequestHeader Map<String, Object> requestHeader,
       @Positive @RequestParam int page,
-      @Positive @RequestParam int size,
-      @Positive @RequestParam int year, @Min(1) @Max(12) @RequestParam int month) {
+      @Positive @RequestParam int size
+  ) {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
 
-    ArrayList<LocalDateTime> abandonPeriodList = getAbandonPeriodUtil.getAbandonPeriod(year, month);
-
     Page<Book> pageBooks =
-        bookService.findAbandonedBooks(page - 1, size, member, abandonPeriodList);
+        bookService.findAbandonedBooks(page - 1, size, member);
     List<Book> books = pageBooks.getContent();
 
     //        List<Book> abandonedBooks = bookService.findAbandonedBooks(books);
