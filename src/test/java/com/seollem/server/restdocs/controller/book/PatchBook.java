@@ -20,23 +20,15 @@ import com.seollem.server.book.Book.BookStatus;
 import com.seollem.server.book.BookController;
 import com.seollem.server.book.BookDto;
 import com.seollem.server.book.BookDto.Patch;
-import com.seollem.server.book.BookMapper;
-import com.seollem.server.book.BookService;
-import com.seollem.server.member.MemberService;
-import com.seollem.server.memo.MemoMapper;
-import com.seollem.server.memo.MemoService;
-import com.seollem.server.memolikes.MemoLikesService;
 import com.seollem.server.restdocs.util.GsonCustomConfig;
 import com.seollem.server.restdocs.util.StubDataUtil;
-import com.seollem.server.restdocs.util.WebMvcTestSetUpUtil;
-import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
+import com.seollem.server.restdocs.util.TestSetUpForBookUtil;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -44,23 +36,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 @WebMvcTest(BookController.class)
-public class PatchBook extends WebMvcTestSetUpUtil {
+public class PatchBook extends TestSetUpForBookUtil {
 
   private final GsonCustomConfig gsonCustomConfig = new GsonCustomConfig();
-  @MockBean
-  private GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil;
-  @MockBean
-  private MemberService memberService;
-  @MockBean
-  private BookService bookService;
-  @MockBean
-  private BookMapper bookMapper;
-  @MockBean
-  private MemoService memoService;
-  @MockBean
-  private MemoMapper memoMapper;
-  @MockBean
-  private MemoLikesService memoLikesService;
 
   @Test
   public void patchBookTest() throws Exception {
