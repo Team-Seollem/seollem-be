@@ -25,7 +25,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
       countQuery =
           "SELECT count(*) FROM book WHERE MEMBER_ID = ?1 AND BOOK_STATUS = ?2 AND CREATED_AT > ?3 AND CREATED_AT < ?4",
       nativeQuery = true)
-  Page<Book> findCalender(
+  Optional<Page<Book>> findCalender(
       Member member, Book.BookStatus bookStatus, LocalDateTime before, LocalDateTime after,
       Pageable pageable);
 

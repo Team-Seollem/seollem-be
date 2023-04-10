@@ -72,10 +72,12 @@ public class BookService {
   public Page<Book> findCalenderBooks(
       int page, int size, Member member, LocalDateTime before, LocalDateTime after,
       Book.BookStatus bookStatus, String sort) {
-    Page<Book> books =
+    Optional<Page<Book>> optionalBooks =
         bookRepository.findCalender(
             member, bookStatus, before, after,
             PageRequest.of(page, size, Sort.by(sort).descending()));
+    Page<Book> books = optionalBooks.orElseThrow(
+        () -> new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND_PERIOD));
 
     return books;
   }
