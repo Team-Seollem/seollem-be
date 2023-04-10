@@ -89,7 +89,7 @@ public class BookController {
     Page<Book> pageBooks =
         bookService.findCalenderBooks(
             page - 1, size, member, abandonPeriodList.get(0), abandonPeriodList.get(1),
-            Book.BookStatus.DONE, "created_at");
+            Book.BookStatus.DONE, "readEndDate");
     List<Book> books = pageBooks.getContent();
 
     return new ResponseEntity<>(
