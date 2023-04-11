@@ -15,7 +15,6 @@ import com.seollem.server.book.BookController;
 import com.seollem.server.member.Member;
 import com.seollem.server.restdocs.util.StubDataUtil;
 import com.seollem.server.restdocs.util.TestSetUpForBookUtil;
-import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -45,11 +44,8 @@ public class GetAbandon extends TestSetUpForBookUtil {
     given(memberService.findVerifiedMemberByEmail(Mockito.anyString())).willReturn(
         StubDataUtil.MockMember.getMember());
 
-    given(getAbandonPeriodUtil.getAbandonPeriod(Mockito.anyInt(), Mockito.anyInt())).willReturn(
-        new ArrayList<>());
-
     given(bookService.findAbandonedBooks(Mockito.anyInt(), Mockito.anyInt(),
-        Mockito.any(Member.class), Mockito.any())).willReturn(
+        Mockito.any(Member.class))).willReturn(
         StubDataUtil.MockBook.getBookPage());
 
     given(bookMapper.BooksToAbandonResponse(Mockito.any())).willReturn(
@@ -60,17 +56,14 @@ public class GetAbandon extends TestSetUpForBookUtil {
         MockMvcRequestBuilders.get("/books/abandon").accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON).header("Authorization",
                 "Bearer JWT Access Token")
-            .queryParam("page", "1").queryParam("size", "10")
-            .queryParam("year", "2022").queryParam("month", "4"));
+            .queryParam("page", "1").queryParam("size", "10"));
 
     //then
     resultActions.andExpect(status().isOk()).andDo(document("Abandon",
         requestHeaders(headerWithName("Authorization").description("Bearer JWT Access Token")),
         requestParameters(
             parameterWithName("page").description("원하는 page"),
-            parameterWithName("size").description("페이지 별 책 개수"),
-            parameterWithName("year").description("검색할 연도"),
-            parameterWithName("month").description("검색할 월")),
+            parameterWithName("size").description("페이지 별 책 개수")),
         responseFields(
             fieldWithPath("item[].bookId").type(JsonFieldType.NUMBER).description("Book-id"),
             fieldWithPath("item[].createdAt").type(JsonFieldType.STRING).description("책 등록 일자"),

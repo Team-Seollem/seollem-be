@@ -9,7 +9,7 @@ import com.seollem.server.memo.MemoDto;
 import com.seollem.server.memo.MemoMapper;
 import com.seollem.server.memo.MemoService;
 import com.seollem.server.memolikes.MemoLikesService;
-import com.seollem.server.util.GetAbandonPeriodUtil;
+import com.seollem.server.util.GetCalenderBookUtil;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class BookController {
   private final MemoService memoService;
   private final MemoMapper memoMapper;
   private final MemoLikesService memoLikesService;
-  private final GetAbandonPeriodUtil getAbandonPeriodUtil;
+  private final GetCalenderBookUtil getCalenderBookUtil;
 
 
   // 서재 뷰 조회
@@ -79,13 +79,18 @@ public class BookController {
   public ResponseEntity getCalender(
       @RequestHeader Map<String, Object> requestHeader,
       @Positive @RequestParam int page,
-      @Positive @RequestParam int size) {
+      @Positive @RequestParam int size,
+      @Positive @RequestParam int year, @Min(1) @Max(12) @RequestParam int month) {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
 
+    ArrayList<LocalDateTime> calenderPeriod =
+        getCalenderBookUtil.getCalenderBookPeriod(year, month);
+
     Page<Book> pageBooks =
-        bookService.findVerifiedBooksByMemberAndBookStatus(
-            page - 1, size, member, Book.BookStatus.DONE, "readEndDate");
+        bookService.findCalenderBooks(
+            page - 1, size, member, calenderPeriod.get(0), calenderPeriod.get(1),
+            Book.BookStatus.DONE, "readEndDate");
     List<Book> books = pageBooks.getContent();
 
     return new ResponseEntity<>(
@@ -98,15 +103,13 @@ public class BookController {
   public ResponseEntity getAbandon(
       @RequestHeader Map<String, Object> requestHeader,
       @Positive @RequestParam int page,
-      @Positive @RequestParam int size,
-      @Positive @RequestParam int year, @Min(1) @Max(12) @RequestParam int month) {
+      @Positive @RequestParam int size
+  ) {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
 
-    ArrayList<LocalDateTime> abandonPeriodList = getAbandonPeriodUtil.getAbandonPeriod(year, month);
-
     Page<Book> pageBooks =
-        bookService.findAbandonedBooks(page - 1, size, member, abandonPeriodList);
+        bookService.findAbandonedBooks(page - 1, size, member);
     List<Book> books = pageBooks.getContent();
 
     //        List<Book> abandonedBooks = bookService.findAbandonedBooks(books);

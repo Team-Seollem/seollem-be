@@ -4,7 +4,6 @@ import com.seollem.server.exception.BusinessLogicException;
 import com.seollem.server.exception.ExceptionCode;
 import com.seollem.server.member.Member;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -65,16 +64,28 @@ public class BookService {
       int page, int size, Member member, Book.BookStatus bookStatus, String sort) {
     Page<Book> books =
         bookRepository.findAllByMemberAndBookStatus(
-            PageRequest.of(page, size, Sort.by(sort).descending()), member, bookStatus);
+            member, bookStatus, PageRequest.of(page, size, Sort.by(sort).descending()));
 
     return books;
   }
 
-  public Page<Book> findAbandonedBooks(int page, int size, Member member,
-      ArrayList<LocalDateTime> list) {
+  public Page<Book> findCalenderBooks(
+      int page, int size, Member member, LocalDateTime before, LocalDateTime after,
+      Book.BookStatus bookStatus, String sort) {
+    Optional<Page<Book>> optionalBooks =
+        bookRepository.findCalender(
+            member, bookStatus, before, after,
+            PageRequest.of(page, size, Sort.by(sort).descending()));
+    Page<Book> books = optionalBooks.orElseThrow(
+        () -> new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND_PERIOD));
+
+    return books;
+  }
+
+  public Page<Book> findAbandonedBooks(int page, int size, Member member) {
     Page<Book> books =
         bookRepository.findAbandon(
-            member, list.get(0), list.get(1),
+            member,
             PageRequest.of(page, size, Sort.by("BOOK_ID").descending()));
 
     return books;
