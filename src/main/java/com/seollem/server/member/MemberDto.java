@@ -47,6 +47,10 @@ public class MemberDto {
         regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{6,}$",
         message = "비밀번호는 알파벳, 숫자, 특수문자 포함 6자 이상이어야 합니다.")
     private String password;
+
+    private String profile;
+
+    private String url;
   }
 
   @Setter
@@ -57,6 +61,8 @@ public class MemberDto {
 
     private String email;
     private String name;
+    private String profile;
+    private String url;
   }
 
   @Setter
@@ -68,5 +74,16 @@ public class MemberDto {
     private String email;
     private String name;
     private LocalDateTime updatedAt;
+    private String profile;
+    private String url;
+  }
+
+  @Getter
+  @Setter
+  @AllArgsConstructor
+  @NoArgsConstructor
+  public static class ImageMemberResponse {
+
+    private String url;
   }
 }

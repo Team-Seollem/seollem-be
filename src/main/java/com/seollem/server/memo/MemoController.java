@@ -69,7 +69,7 @@ public class MemoController {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
 
-    String url = fileUploadService.createImageMemo(file);
+    String url = fileUploadService.createImage(file);
     MemoDto.ImageMemoResponse imageMemoResponse = new ImageMemoResponse(url);
 
     return new ResponseEntity<>(imageMemoResponse, HttpStatus.CREATED);
