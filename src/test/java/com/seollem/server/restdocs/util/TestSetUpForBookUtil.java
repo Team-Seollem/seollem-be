@@ -6,7 +6,7 @@ import com.seollem.server.member.MemberService;
 import com.seollem.server.memo.MemoMapper;
 import com.seollem.server.memo.MemoService;
 import com.seollem.server.memolikes.MemoLikesService;
-import com.seollem.server.util.GetCalenderPeriodUtil;
+import com.seollem.server.util.GetCalenderBookUtil;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -27,6 +27,6 @@ public class TestSetUpForBookUtil extends WebMvcTestSetUpUtil {
   @MockBean
   protected MemoLikesService memoLikesService;
   @MockBean
-  protected GetCalenderPeriodUtil getAbandonPeriodUtil;
+  protected GetCalenderBookUtil getAbandonPeriodUtil;
 
 }

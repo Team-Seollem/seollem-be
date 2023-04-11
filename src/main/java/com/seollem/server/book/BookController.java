@@ -9,7 +9,7 @@ import com.seollem.server.memo.MemoDto;
 import com.seollem.server.memo.MemoMapper;
 import com.seollem.server.memo.MemoService;
 import com.seollem.server.memolikes.MemoLikesService;
-import com.seollem.server.util.GetCalenderPeriodUtil;
+import com.seollem.server.util.GetCalenderBookUtil;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class BookController {
   private final MemoService memoService;
   private final MemoMapper memoMapper;
   private final MemoLikesService memoLikesService;
-  private final GetCalenderPeriodUtil getCalenderPeriod;
+  private final GetCalenderBookUtil getCalenderBookUtil;
 
 
   // 서재 뷰 조회
@@ -84,7 +84,8 @@ public class BookController {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
 
-    ArrayList<LocalDateTime> calenderPeriod = getCalenderPeriod.getCalenderPeriod(year, month);
+    ArrayList<LocalDateTime> calenderPeriod =
+        getCalenderBookUtil.getCalenderBookPeriod(year, month);
 
     Page<Book> pageBooks =
         bookService.findCalenderBooks(
