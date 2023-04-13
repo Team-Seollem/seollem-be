@@ -44,9 +44,6 @@ public class MemoService {
     if (patchMemo.getMemoBookPage() != 0) {
       findMemo.setMemoBookPage(patchMemo.getMemoBookPage());
     }
-    if (patchMemo.getMemoLikesCount() != 0) {
-      findMemo.setMemoLikesCount(patchMemo.getMemoLikesCount());
-    }
 
     return memoRepository.save(findMemo);
   }
