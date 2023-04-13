@@ -6,7 +6,6 @@ import com.seollem.server.exception.BusinessLogicException;
 import com.seollem.server.exception.ExceptionCode;
 import com.seollem.server.member.Member;
 import com.seollem.server.memo.Memo.MemoAuthority;
-import com.seollem.server.util.CustomBeanUtils;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,6 @@ public class MemoService {
 
   public final MemoRepository memoRepository;
 
-  private final CustomBeanUtils<Memo> beanUtils;
 
   private final BookService bookService;
 
@@ -34,10 +32,21 @@ public class MemoService {
     return saveMemo;
   }
 
-  public Memo updateMemo(Memo memo) {
-    Memo findMemo = findVerifiedMemo(memo.getMemoId());
-    Memo updatingMemo = beanUtils.copyNonNullProperties(memo, findMemo);
-    return memoRepository.save(updatingMemo);
+  public Memo updateMemo(Memo patchMemo) {
+    Memo findMemo = findVerifiedMemo(patchMemo.getMemoId());
+
+    Optional.ofNullable(patchMemo.getMemoType())
+        .ifPresent(memoType -> findMemo.setMemoType(memoType));
+    Optional.ofNullable(patchMemo.getMemoContent())
+        .ifPresent(memoContent -> findMemo.setMemoContent(memoContent));
+    Optional.ofNullable(patchMemo.getMemoBookPage())
+        .ifPresent(memoBookPage -> findMemo.setMemoBookPage(memoBookPage));
+    Optional.ofNullable(patchMemo.getMemoLikesCount())
+        .ifPresent(memoLikesCount -> findMemo.setMemoLikesCount(memoLikesCount));
+    Optional.ofNullable(patchMemo.getMemoAuthority())
+        .ifPresent(memoAuthority -> findMemo.setMemoAuthority(memoAuthority));
+
+    return memoRepository.save(findMemo);
   }
 
   public Memo randomMemo(Member member) {

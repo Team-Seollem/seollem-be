@@ -78,7 +78,7 @@ public class PatchMemo extends WebMvcTestSetUpUtil {
         StubDataUtil.MockMemo.getMemoResponse());
 
     MemoDto.Patch patch =
-        new Patch(1, "1번 메모의 내용입니다.", MemoType.BOOK_CONTENT, 14, MemoAuthority.PUBLIC);
+        new Patch("1번 메모의 내용입니다.", MemoType.BOOK_CONTENT, 14, MemoAuthority.PUBLIC);
     String content = gson.toJson(patch);
 
     //when, then

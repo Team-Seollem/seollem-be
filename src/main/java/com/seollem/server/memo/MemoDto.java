@@ -32,8 +32,6 @@ public class MemoDto {
   @NoArgsConstructor
   public static class Patch {
 
-    private long memoId;
-
     @NotBlank(message = "메모는 공백이 아니어야 합니다.")
     private String memoContent;
 
