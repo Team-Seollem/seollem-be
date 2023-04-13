@@ -39,12 +39,14 @@ public class MemoService {
         .ifPresent(memoType -> findMemo.setMemoType(memoType));
     Optional.ofNullable(patchMemo.getMemoContent())
         .ifPresent(memoContent -> findMemo.setMemoContent(memoContent));
-    Optional.ofNullable(patchMemo.getMemoBookPage())
-        .ifPresent(memoBookPage -> findMemo.setMemoBookPage(memoBookPage));
-    Optional.ofNullable(patchMemo.getMemoLikesCount())
-        .ifPresent(memoLikesCount -> findMemo.setMemoLikesCount(memoLikesCount));
     Optional.ofNullable(patchMemo.getMemoAuthority())
         .ifPresent(memoAuthority -> findMemo.setMemoAuthority(memoAuthority));
+    if (patchMemo.getMemoBookPage() != 0) {
+      findMemo.setMemoBookPage(patchMemo.getMemoBookPage());
+    }
+    if (patchMemo.getMemoLikesCount() != 0) {
+      findMemo.setMemoLikesCount(patchMemo.getMemoLikesCount());
+    }
 
     return memoRepository.save(findMemo);
   }
