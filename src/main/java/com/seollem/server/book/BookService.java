@@ -31,18 +31,21 @@ public class BookService {
     Optional.ofNullable(book.getAuthor()).ifPresent(author -> findBook.setAuthor(author));
     Optional.ofNullable(book.getPublisher())
         .ifPresent(publisher -> findBook.setPublisher(publisher));
-    Optional.ofNullable(book.getItemPage())
-        .ifPresent(itemPage -> findBook.setItemPage(itemPage));
     Optional.ofNullable(book.getReadStartDate())
         .ifPresent(readStartDate -> findBook.setReadStartDate(readStartDate));
     Optional.ofNullable(book.getReadEndDate())
         .ifPresent(readEndDate -> findBook.setReadEndDate(readEndDate));
     Optional.ofNullable(book.getBookStatus())
         .ifPresent(bookStatus -> findBook.setBookStatus(bookStatus));
-    Optional.ofNullable(book.getStar()).ifPresent(star -> findBook.setStar(star));
-    Optional.ofNullable(book.getCurrentPage())
-        .ifPresent(currentPage -> findBook.setCurrentPage(currentPage));
-
+    if (book.getCurrentPage() != 0) {
+      findBook.setCurrentPage(book.getCurrentPage());
+    }
+    if (book.getItemPage() != 0) {
+      findBook.setItemPage(book.getItemPage());
+    }
+    if (book.getStar() != 0) {
+      findBook.setStar(book.getStar());
+    }
     return bookRepository.save(findBook);
   }
 
