@@ -155,6 +155,5 @@ public class BookDto {
     private long bookId;
     private String title;
     private String cover;
-    private int memoCount;
   }
 }
