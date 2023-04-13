@@ -90,7 +90,7 @@ public class BookController {
     Page<Book> pageBooks =
         bookService.findCalenderBooks(
             page - 1, size, member, calenderPeriod.get(0), calenderPeriod.get(1),
-            Book.BookStatus.DONE, "readEndDate");
+            Book.BookStatus.DONE, "read_end_date");
     List<Book> books = pageBooks.getContent();
 
     return new ResponseEntity<>(
