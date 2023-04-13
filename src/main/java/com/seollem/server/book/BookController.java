@@ -158,9 +158,6 @@ public class BookController {
       memos = memoService.getMemoWithAuthority(memoAuthority);
     }
 
-    memos.stream()
-        .forEach(memo -> memo.setMemoLikesCount(memoLikesService.getMemoLikesCountWithMemo(memo)));
-
     result.setMemosList(memoMapper.memoToMemoResponses(memos));
 
     return new ResponseEntity(result, HttpStatus.OK);
@@ -188,10 +185,6 @@ public class BookController {
     }
     List<Memo> memos = memoTypeList.getContent();
     List<MemoDto.Response> memoResponseList = memoMapper.memoToMemoResponses(memos);
-    for (int i = 0; i < memos.size(); i++) {
-      memoResponseList.get(i)
-          .setMemoLikesCount(memoLikesService.getMemoLikesCountWithMemo(memos.get(i)));
-    }
     //        BookDto.MemosOfBook response = bookMapper.BookToMemosOfBookResponse(book);
     //        response.setMemosList(memoTypeList);
     return new ResponseEntity<>(
