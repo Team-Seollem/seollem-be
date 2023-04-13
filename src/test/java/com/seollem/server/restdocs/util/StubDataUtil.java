@@ -30,13 +30,13 @@ public class StubDataUtil {
 
     public static Book getBook() {
       return new com.seollem.server.book.Book(1, "title", "cover", "author", "publisher", 1, 1, 1,
-          BookStatus.YET, LocalDateTime.now(), LocalDateTime.now(), 1, new Member(), null);
+          BookStatus.YET, LocalDateTime.now(), LocalDateTime.now(), new Member(), null);
     }
 
     public static PageImpl<Book> getBookPage() {
       Book book =
           new com.seollem.server.book.Book(1, "title", "cover", "author", "publisher", 1, 1, 1,
-              BookStatus.YET, LocalDateTime.now(), LocalDateTime.now(), 1, new Member(), null);
+              BookStatus.YET, LocalDateTime.now(), LocalDateTime.now(), new Member(), null);
       return new PageImpl<>(List.of(book), PageRequest.of(1, 10), 0);
     }
 
@@ -44,10 +44,10 @@ public class StubDataUtil {
       List<BookDto.LibraryResponse> libraryResponses = new ArrayList<>();
       BookDto.LibraryResponse libraryResponse1 =
           new LibraryResponse(1, "미움받을용기", "https://imageurl1.com", "아들러", LocalDateTime.now(), 3,
-              104, 507, BookStatus.YET, 3);
+              104, 507, BookStatus.YET);
       BookDto.LibraryResponse libraryResponse2 =
           new LibraryResponse(12, "역사란 무엇인가", "https://imageurl12.com", "김기명", LocalDateTime.now(),
-              0, 42, 114, BookStatus.YET, 0);
+              0, 42, 114, BookStatus.YET);
       libraryResponses.add(libraryResponse1);
       libraryResponses.add(libraryResponse2);
       return libraryResponses;
@@ -89,7 +89,7 @@ public class StubDataUtil {
     public static BookDto.DetailResponse getBookDetailResponse() {
       return new BookDto.DetailResponse(1, "title", "cover", "author", "publisher",
           LocalDateTime.now(), 1, 107, 833, BookStatus.ING, LocalDateTime.now(),
-          LocalDateTime.now(), null, 2);
+          LocalDateTime.now(), null);
     }
 
     public static BookDto.PostResponse getBookPostResponse() {
