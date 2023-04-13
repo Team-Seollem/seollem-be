@@ -74,7 +74,6 @@ public class MemoService {
   public void deleteMemo(long memoId) {
     Memo memo = findVerifiedMemo(memoId);
     Book book = memo.getBook();
-    book.setMemoCount(book.getMemoCount() - 1);
 
     memoRepository.delete(memo);
   }
@@ -92,7 +91,6 @@ public class MemoService {
   // 책이 있는지 확인
   private void verifyMemo(Memo memo) {
     Book book = bookService.findVerifiedBookById(memo.getBook().getBookId());
-    book.setMemoCount(book.getMemoCount() + 1);
     bookService.updateBook(book);
   }
 
