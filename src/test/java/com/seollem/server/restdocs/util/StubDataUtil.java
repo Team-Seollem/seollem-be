@@ -29,8 +29,9 @@ public class StubDataUtil {
   public static class MockBook {
 
     public static Book getBook() {
-      return new com.seollem.server.book.Book(1, "title", "cover", "author", "publisher", 1, 1, 1,
-          BookStatus.YET, LocalDateTime.now(), LocalDateTime.now(), new Member(), null);
+      return new com.seollem.server.book.Book(1, "미움받을용기", "https://imageurl1.com", "아들러", "한빛출판사",
+          214, 406, 1, BookStatus.YET, LocalDateTime.now(), LocalDateTime.now(), new Member(),
+          null);
     }
 
     public static PageImpl<Book> getBookPage() {
@@ -40,14 +41,31 @@ public class StubDataUtil {
       return new PageImpl<>(List.of(book), PageRequest.of(1, 10), 0);
     }
 
+    public static PageImpl<Book> getLibraryBookPage() {
+      List<Book> list = new ArrayList<>();
+      Book book1 =
+          new com.seollem.server.book.Book(1, "미움받을용기", "https://imageurl1.com", "아들러", "한빛출판사",
+              214, 406, 5, BookStatus.YET, LocalDateTime.now(), LocalDateTime.now(), new Member(),
+              null);
+      Book book2 =
+          new com.seollem.server.book.Book(12, "차라투스트라는 이렇게 말했다.", "https://imageurl12.com", "니체",
+              "원호출판사", 15, 898, 0, BookStatus.YET, LocalDateTime.now(), LocalDateTime.now(),
+              new Member(), null);
+      list.add(book1);
+      list.add(book2);
+
+      return new PageImpl<>(list);
+    }
+
     public static List<BookDto.LibraryResponse> getLibraryResponse() {
       List<BookDto.LibraryResponse> libraryResponses = new ArrayList<>();
       BookDto.LibraryResponse libraryResponse1 =
-          new LibraryResponse(1, "미움받을용기", "https://imageurl1.com", "아들러", LocalDateTime.now(), 3,
-              104, 507, BookStatus.YET);
+          new LibraryResponse(1, "미움받을용기", "https://imageurl1.com", "아들러", LocalDateTime.now(), 5,
+              214, 406, BookStatus.YET, 2);
       BookDto.LibraryResponse libraryResponse2 =
-          new LibraryResponse(12, "역사란 무엇인가", "https://imageurl12.com", "김기명", LocalDateTime.now(),
-              0, 42, 114, BookStatus.YET);
+          new LibraryResponse(12, "차라투스트라는 이렇게 말했다.", "https://imageurl12.com", "니체",
+              LocalDateTime.now(),
+              0, 15, 898, BookStatus.YET, 0);
       libraryResponses.add(libraryResponse1);
       libraryResponses.add(libraryResponse2);
       return libraryResponses;
@@ -78,9 +96,9 @@ public class StubDataUtil {
     public static List<BooksHaveMemoResponse> getBooksHaveMemoResponse() {
       List<BooksHaveMemoResponse> Responses = new ArrayList<>();
       BooksHaveMemoResponse response1 =
-          new BooksHaveMemoResponse(1, "책 제목1", "https://imageurl1.com");
+          new BooksHaveMemoResponse(1, "책 제목1", "https://imageurl1.com", 2);
       BooksHaveMemoResponse response2 =
-          new BooksHaveMemoResponse(12, "책 제목12", "https://imageurl12.com");
+          new BooksHaveMemoResponse(12, "책 제목12", "https://imageurl12.com", 0);
       Responses.add(response1);
       Responses.add(response2);
       return Responses;
@@ -89,7 +107,7 @@ public class StubDataUtil {
     public static BookDto.DetailResponse getBookDetailResponse() {
       return new BookDto.DetailResponse(1, "title", "cover", "author", "publisher",
           LocalDateTime.now(), 1, 107, 833, BookStatus.ING, LocalDateTime.now(),
-          LocalDateTime.now(), null);
+          LocalDateTime.now(), null, 2);
     }
 
     public static BookDto.PostResponse getBookPostResponse() {
@@ -128,8 +146,8 @@ public class StubDataUtil {
           new Memo(1, MemoType.BOOK_CONTENT, "메모 1의 메모한 내용입니다.", 24, MemoAuthority.PUBLIC, null,
               null, null);
       Memo memo2 =
-          new Memo(4, MemoType.QUESTION, "메모 4에 메모한 내용입니다.", 223, MemoAuthority.PUBLIC, null,
-              null, null);
+          new Memo(4, MemoType.QUESTION, "메모 4에 메모한 내용입니다.", 223, MemoAuthority.PUBLIC, null, null,
+              null);
       List<Memo> list = new ArrayList<>();
       list.add(memo1);
       list.add(memo2);
@@ -139,9 +157,10 @@ public class StubDataUtil {
     public static List<MemoDto.Response> getMemoResponses() {
       MemoDto.Response memoResponse1 =
           new MemoDto.Response(1, MemoType.BOOK_CONTENT, "메모 1의 메모한 내용입니다.", 24,
-              MemoAuthority.PUBLIC, LocalDateTime.now(), LocalDateTime.now());
+              MemoAuthority.PUBLIC, 2, LocalDateTime.now(), LocalDateTime.now());
       MemoDto.Response memoResponse2 =
           new MemoDto.Response(4, MemoType.QUESTION, "메모 4에 메모한 내용입니다.", 223, MemoAuthority.PUBLIC,
+              0,
               LocalDateTime.now(), LocalDateTime.now());
       List<MemoDto.Response> list = new ArrayList<>();
       list.add(memoResponse1);
@@ -163,7 +182,7 @@ public class StubDataUtil {
 
     public static MemoDto.Response getMemoResponse() {
       return new Response(1, MemoType.BOOK_CONTENT, "1번 메모의 내용입니다.", 14, MemoAuthority.PUBLIC,
-          LocalDateTime.now(), LocalDateTime.now());
+          2, LocalDateTime.now(), LocalDateTime.now());
     }
   }
 
