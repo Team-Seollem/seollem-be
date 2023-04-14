@@ -55,7 +55,7 @@ public class GetLibrary extends TestSetUpForBookUtil {
         MockMvcRequestBuilders.get("/books/library").accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .header("Authorization", "Bearer JWT Access Token").queryParam("page", "1")
-            .queryParam("size", "2").queryParam("bookStatus", "YET"));
+            .queryParam("size", "2").queryParam("bookStatus", "DONE"));
 
     //then
     resultActions.andExpect(status().isOk()).andDo(document("Library",
