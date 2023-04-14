@@ -21,7 +21,6 @@ public class MemoService {
 
   public final MemoRepository memoRepository;
 
-
   private final BookService bookService;
 
   private final MemoMapper mapper;
@@ -77,6 +76,13 @@ public class MemoService {
     List<Memo> list =
         memoRepository.findAllByMemoAuthority(memoAuthority);
     return list;
+  }
+
+  public int getMemoCount(Book book) {
+    int memoCount = memoRepository.countMemoWithBook(book);
+
+    return memoCount;
+
   }
 
   public void deleteMemo(long memoId) {

@@ -24,4 +24,7 @@ public interface MemoRepository extends JpaRepository<Memo, Long> {
 
   @Query(value = "SELECT * FROM memo WHERE MEMBER_ID = ?1 order by RAND() limit 1", nativeQuery = true)
   Memo findRandomMemo(Member member);
+
+  @Query("SELECT COUNT(*) FROM Memo m WHERE m.book = ?1")
+  int countMemoWithBook(Book book);
 }

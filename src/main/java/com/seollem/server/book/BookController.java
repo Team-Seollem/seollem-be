@@ -1,5 +1,6 @@
 package com.seollem.server.book;
 
+import com.seollem.server.book.BookDto.BooksHaveMemoResponse;
 import com.seollem.server.globaldto.MultiResponseDto;
 import com.seollem.server.member.Member;
 import com.seollem.server.member.MemberService;
@@ -52,7 +53,7 @@ public class BookController {
   private final GetCalenderBookUtil getCalenderBookUtil;
 
 
-  // 서재 뷰 조회
+  // 책 Library 조회
   @GetMapping("/library")
   public ResponseEntity getLibrary(
       @RequestHeader Map<String, Object> requestHeader,
@@ -67,10 +68,17 @@ public class BookController {
             page - 1, size, member, bookStatus, "bookId");
     List<Book> books = pageBooks.getContent();
 
+    List<BookDto.LibraryResponse> responseList = bookMapper.BooksToLibraryResponse(books);
+
+    for (Book book : books) {
+      responseList.stream()
+          .forEach(response -> response.setMemoCount(memoService.getMemoCount(book)));
+    }
+
     //        List<Book> classifiedBooks = bookService.classifyByBookStatus(books, bookStatus);
 
     return new ResponseEntity<>(
-        new MultiResponseDto<>(bookMapper.BooksToLibraryResponse(books), pageBooks),
+        new MultiResponseDto<>(responseList, pageBooks),
         HttpStatus.OK);
   }
 
@@ -119,7 +127,7 @@ public class BookController {
         HttpStatus.OK);
   }
 
-  // 나만의 작은 책 전체 조회 (메모 존재하는 책들만 조회)
+  // 나만의 작은 책 전체 조회 (메모 존재하는 책 조회)
   @GetMapping("/memo-books")
   public ResponseEntity getBooksHaveMemo(
       @RequestHeader Map<String, Object> requestHeader,
@@ -131,8 +139,15 @@ public class BookController {
     Page<Book> pageBooks = bookService.findMemoBooks(page - 1, size, member);
     List<Book> books = pageBooks.getContent();
 
+    List<BooksHaveMemoResponse> responseList = bookMapper.BooksToMemoBooksResponse(books);
+
+    for (Book book : books) {
+      responseList.stream()
+          .forEach(response -> response.setMemoCount(memoService.getMemoCount(book)));
+    }
+
     return new ResponseEntity<>(
-        new MultiResponseDto<>(bookMapper.BooksToMemoBooksResponse(books), pageBooks),
+        new MultiResponseDto<>(responseList, pageBooks),
         HttpStatus.OK);
   }
 
@@ -151,6 +166,8 @@ public class BookController {
 
     BookDto.DetailResponse result = bookMapper.BookToBookDetailResponse(book);
 
+    result.setMemoCount(memoService.getMemoCount(book));
+
     List<Memo> memos;
     if (memoAuthority == MemoAuthority.ALL) {
       memos = memoService.getMemos(book);
@@ -158,7 +175,14 @@ public class BookController {
       memos = memoService.getMemoWithAuthority(memoAuthority);
     }
 
-    result.setMemosList(memoMapper.memoToMemoResponses(memos));
+    List<MemoDto.Response> responseList = memoMapper.memoToMemoResponses(memos);
+
+    for (Memo memo : memos) {
+      responseList.stream().forEach(
+          response -> response.setMemoLikesCount(memoLikesService.getMemoLikesCountWithMemo(memo)));
+    }
+
+    result.setMemosList(responseList);
 
     return new ResponseEntity(result, HttpStatus.OK);
   }
