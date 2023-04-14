@@ -45,7 +45,7 @@ public class GetLibrary extends TestSetUpForBookUtil {
 
     when(bookService.findVerifiedBooksByMemberAndBookStatus(Mockito.anyInt(), Mockito.anyInt(),
         Mockito.any(), Mockito.any(), Mockito.anyString())).thenReturn(
-        StubDataUtil.MockBook.getLibraryBookPage());
+        StubDataUtil.MockBook.getBookPage());
 
     when(bookMapper.BooksToLibraryResponse(Mockito.any())).thenReturn(
         StubDataUtil.MockBook.getLibraryResponse());

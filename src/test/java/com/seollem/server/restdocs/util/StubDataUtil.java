@@ -34,14 +34,8 @@ public class StubDataUtil {
           null);
     }
 
-    public static PageImpl<Book> getBookPage() {
-      Book book =
-          new com.seollem.server.book.Book(1, "title", "cover", "author", "publisher", 1, 1, 1,
-              BookStatus.YET, LocalDateTime.now(), LocalDateTime.now(), new Member(), null);
-      return new PageImpl<>(List.of(book), PageRequest.of(1, 10), 0);
-    }
 
-    public static PageImpl<Book> getLibraryBookPage() {
+    public static PageImpl<Book> getBookPage() {
       List<Book> list = new ArrayList<>();
       Book book1 =
           new com.seollem.server.book.Book(1, "미움받을용기", "https://imageurl1.com", "아들러", "한빛출판사",
