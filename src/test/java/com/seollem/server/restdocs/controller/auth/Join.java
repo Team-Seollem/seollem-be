@@ -1,7 +1,7 @@
 package com.seollem.server.restdocs.controller.auth;
 
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -14,7 +14,6 @@ import com.seollem.server.member.MemberDto;
 import com.seollem.server.member.MemberMapper;
 import com.seollem.server.member.MemberService;
 import com.seollem.server.restdocs.util.WebMvcTestSetUpUtil;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -43,10 +42,10 @@ public class Join extends WebMvcTestSetUpUtil {
   @Test
   public void authJoinTest() throws Exception {
     //given
-    given(memberMapper.memberPostToMember(Mockito.any(MemberDto.Post.class))).willReturn(
+    when(memberMapper.memberPostToMember(Mockito.any(MemberDto.Post.class))).thenReturn(
         new Member());
 
-    given(memberService.createMember(Mockito.any(Member.class), anyString())).willReturn(
+    when(memberService.createMember(Mockito.any(Member.class), anyString())).thenReturn(
         new Member());
 
     MemberDto.Post post = new MemberDto.Post("khs@gmail.com", "김형섭", "password123!", "123456");
@@ -55,11 +54,11 @@ public class Join extends WebMvcTestSetUpUtil {
     //when, then
     mockMvc.perform(MockMvcRequestBuilders.post("/join").accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON).content(content)).andExpect(status().isCreated())
-        .andDo(document("Join", requestFields(
-            List.of(fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+        .andDo(document("Join",
+            requestFields(fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
                 fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
                 fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
                 fieldWithPath("authenticationCode").type(JsonFieldType.STRING)
-                    .description("인증번호")))));
+                    .description("인증번호"))));
   }
 }

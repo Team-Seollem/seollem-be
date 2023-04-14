@@ -32,7 +32,6 @@ import org.springframework.web.context.WebApplicationContext;
 @SpringBootTest
 public class Login {
 
-
   private final GsonCustomConfig gsonCustomConfig = new GsonCustomConfig();
 
   protected MockMvc mockMvc;
@@ -40,13 +39,11 @@ public class Login {
   @BeforeEach
   void setUp(WebApplicationContext webApplicationContext,
       RestDocumentationContextProvider restDocumentation) {
-    this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-        .apply(documentationConfiguration(restDocumentation).operationPreprocessors()
-            .withRequestDefaults(prettyPrint())
-            .withResponseDefaults(prettyPrint())
-            .and().uris().withScheme("https")
-            .withHost("seollem.link").withPort(443))
-        .apply(springSecurity()).build();
+    this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).apply(
+            documentationConfiguration(restDocumentation).operationPreprocessors()
+                .withRequestDefaults(prettyPrint()).withResponseDefaults(prettyPrint()).and().uris()
+                .withScheme("https").withHost("seollem.link").withPort(443)).apply(springSecurity())
+        .build();
   }
 
   @WithMockUser
@@ -61,18 +58,11 @@ public class Login {
     String content = gson.toJson(jsonObject);
 
     //when
-    mockMvc.perform(
-            post("/login")
-                .content(content).accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk()).andDo(document("Login",
-            requestFields(
-                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
-                fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호")
-            ),
-            responseHeaders(
-                headerWithName("Authorization").description("Bearer \"ACCESS TOKEN...\""),
-                headerWithName("Refresh").description("Bearer \"REFRESH TOKEN...\""))
-        ));
+    mockMvc.perform(post("/login").content(content).accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andDo(document("Login",
+        requestFields(fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+            fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호")),
+        responseHeaders(headerWithName("Authorization").description("Bearer \"ACCESS TOKEN...\""),
+            headerWithName("Refresh").description("Bearer \"REFRESH TOKEN...\""))));
   }
 }

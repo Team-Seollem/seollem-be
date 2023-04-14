@@ -77,8 +77,6 @@ public class BookController {
       responseList.get(i).setMemoCount(memoService.getMemoCountWithBook(books.get(i)));
     }
 
-    //        List<Book> classifiedBooks = bookService.classifyByBookStatus(books, bookStatus);
-
     return new ResponseEntity<>(
         new MultiResponseDto<>(responseList, pageBooks),
         HttpStatus.OK);
