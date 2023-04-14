@@ -67,9 +67,11 @@ public class StubDataUtil {
     public static List<BookDto.CalenderResponse> getCalenderResponse() {
       List<BookDto.CalenderResponse> calenderResponses = new ArrayList<>();
       BookDto.CalenderResponse response1 =
-          new CalenderResponse(1, LocalDateTime.now(), "https://imageurl1.com");
+          new CalenderResponse(1, LocalDateTime.parse("2022-10-13T21:04:32"),
+              "https://imageurl1.com");
       BookDto.CalenderResponse response2 =
-          new CalenderResponse(12, LocalDateTime.now(), "https://imageurl12.com");
+          new CalenderResponse(12, LocalDateTime.parse("2022-10-04T12:15:33"),
+              "https://imageurl12.com");
       calenderResponses.add(response1);
       calenderResponses.add(response2);
       return calenderResponses;

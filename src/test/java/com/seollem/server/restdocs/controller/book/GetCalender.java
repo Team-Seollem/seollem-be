@@ -1,6 +1,7 @@
 package com.seollem.server.restdocs.controller.book;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -17,7 +18,6 @@ import com.seollem.server.restdocs.util.StubDataUtil;
 import com.seollem.server.restdocs.util.TestSetUpForBookUtil;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -41,21 +41,20 @@ public class GetCalender extends TestSetUpForBookUtil {
   @Test
   public void calenderTest() throws Exception {
     //given
-    given(getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(Mockito.anyMap())).willReturn(
+    when(getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(Mockito.anyMap())).thenReturn(
         "starrypro@gmail.com");
 
-    given(memberService.findVerifiedMemberByEmail(Mockito.anyString())).willReturn(
+    when(memberService.findVerifiedMemberByEmail(Mockito.anyString())).thenReturn(
         StubDataUtil.MockMember.getMember());
 
     ArrayList<LocalDateTime> tempList = new ArrayList<>();
     tempList.add(LocalDateTime.now());
     tempList.add(LocalDateTime.now());
-    given(
-        getAbandonPeriodUtil.getCalenderBookPeriod(Mockito.anyInt(), Mockito.anyInt())).willReturn(
+    when(getAbandonPeriodUtil.getCalenderBookPeriod(Mockito.anyInt(), Mockito.anyInt())).thenReturn(
         tempList);
 
-    given(bookService.findCalenderBooks(Mockito.anyInt(), Mockito.anyInt(), Mockito.any(),
-        Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyString())).willReturn(
+    when(bookService.findCalenderBooks(Mockito.anyInt(), Mockito.anyInt(), Mockito.any(),
+        Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyString())).thenReturn(
         StubDataUtil.MockBook.getBookPage());
 
     given(bookMapper.BooksToCalenderResponse(Mockito.any())).willReturn(
@@ -64,23 +63,20 @@ public class GetCalender extends TestSetUpForBookUtil {
     //when
     ResultActions resultActions = mockMvc.perform(
         MockMvcRequestBuilders.get("/books/calender").accept(MediaType.APPLICATION_JSON)
-            .contentType(MediaType.APPLICATION_JSON).header("Authorization",
-                "Bearer JWT Access Token")
-            .queryParam("page", "1").queryParam("size", "10")
-            .queryParam("year", "2022").queryParam("month", "4"));
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer JWT Access Token").queryParam("page", "1")
+            .queryParam("size", "2").queryParam("year", "2022").queryParam("month", "10"));
 
     //then
     resultActions.andExpect(status().isOk()).andDo(print()).andDo(document("Calender",
         requestHeaders(headerWithName("Authorization").description("Bearer JWT Access Token")),
-        requestParameters(
-            List.of(parameterWithName("page").description("원하는 page"),
-                parameterWithName("size").description("페이지 별 책 개수"),
-                parameterWithName("year").description("검색할 년도"),
-                parameterWithName("month").description("검색할 월"))),
-        responseFields(
-            fieldWithPath("item[].bookId").type(JsonFieldType.NUMBER).description("Book-id"),
+        requestParameters(parameterWithName("page").description("원하는 page"),
+            parameterWithName("size").description("페이지 별 책 개수"),
+            parameterWithName("year").description("조회할 읽기 완료 년도"),
+            parameterWithName("month").description("조회할 읽기 완료 월")), responseFields(
+            fieldWithPath("item[].bookId").type(JsonFieldType.NUMBER).description("책 ID"),
+            fieldWithPath("item[].readEndDate").type(JsonFieldType.STRING).description("읽기 완료한 일자"),
             fieldWithPath("item[].cover").type(JsonFieldType.STRING).description("표지 이미지 url"),
-            fieldWithPath("item[].readEndDate").type(JsonFieldType.STRING).description("읽기 완료한 시간"),
             fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("조회 페이지"),
             fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("페이지별 책 개수"),
             fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER)
