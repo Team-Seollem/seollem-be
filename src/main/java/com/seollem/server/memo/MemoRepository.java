@@ -18,7 +18,7 @@ public interface MemoRepository extends JpaRepository<Memo, Long> {
 
   Page<Memo> findAllByBookAndMemoType(Pageable pageable, Book book, Memo.MemoType memoType);
 
-  List<Memo> findAllByMemoAuthority(MemoAuthority memoAuthority);
+  List<Memo> findAllByBookAndMemoAuthority(Book book, MemoAuthority memoAuthority);
 
   Page<Memo> findAllByBook(Pageable pageable, Book book);
 
@@ -27,4 +27,7 @@ public interface MemoRepository extends JpaRepository<Memo, Long> {
 
   @Query("SELECT COUNT(*) FROM Memo m WHERE m.book = ?1")
   int countMemoWithBook(Book book);
+
+  @Query("SELECT COUNT(*) FROM Memo m WHERE m.member = ?1")
+  int countMemoWithMember(Member member);
 }

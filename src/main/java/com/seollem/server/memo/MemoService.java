@@ -52,12 +52,13 @@ public class MemoService {
     return random;
   }
 
-  public List<Memo> getMemos(Book book) {
+  public List<Memo> getMemosWithBook(Book book) {
     List<Memo> memoList = memoRepository.findAllByBook(book);
     return memoList;
   }
 
-  public Page<Memo> getBookAndMemoTypes(int page, int size, Book book, Memo.MemoType memoType) {
+  public Page<Memo> getMemosWithBookAndMemoTypes(int page, int size, Book book,
+      Memo.MemoType memoType) {
     Page<Memo> memoTypeList =
         memoRepository.findAllByBookAndMemoType(
             PageRequest.of(page, size, Sort.by("memoId").descending()), book, memoType);
@@ -65,20 +66,20 @@ public class MemoService {
     return memoTypeList;
   }
 
-  public Page<Memo> getBookAndMemo(int page, int size, Book book) {
+  public Page<Memo> getMemosWithBook(int page, int size, Book book) {
     Page<Memo> memoTypeList =
         memoRepository.findAllByBook(
             PageRequest.of(page, size, Sort.by("memoId").descending()), book);
     return memoTypeList;
   }
 
-  public List<Memo> getMemoWithAuthority(MemoAuthority memoAuthority) {
+  public List<Memo> getMemoWithBookAndMemoAuthority(Book book, MemoAuthority memoAuthority) {
     List<Memo> list =
-        memoRepository.findAllByMemoAuthority(memoAuthority);
+        memoRepository.findAllByBookAndMemoAuthority(book, memoAuthority);
     return list;
   }
 
-  public int getMemoCount(Book book) {
+  public int getMemoCountWithBook(Book book) {
     int memoCount = memoRepository.countMemoWithBook(book);
 
     return memoCount;

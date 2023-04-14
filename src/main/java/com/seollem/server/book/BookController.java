@@ -2,6 +2,8 @@ package com.seollem.server.book;
 
 import com.seollem.server.book.BookDto.BooksHaveMemoResponse;
 import com.seollem.server.globaldto.MultiResponseDto;
+import com.seollem.server.globaldto.MultiResponseDtoForBooksHaveMemo;
+import com.seollem.server.globaldto.PageInfo;
 import com.seollem.server.member.Member;
 import com.seollem.server.member.MemberService;
 import com.seollem.server.memo.Memo;
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -70,9 +73,8 @@ public class BookController {
 
     List<BookDto.LibraryResponse> responseList = bookMapper.BooksToLibraryResponse(books);
 
-    for (Book book : books) {
-      responseList.stream()
-          .forEach(response -> response.setMemoCount(memoService.getMemoCount(book)));
+    for (int i = 0; i < books.size(); i++) {
+      responseList.get(i).setMemoCount(memoService.getMemoCountWithBook(books.get(i)));
     }
 
     //        List<Book> classifiedBooks = bookService.classifyByBookStatus(books, bookStatus);
@@ -127,7 +129,7 @@ public class BookController {
         HttpStatus.OK);
   }
 
-  // 나만의 작은 책 전체 조회 (메모 존재하는 책 조회)
+  // 메모 존재하는 책 조회
   @GetMapping("/memo-books")
   public ResponseEntity getBooksHaveMemo(
       @RequestHeader Map<String, Object> requestHeader,
@@ -136,18 +138,34 @@ public class BookController {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
 
-    Page<Book> pageBooks = bookService.findMemoBooks(page - 1, size, member);
-    List<Book> books = pageBooks.getContent();
+    List<Book> books = bookService.findVerifiedBooksByMember(member);
+    List<Book> filteredBooks =
+        books.stream().filter(book -> memoService.getMemoCountWithBook(book) > 0)
+            .collect(Collectors.toList());
 
-    List<BooksHaveMemoResponse> responseList = bookMapper.BooksToMemoBooksResponse(books);
+    List<BooksHaveMemoResponse> responseList = bookMapper.BooksToMemoBooksResponse(filteredBooks);
 
-    for (Book book : books) {
-      responseList.stream()
-          .forEach(response -> response.setMemoCount(memoService.getMemoCount(book)));
+    for (int i = 0; i < filteredBooks.size(); i++) {
+      responseList.get(i).setMemoCount(memoService.getMemoCountWithBook(filteredBooks.get(i)));
     }
 
+    List<BooksHaveMemoResponse> pagedResponseList = new ArrayList<>();
+    for (int i = size * (page - 1); i < size * (page - 1) + size; i++) {
+      if (i > responseList.size() - 1) {
+        break;
+      }
+      pagedResponseList.add(responseList.get(i));
+    }
+
+    PageInfo pageInfo = new PageInfo().builder()
+        .page(page)
+        .size(size)
+        .totalElements(responseList.size())
+        .totalPages(responseList.size() / size + 1)
+        .build();
+
     return new ResponseEntity<>(
-        new MultiResponseDto<>(responseList, pageBooks),
+        new MultiResponseDtoForBooksHaveMemo<>(pagedResponseList, pageInfo),
         HttpStatus.OK);
   }
 
@@ -166,20 +184,20 @@ public class BookController {
 
     BookDto.DetailResponse result = bookMapper.BookToBookDetailResponse(book);
 
-    result.setMemoCount(memoService.getMemoCount(book));
+    result.setMemoCount(memoService.getMemoCountWithBook(book));
 
     List<Memo> memos;
     if (memoAuthority == MemoAuthority.ALL) {
-      memos = memoService.getMemos(book);
+      memos = memoService.getMemosWithBook(book);
     } else {
-      memos = memoService.getMemoWithAuthority(memoAuthority);
+      memos = memoService.getMemoWithBookAndMemoAuthority(book, memoAuthority);
     }
 
     List<MemoDto.Response> responseList = memoMapper.memoToMemoResponses(memos);
 
-    for (Memo memo : memos) {
-      responseList.stream().forEach(
-          response -> response.setMemoLikesCount(memoLikesService.getMemoLikesCountWithMemo(memo)));
+    for (int i = 0; i < memos.size(); i++) {
+      responseList.get(i)
+          .setMemoLikesCount(memoLikesService.getMemoLikesCountWithMemo(memos.get(i)));
     }
 
     result.setMemosList(responseList);
@@ -187,7 +205,7 @@ public class BookController {
     return new ResponseEntity(result, HttpStatus.OK);
   }
 
-  // 책 메모 조회 - 타입별
+  // 책의 메모 조회 - 타입별
   @GetMapping("/{book-id}/memos")
   public ResponseEntity getBookMemos(
       @RequestHeader Map<String, Object> requestHeader,
@@ -203,16 +221,20 @@ public class BookController {
 
     Page<Memo> memoTypeList;
     if (memoType == Memo.MemoType.ALL) {
-      memoTypeList = memoService.getBookAndMemo(page - 1, size, book);
+      memoTypeList = memoService.getMemosWithBook(page - 1, size, book);
     } else {
-      memoTypeList = memoService.getBookAndMemoTypes(page - 1, size, book, memoType);
+      memoTypeList = memoService.getMemosWithBookAndMemoTypes(page - 1, size, book, memoType);
     }
     List<Memo> memos = memoTypeList.getContent();
-    List<MemoDto.Response> memoResponseList = memoMapper.memoToMemoResponses(memos);
+    List<MemoDto.Response> responseList = memoMapper.memoToMemoResponses(memos);
+    for (int i = 0; i < memos.size(); i++) {
+      responseList.get(i)
+          .setMemoLikesCount(memoLikesService.getMemoLikesCountWithMemo(memos.get(i)));
+    }
     //        BookDto.MemosOfBook response = bookMapper.BookToMemosOfBookResponse(book);
     //        response.setMemosList(memoTypeList);
     return new ResponseEntity<>(
-        new MultiResponseDto<>(memoResponseList, memoTypeList),
+        new MultiResponseDto<>(responseList, memoTypeList),
         HttpStatus.OK);
   }
 

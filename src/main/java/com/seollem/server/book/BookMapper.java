@@ -21,13 +21,13 @@ public interface BookMapper {
 
   BookDto.MemosOfBook BookToMemosOfBookResponse(Book book);
 
-  @Mapping(source = "BookDto.LibraryResponse", target = "memoCount", ignore = true)
+  @Mapping(target = "memoCount", ignore = true)
   List<BookDto.LibraryResponse> BooksToLibraryResponse(List<Book> books);
 
   List<BookDto.CalenderResponse> BooksToCalenderResponse(List<Book> books);
 
   List<BookDto.AbandonResponse> BooksToAbandonResponse(List<Book> books);
 
-  @Mapping(source = "BooksHaveMemoResponse", target = "memoCount", ignore = true)
+  @Mapping(target = "memoCount", ignore = true)
   List<BooksHaveMemoResponse> BooksToMemoBooksResponse(List<Book> books);
 }

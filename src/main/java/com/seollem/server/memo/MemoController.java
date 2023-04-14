@@ -57,7 +57,7 @@ public class MemoController {
     memoOfBook.setBook(book);
 
     Memo memo = memoService.createMemo(memoOfBook);
-    MemoDto.Response response = memoMapper.memoToMemoResponse(memo);
+    MemoDto.PostResponse response = memoMapper.memoToMemoPostResponse(memo);
 
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
@@ -90,6 +90,8 @@ public class MemoController {
 
     Memo updatedMemo = memoService.updateMemo(patchMemo);
     MemoDto.Response response = memoMapper.memoToMemoResponse(updatedMemo);
+    response.setMemoLikesCount(memoLikesService.getMemoLikesCountWithMemo(updatedMemo));
+
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
