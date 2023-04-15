@@ -92,7 +92,6 @@ public class BookDto {
     private Book.BookStatus bookStatus;
     private LocalDateTime readStartDate;
     private LocalDateTime readEndDate;
-
     private List<MemoDto.Response> memosList;
     private int memoCount;
   }
@@ -105,7 +104,6 @@ public class BookDto {
 
     private long bookId;
     private List<MemoDto.Response> memosList;
-    private int memoCount;
   }
 
   @Setter

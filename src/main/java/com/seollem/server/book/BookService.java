@@ -4,6 +4,7 @@ import com.seollem.server.exception.BusinessLogicException;
 import com.seollem.server.exception.ExceptionCode;
 import com.seollem.server.member.Member;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -72,12 +73,20 @@ public class BookService {
     return books;
   }
 
+
+  public List<Book> findVerifiedBooksByMember(Member member) {
+    List<Book> books =
+        bookRepository.findAllByMember(member);
+
+    return books;
+  }
+
   public Page<Book> findCalenderBooks(
       int page, int size, Member member, LocalDateTime before, LocalDateTime after,
       Book.BookStatus bookStatus, String sort) {
     Optional<Page<Book>> optionalBooks =
         bookRepository.findCalender(
-            member, bookStatus, before, after,
+            member, bookStatus.ordinal(), before, after,
             PageRequest.of(page, size, Sort.by(sort).descending()));
     Page<Book> books = optionalBooks.orElseThrow(
         () -> new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND_PERIOD));

@@ -18,10 +18,16 @@ public interface MemoRepository extends JpaRepository<Memo, Long> {
 
   Page<Memo> findAllByBookAndMemoType(Pageable pageable, Book book, Memo.MemoType memoType);
 
-  List<Memo> findAllByMemoAuthority(MemoAuthority memoAuthority);
+  List<Memo> findAllByBookAndMemoAuthority(Book book, MemoAuthority memoAuthority);
 
   Page<Memo> findAllByBook(Pageable pageable, Book book);
 
   @Query(value = "SELECT * FROM memo WHERE MEMBER_ID = ?1 order by RAND() limit 1", nativeQuery = true)
   Memo findRandomMemo(Member member);
+
+  @Query("SELECT COUNT(*) FROM Memo m WHERE m.book = ?1")
+  int countMemoWithBook(Book book);
+
+  @Query("SELECT COUNT(*) FROM Memo m WHERE m.member = ?1")
+  int countMemoWithMember(Member member);
 }

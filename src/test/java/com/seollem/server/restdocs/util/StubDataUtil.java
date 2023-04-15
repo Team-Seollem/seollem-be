@@ -14,6 +14,7 @@ import com.seollem.server.memo.Memo;
 import com.seollem.server.memo.Memo.MemoAuthority;
 import com.seollem.server.memo.Memo.MemoType;
 import com.seollem.server.memo.MemoDto;
+import com.seollem.server.memo.MemoDto.PostResponse;
 import com.seollem.server.memo.MemoDto.RandomResponse;
 import com.seollem.server.memo.MemoDto.Response;
 import com.seollem.server.memolikes.MemoLikes;
@@ -21,7 +22,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 
 public class StubDataUtil {
 
@@ -29,25 +29,36 @@ public class StubDataUtil {
   public static class MockBook {
 
     public static Book getBook() {
-      return new com.seollem.server.book.Book(1, "title", "cover", "author", "publisher", 1, 1, 1,
-          BookStatus.YET, LocalDateTime.now(), LocalDateTime.now(), 1, new Member(), null);
+      return new com.seollem.server.book.Book(1, "미움받을용기", "https://imageurl1.com", "아들러", "한빛출판사",
+          214, 406, 5, BookStatus.DONE, LocalDateTime.parse("2022-10-02T11:09:10"),
+          LocalDateTime.parse("2022-10-13T21:04:32"), new Member(), null);
     }
 
+
     public static PageImpl<Book> getBookPage() {
-      Book book =
-          new com.seollem.server.book.Book(1, "title", "cover", "author", "publisher", 1, 1, 1,
-              BookStatus.YET, LocalDateTime.now(), LocalDateTime.now(), 1, new Member(), null);
-      return new PageImpl<>(List.of(book), PageRequest.of(1, 10), 0);
+      List<Book> list = new ArrayList<>();
+      Book book1 =
+          new com.seollem.server.book.Book(1, "미움받을용기", "https://imageurl1.com", "아들러", "한빛출판사",
+              214, 406, 5, BookStatus.DONE, LocalDateTime.parse("2022-10-02T11:09:10"),
+              LocalDateTime.parse("2022-10-13T21:04:32"), new Member(), null);
+      Book book2 =
+          new com.seollem.server.book.Book(12, "차라투스트라는 이렇게 말했다.", "https://imageurl12.com", "니체",
+              "원호출판사", 15, 898, 0, BookStatus.DONE, LocalDateTime.parse("2022-09-03T10:15:30"),
+              LocalDateTime.parse("2022-10-04T12:15:33"), new Member(), null);
+      list.add(book1);
+      list.add(book2);
+
+      return new PageImpl<>(list);
     }
 
     public static List<BookDto.LibraryResponse> getLibraryResponse() {
       List<BookDto.LibraryResponse> libraryResponses = new ArrayList<>();
       BookDto.LibraryResponse libraryResponse1 =
-          new LibraryResponse(1, "미움받을용기", "https://imageurl1.com", "아들러", LocalDateTime.now(), 3,
-              104, 507, BookStatus.YET, 3);
+          new LibraryResponse(1, "미움받을용기", "https://imageurl1.com", "아들러",
+              LocalDateTime.parse("2022-09-23T19:08:56"), 5, 214, 406, BookStatus.DONE, 2);
       BookDto.LibraryResponse libraryResponse2 =
-          new LibraryResponse(12, "역사란 무엇인가", "https://imageurl12.com", "김기명", LocalDateTime.now(),
-              0, 42, 114, BookStatus.YET, 0);
+          new LibraryResponse(12, "차라투스트라는 이렇게 말했다.", "https://imageurl12.com", "니체",
+              LocalDateTime.parse("2022-09-01T12:09:11"), 0, 15, 898, BookStatus.DONE, 0);
       libraryResponses.add(libraryResponse1);
       libraryResponses.add(libraryResponse2);
       return libraryResponses;
@@ -56,9 +67,11 @@ public class StubDataUtil {
     public static List<BookDto.CalenderResponse> getCalenderResponse() {
       List<BookDto.CalenderResponse> calenderResponses = new ArrayList<>();
       BookDto.CalenderResponse response1 =
-          new CalenderResponse(1, LocalDateTime.now(), "https://imageurl1.com");
+          new CalenderResponse(1, LocalDateTime.parse("2022-10-13T21:04:32"),
+              "https://imageurl1.com");
       BookDto.CalenderResponse response2 =
-          new CalenderResponse(12, LocalDateTime.now(), "https://imageurl12.com");
+          new CalenderResponse(12, LocalDateTime.parse("2022-10-04T12:15:33"),
+              "https://imageurl12.com");
       calenderResponses.add(response1);
       calenderResponses.add(response2);
       return calenderResponses;
@@ -67,9 +80,11 @@ public class StubDataUtil {
     public static List<BookDto.AbandonResponse> getAbandonResponse() {
       List<BookDto.AbandonResponse> Responses = new ArrayList<>();
       BookDto.AbandonResponse response1 =
-          new AbandonResponse(1, LocalDateTime.now(), "책 제목1", "https://imageurl1.com");
+          new AbandonResponse(1, LocalDateTime.parse("2022-04-30T21:04:32"), "미움받을용기",
+              "https://imageurl1.com");
       BookDto.AbandonResponse response2 =
-          new AbandonResponse(12, LocalDateTime.now(), "책 제목12", "https://imageurl12.com");
+          new AbandonResponse(12, LocalDateTime.parse("2022-05-13T01:44:02"), "차라투스트라는 이렇게 말했다.",
+              "https://imageurl12.com");
       Responses.add(response1);
       Responses.add(response2);
       return Responses;
@@ -78,27 +93,29 @@ public class StubDataUtil {
     public static List<BooksHaveMemoResponse> getBooksHaveMemoResponse() {
       List<BooksHaveMemoResponse> Responses = new ArrayList<>();
       BooksHaveMemoResponse response1 =
-          new BooksHaveMemoResponse(1, "책 제목1", "https://imageurl1.com", 1);
+          new BooksHaveMemoResponse(1, "미움받을용기", "https://imageurl1.com", 2);
       BooksHaveMemoResponse response2 =
-          new BooksHaveMemoResponse(12, "책 제목12", "https://imageurl12.com", 5);
+          new BooksHaveMemoResponse(12, "차라투스트라는 이렇게 말했다.", "https://imageurl12.com", 0);
       Responses.add(response1);
       Responses.add(response2);
       return Responses;
     }
 
     public static BookDto.DetailResponse getBookDetailResponse() {
-      return new BookDto.DetailResponse(1, "title", "cover", "author", "publisher",
-          LocalDateTime.now(), 1, 107, 833, BookStatus.ING, LocalDateTime.now(),
-          LocalDateTime.now(), null, 2);
+      return new BookDto.DetailResponse(1, "미움받을용기", "https://imageurl1.com", "아들러", "한빛출판사",
+          LocalDateTime.parse("2022-04-30T21:04:32"), 5, 214, 406, BookStatus.DONE,
+          LocalDateTime.parse("2022-10-02T11:09:10"), LocalDateTime.parse("2022-10-13T21:04:32"),
+          null, 2);
     }
 
     public static BookDto.PostResponse getBookPostResponse() {
-      return new BookDto.PostResponse(1, "미움받을 용기", "아들러", "https://imageURL.com", BookStatus.YET);
+      return new BookDto.PostResponse(1, "미움받을용기", "아들러", "https://imageurl1.com", BookStatus.DONE);
     }
 
     public static BookDto.PatchResponse getBookPatchResponse() {
-      return new BookDto.PatchResponse("김지준", "한빛출판사", 221, LocalDateTime.now(),
-          LocalDateTime.now(), BookStatus.YET, 5, 220);
+      return new BookDto.PatchResponse("알프레드 아들러", "독립출판", 511,
+          LocalDateTime.parse("2022-10-02T11:09:10"), LocalDateTime.parse("2022-10-13T21:04:32"),
+          BookStatus.DONE, 5, 371);
     }
 
 
@@ -125,11 +142,11 @@ public class StubDataUtil {
 
     public static List<Memo> getMemos() {
       Memo memo1 =
-          new Memo(1, MemoType.BOOK_CONTENT, "메모 1의 메모한 내용입니다.", 24, 3, MemoAuthority.PUBLIC, null,
+          new Memo(1, MemoType.BOOK_CONTENT, "메모 1의 메모한 내용입니다.", 24, MemoAuthority.PUBLIC, null,
               null, null);
       Memo memo2 =
-          new Memo(4, MemoType.QUESTION, "메모 4에 메모한 내용입니다.", 223, 0, MemoAuthority.PUBLIC, null,
-              null, null);
+          new Memo(4, MemoType.QUESTION, "메모 4에 메모한 내용입니다.", 223, MemoAuthority.PUBLIC, null, null,
+              null);
       List<Memo> list = new ArrayList<>();
       list.add(memo1);
       list.add(memo2);
@@ -138,11 +155,13 @@ public class StubDataUtil {
 
     public static List<MemoDto.Response> getMemoResponses() {
       MemoDto.Response memoResponse1 =
-          new MemoDto.Response(1, MemoType.BOOK_CONTENT, "메모 1의 메모한 내용입니다.", 24,
-              MemoAuthority.PUBLIC, 3, LocalDateTime.now(), LocalDateTime.now());
+          new MemoDto.Response(1, MemoType.BOOK_CONTENT, "미움받을 용기 너무 재밌다.!!", 24,
+              MemoAuthority.PUBLIC, 0, LocalDateTime.parse("2022-10-12T07:54:32"),
+              LocalDateTime.parse("2022-10-12T07:54:32"));
       MemoDto.Response memoResponse2 =
-          new MemoDto.Response(4, MemoType.QUESTION, "메모 4에 메모한 내용입니다.", 223, MemoAuthority.PUBLIC,
-              3, LocalDateTime.now(), LocalDateTime.now());
+          new MemoDto.Response(4, MemoType.QUESTION, "왜 미움받아도 괜찮은걸까?", 223, MemoAuthority.PUBLIC, 0,
+              LocalDateTime.parse("2022-10-13T08:55:01"),
+              LocalDateTime.parse("2022-10-13T08:55:01"));
       List<MemoDto.Response> list = new ArrayList<>();
       list.add(memoResponse1);
       list.add(memoResponse2);
@@ -150,22 +169,36 @@ public class StubDataUtil {
     }
 
     public static PageImpl<Memo> getMemoPage() {
-      Memo memo =
-          new Memo(1, MemoType.BOOK_CONTENT, "메모4의 내용입니다.", 42, 0, MemoAuthority.PUBLIC, null, null,
+      Memo memo1 =
+          new Memo(1, MemoType.BOOK_CONTENT, "미움받을 용기 너무 재밌다.!!", 24, MemoAuthority.PUBLIC, null,
+              null, null);
+      Memo memo2 =
+          new Memo(4, MemoType.QUESTION, "왜 미움받아도 괜찮은걸까?", 223, MemoAuthority.PUBLIC, null, null,
               null);
-      return new PageImpl<>(List.of(memo), PageRequest.of(1, 10), 0);
+      List<Memo> list = new ArrayList<>();
+      list.add(memo1);
+      list.add(memo2);
+      return new PageImpl<>(list);
     }
 
     public static MemoDto.RandomResponse getRandomMemoResponse() {
-      return new RandomResponse(1, "1번 메모의 내용입니다.", MemoType.BOOK_CONTENT, 15, LocalDateTime.now(),
+      return new RandomResponse(3, "랜덤 메모 내용입니다.", MemoType.BOOK_CONTENT, 15, LocalDateTime.now(),
           LocalDateTime.now());
     }
 
     public static MemoDto.Response getMemoResponse() {
-      return new Response(1, MemoType.BOOK_CONTENT, "1번 메모의 내용입니다.", 14, MemoAuthority.PUBLIC, 3,
+      return new Response(3, MemoType.BOOK_CONTENT, "메모 내용입니다.", 14, MemoAuthority.PUBLIC, 0,
+          LocalDateTime.now(), LocalDateTime.now());
+    }
+
+
+    public static MemoDto.PostResponse getMemoPostResponse() {
+      return new PostResponse(3, MemoType.BOOK_CONTENT, "새롭게 등록할 메모 내용입니다.", 255,
+          MemoAuthority.PUBLIC,
           LocalDateTime.now(), LocalDateTime.now());
     }
   }
+
 
   public static class MockAladdin {
 

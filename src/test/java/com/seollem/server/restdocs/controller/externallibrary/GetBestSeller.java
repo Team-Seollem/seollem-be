@@ -48,7 +48,7 @@ public class GetBestSeller extends WebMvcTestSetUpUtil {
     //then
     resultActions.andExpect(status().isOk()).andDo(document("GetAladdinBestSeller",
         responseFields(
-            fieldWithPath("response").type(JsonFieldType.STRING).description("베스트셀러 조회 결과")
+            fieldWithPath("response").type(JsonFieldType.STRING).description("베스트셀러 조회 결과 데이터")
         )));
   }
 }

@@ -15,7 +15,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.google.gson.Gson;
-import com.seollem.server.book.Book;
 import com.seollem.server.book.Book.BookStatus;
 import com.seollem.server.book.BookController;
 import com.seollem.server.book.BookDto;
@@ -51,54 +50,45 @@ public class PatchBook extends TestSetUpForBookUtil {
     when(memberService.findVerifiedMemberByEmail(Mockito.anyString())).thenReturn(
         StubDataUtil.MockMember.getMember());
 
-    when(bookService.verifyBookStatus(Mockito.any())).thenReturn(new Book());
+    when(bookService.verifyBookStatus(Mockito.any())).thenReturn(StubDataUtil.MockBook.getBook());
 
     doNothing().when(bookService).verifyMemberHasBook(Mockito.anyLong(), Mockito.anyLong());
 
-    when(bookService.updateBook(Mockito.any())).thenReturn(new Book());
+    when(bookService.updateBook(Mockito.any())).thenReturn(StubDataUtil.MockBook.getBook());
 
     when(bookMapper.BookToBookPatchResponse(Mockito.any())).thenReturn(
         StubDataUtil.MockBook.getBookPatchResponse());
 
-    BookDto.Patch patch = new Patch("김지준", 221, 220, "한빛출판사", BookStatus.YET, LocalDateTime.now(),
-        LocalDateTime.now(), 5);
+    BookDto.Patch patch =
+        new Patch("알프레드 아들러", 511, 371, "독립출판", BookStatus.DONE,
+            LocalDateTime.parse("2022-10-02T11:09:10"),
+            LocalDateTime.parse("2022-10-13T21:04:32"), 5);
     String content = gson.toJson(patch);
 
     //when, then
     this.mockMvc.perform(
             patch("/books/{book-id}", 1).content(content).contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(Charset.defaultCharset())
-                .header("Authorization", "Bearer JWT Access Token"))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andDo(document("PatchBook",
-            requestHeaders(
-                headerWithName("Authorization").description("JWT Access Token")
-            ),
-            pathParameters(
-                parameterWithName("book-id").description("수정할 책 id")
-            ),
-            requestFields(
-                fieldWithPath("author").description("저자"),
-                fieldWithPath("itemPage").description("책 전체 페이지 수"),
+                .header("Authorization", "Bearer JWT Access Token")).andDo(print())
+        .andExpect(status().isOk()).andDo(document("PatchBook",
+            requestHeaders(headerWithName("Authorization").description("JWT Access Token")),
+            pathParameters(parameterWithName("book-id").description("책 ID")),
+            requestFields(fieldWithPath("author").description("저자"),
+                fieldWithPath("itemPage").description("전체 페이지 수"),
                 fieldWithPath("currentPage").description("현재 읽고 있는 페이지"),
                 fieldWithPath("publisher").description("출판사"),
-                fieldWithPath("bookStatus").description("읽기 상태 : 읽기 전, 읽는 중, 읽기 완료"),
-                fieldWithPath("readStartDate").description("읽기 시작 일자"),
-                fieldWithPath("readEndDate").description("읽기 완료 일자"),
-                fieldWithPath("star").description("별점")
-            ),
-            responseFields(
-                fieldWithPath("author").description("저자"),
+                fieldWithPath("bookStatus").description("책 읽기 상태 : YET(읽기 전), ING(읽는 중), DONE(읽기 완료)"),
+                fieldWithPath("readStartDate").description("읽기 시작한 일자"),
+                fieldWithPath("readEndDate").description("읽기 완료한 일자"),
+                fieldWithPath("star").description("별점")),
+            responseFields(fieldWithPath("author").description("저자"),
                 fieldWithPath("publisher").description("출판사"),
-                fieldWithPath("itemPage").description("책 전체 페이지 수"),
-                fieldWithPath("readStartDate").description("읽기 시작 일자"),
-                fieldWithPath("readEndDate").description("읽기 완료 일자"),
-                fieldWithPath("bookStatus").description("읽기 상태 : 읽기 전, 읽는 중, 읽기 완료"),
+                fieldWithPath("itemPage").description("전체 페이지 수"),
+                fieldWithPath("readStartDate").description("읽기 시작한 일자"),
+                fieldWithPath("readEndDate").description("읽기 완료한 일자"),
+                fieldWithPath("bookStatus").description("책 읽기 상태 : YET(읽기 전), ING(읽는 중), DONE(읽기 완료)"),
                 fieldWithPath("star").description("별점"),
-                fieldWithPath("currentPage").description("현재 읽고 있는 페이지")
-            )
-        ));
+                fieldWithPath("currentPage").description("현재 읽고 있는 페이지"))));
 
   }
 

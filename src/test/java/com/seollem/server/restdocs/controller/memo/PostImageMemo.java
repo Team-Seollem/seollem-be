@@ -63,7 +63,7 @@ public class PostImageMemo extends WebMvcTestSetUpUtil {
 
     doNothing().when(bookService).verifyMemberHasBook(Mockito.anyLong(), Mockito.anyLong());
 
-    when(fileUploadService.createImageMemo(Mockito.any())).thenReturn("https://ImageUrl.com");
+    when(fileUploadService.createImageMemo(Mockito.any())).thenReturn("https://memoimageurl.com");
 
     //when, then
     this.mockMvc.perform(
@@ -71,7 +71,7 @@ public class PostImageMemo extends WebMvcTestSetUpUtil {
                 .header("Authorization", "Bearer JWT Access Token")).andDo(print())
         .andExpect(status().isCreated()).andDo(document("PostImageMemo",
             requestHeaders(headerWithName("Authorization").description("Bearer JWT Access Token")),
-            requestParts(partWithName("file").description("업로드할 이미지 파일")),
+            requestParts(partWithName("file").description("업로드할 이미지 파일 : form-data")),
             responseFields(fieldWithPath("url").description("업로드된 이미지의 URL"))
         ));
   }

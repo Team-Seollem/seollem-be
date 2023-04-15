@@ -1,8 +1,8 @@
 package com.seollem.server.restdocs.controller.book;
 
 
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -40,27 +40,28 @@ public class GetMemos extends TestSetUpForBookUtil {
   @Test
   public void DetailTest() throws Exception {
     //given
-    given(getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(Mockito.anyMap())).willReturn(
+    when(getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(Mockito.anyMap())).thenReturn(
         "starrypro@gmail.com");
 
-    given(memberService.findVerifiedMemberByEmail(Mockito.anyString())).willReturn(
+    when(memberService.findVerifiedMemberByEmail(Mockito.anyString())).thenReturn(
         StubDataUtil.MockMember.getMember());
 
     doNothing().when(bookService).verifyMemberHasBook(Mockito.anyLong(), Mockito.anyLong());
 
-    given(bookService.findVerifiedBookById(Mockito.anyLong())).willReturn(
+    when(bookService.findVerifiedBookById(Mockito.anyLong())).thenReturn(
         StubDataUtil.MockBook.getBook());
 
-    given(memoService.getBookAndMemo(Mockito.anyInt(), Mockito.anyInt(), Mockito.any())).willReturn(
+    when(
+        memoService.getMemosWithBook(Mockito.anyInt(), Mockito.anyInt(), Mockito.any())).thenReturn(
         StubDataUtil.MockMemo.getMemoPage());
 
-    given(memoService.getBookAndMemoTypes(Mockito.anyInt(), Mockito.anyInt(), Mockito.any(),
-        Mockito.any())).willReturn(StubDataUtil.MockMemo.getMemoPage());
+    when(memoService.getMemosWithBookAndMemoTypes(Mockito.anyInt(), Mockito.anyInt(), Mockito.any(),
+        Mockito.any())).thenReturn(StubDataUtil.MockMemo.getMemoPage());
 
-    given(memoLikesService.getMemoLikesCountWithMemo(Mockito.any())).willReturn(3);
-
-    given(memoMapper.memoToMemoResponses(Mockito.any())).willReturn(
+    when(memoMapper.memoToMemoResponses(Mockito.any())).thenReturn(
         StubDataUtil.MockMemo.getMemoResponses());
+
+    when(memoLikesService.getMemoLikesCountWithMemo(Mockito.any())).thenReturn(2);
 
     //when
     ResultActions resultActions = mockMvc.perform(
@@ -69,8 +70,8 @@ public class GetMemos extends TestSetUpForBookUtil {
             .header("Authorization",
                 "Bearer JWT Access Token")
             .queryParam("page", "1")
-            .queryParam("size", "10")
-            .queryParam("memoType", "BOOK_CONTENT"));
+            .queryParam("size", "2")
+            .queryParam("memoType", "ALL"));
 
     //then
     resultActions.andExpect(status().isOk()).andDo(document("GetMemos",
@@ -84,9 +85,9 @@ public class GetMemos extends TestSetUpForBookUtil {
             parameterWithName("memoType").description(
                 "메모 타입 : BOOK_CONTENT, SUMMARY, THOUGHT, QUESTION, ALL")),
         responseFields(
-            fieldWithPath("item[].memoId").type(JsonFieldType.NUMBER).description("Memo-id"),
+            fieldWithPath("item[].memoId").type(JsonFieldType.NUMBER).description("메모 ID"),
             fieldWithPath("item[].memoType").type(JsonFieldType.STRING).description(
-                "메모 타입 : 전체(ALL), 책 속 문장(BOOK_CONTENT), 책 내용 요약(SUMMARY), 나만의 생각(THOUGHT), 나만의 질문(QUESTION)"),
+                "메모 타입 : 책 속 문장(BOOK_CONTENT), 책 내용 요약(SUMMARY), 나만의 생각(THOUGHT), 나만의 질문(QUESTION), 전체(ALL)"),
             fieldWithPath("item[].memoContent").type(JsonFieldType.STRING)
                 .description("메모 내용"),
             fieldWithPath("item[].memoBookPage").type(JsonFieldType.NUMBER)

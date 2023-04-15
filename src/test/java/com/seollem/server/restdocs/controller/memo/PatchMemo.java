@@ -72,48 +72,39 @@ public class PatchMemo extends WebMvcTestSetUpUtil {
     when(memberService.findVerifiedMemberByEmail(Mockito.anyString())).thenReturn(
         StubDataUtil.MockMember.getMember());
 
+    when(memoMapper.memoPatchToMemo(Mockito.any())).thenReturn(new Memo());
+
     when(memoService.updateMemo(Mockito.any())).thenReturn(new Memo());
 
     when(memoMapper.memoToMemoResponse(Mockito.any())).thenReturn(
         StubDataUtil.MockMemo.getMemoResponse());
 
     MemoDto.Patch patch =
-        new Patch(1, "1번 메모의 내용입니다.", MemoType.BOOK_CONTENT, 14, MemoAuthority.PUBLIC);
+        new Patch("메모 내용입니다.", MemoType.BOOK_CONTENT, 14, MemoAuthority.PUBLIC);
     String content = gson.toJson(patch);
 
     //when, then
     this.mockMvc.perform(
-            patch("/memos/{memo-id}", 1).content(content).contentType(MediaType.APPLICATION_JSON)
+            patch("/memos/{memo-id}", 3).content(content).contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(Charset.defaultCharset())
-                .header("Authorization", "Bearer JWT Access Token"))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andDo(document("PatchMemo",
-            requestHeaders(
-                headerWithName("Authorization").description("Bearer JWT Access Token")
-            ),
-            pathParameters(
-                parameterWithName("memo-id").description("수정할 메모 id")
-            ),
-            requestFields(
-                fieldWithPath("memoId").description("메모 id"),
-                fieldWithPath("memoContent").description("변경할 메모 내용"),
+                .header("Authorization", "Bearer JWT Access Token")).andDo(print())
+        .andExpect(status().isOk()).andDo(document("PatchMemo",
+            requestHeaders(headerWithName("Authorization").description("Bearer JWT Access Token")),
+            pathParameters(parameterWithName("memo-id").description("메모 ID")),
+            requestFields(fieldWithPath("memoContent").description("메모 내용"),
                 fieldWithPath("memoType").description(
-                    "변경할 메모 타입 : 전체(ALL), 책 속 문장(BOOK_CONTENT), 책 내용 요약(SUMMARY), 나만의 생각(THOUGHT), 나만의 질문(QUESTION)"),
-                fieldWithPath("memoBookPage").description("변경할 메모와 연관된 책 페이지"),
-                fieldWithPath("memoAuthority").description("변경할 메모 보기 권한 : PUBLIC, PRIVATE")
-            ),
-            responseFields(
-                fieldWithPath("memoId").description("Memo-id"),
+                    "변경할 메모 타입 : 책 속 문장(BOOK_CONTENT), 책 내용 요약(SUMMARY), 나만의 생각(THOUGHT), 나만의 질문(QUESTION), 전체(ALL)"),
+                fieldWithPath("memoBookPage").description("메모와 연관된 책 페이지"),
+                fieldWithPath("memoAuthority").description("메모 보기 권한 : PUBLIC, PRIVATE")),
+            responseFields(fieldWithPath("memoId").description("메모 ID"),
                 fieldWithPath("memoType").description(
-                    "메모 타입 : 전체(ALL), 책 속 문장(BOOK_CONTENT), 책 내용 요약(SUMMARY), 나만의 생각(THOUGHT), 나만의 질문(QUESTION)"),
+                    "메모 타입 : 책 속 문장(BOOK_CONTENT), 책 내용 요약(SUMMARY), 나만의 생각(THOUGHT), 나만의 질문(QUESTION), 전체(ALL)"),
                 fieldWithPath("memoContent").description("메모 내용"),
                 fieldWithPath("memoBookPage").description("메모와 연관된 책 페이지"),
                 fieldWithPath("memoAuthority").description("메모 보기 권한 : PUBLIC, PRIVATE"),
                 fieldWithPath("memoLikesCount").description("메모 좋아요 개수"),
                 fieldWithPath("createdAt").description("메모 생성 일자"),
-                fieldWithPath("updatedAt").description("메모 수정 일자"))
-        ));
+                fieldWithPath("updatedAt").description("메모 수정 일자"))));
 
   }
 
