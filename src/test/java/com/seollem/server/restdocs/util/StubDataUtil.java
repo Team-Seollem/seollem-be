@@ -14,6 +14,7 @@ import com.seollem.server.memo.Memo;
 import com.seollem.server.memo.Memo.MemoAuthority;
 import com.seollem.server.memo.Memo.MemoType;
 import com.seollem.server.memo.MemoDto;
+import com.seollem.server.memo.MemoDto.PostResponse;
 import com.seollem.server.memo.MemoDto.RandomResponse;
 import com.seollem.server.memo.MemoDto.Response;
 import com.seollem.server.memolikes.MemoLikes;
@@ -181,15 +182,23 @@ public class StubDataUtil {
     }
 
     public static MemoDto.RandomResponse getRandomMemoResponse() {
-      return new RandomResponse(1, "1번 메모의 내용입니다.", MemoType.BOOK_CONTENT, 15, LocalDateTime.now(),
+      return new RandomResponse(3, "랜덤 메모 내용입니다.", MemoType.BOOK_CONTENT, 15, LocalDateTime.now(),
           LocalDateTime.now());
     }
 
     public static MemoDto.Response getMemoResponse() {
-      return new Response(1, MemoType.BOOK_CONTENT, "1번 메모의 내용입니다.", 14, MemoAuthority.PUBLIC, 2,
+      return new Response(3, MemoType.BOOK_CONTENT, "메모 내용입니다.", 14, MemoAuthority.PUBLIC, 0,
+          LocalDateTime.now(), LocalDateTime.now());
+    }
+
+
+    public static MemoDto.PostResponse getMemoPostResponse() {
+      return new PostResponse(3, MemoType.BOOK_CONTENT, "새롭게 등록할 메모 내용입니다.", 255,
+          MemoAuthority.PUBLIC,
           LocalDateTime.now(), LocalDateTime.now());
     }
   }
+
 
   public static class MockAladdin {
 

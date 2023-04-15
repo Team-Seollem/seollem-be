@@ -48,7 +48,7 @@ public class GetItemNewSpecial extends WebMvcTestSetUpUtil {
     //then
     resultActions.andExpect(status().isOk()).andDo(document("GetAladdinItemNewSpecial",
         responseFields(
-            fieldWithPath("response").type(JsonFieldType.STRING).description("신간리스트 조회 결과")
+            fieldWithPath("response").type(JsonFieldType.STRING).description("신간리스트 조회 결과 데이터")
         )));
   }
 }

@@ -53,7 +53,7 @@ public class GetSearchedBook extends WebMvcTestSetUpUtil {
             parameterWithName("title-or-author").description("검색어 : 책 제목 or 저자, 한글 영문 모두 가능")
         ),
         responseFields(
-            fieldWithPath("response").type(JsonFieldType.STRING).description("책 검색 결과")
+            fieldWithPath("response").type(JsonFieldType.STRING).description("책 검색 결과 데이터")
         )));
   }
 }

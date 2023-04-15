@@ -10,9 +10,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.google.gson.Gson;
-import com.seollem.server.member.Member;
 import com.seollem.server.member.MemberService;
 import com.seollem.server.restdocs.util.GsonCustomConfig;
+import com.seollem.server.restdocs.util.StubDataUtil;
 import com.seollem.server.restdocs.util.WebMvcTestSetUpUtil;
 import com.seollem.server.temppassword.TempPasswordController;
 import com.seollem.server.temppassword.TempPasswordDto;
@@ -45,9 +45,10 @@ public class TempPassword extends WebMvcTestSetUpUtil {
     //given
     when(tempPasswordService.createTempPassword()).thenReturn("password");
 
-    when(memberService.findVerifiedMemberByEmail(Mockito.anyString())).thenReturn(new Member());
+    when(memberService.findVerifiedMemberByEmail(Mockito.anyString())).thenReturn(
+        StubDataUtil.MockMember.getMember());
 
-    when(memberService.updateMember(Mockito.any())).thenReturn(new Member());
+    when(memberService.updateMember(Mockito.any())).thenReturn(StubDataUtil.MockMember.getMember());
 
     doNothing().when(tempPasswordService).send(Mockito.anyString(), Mockito.anyString());
 

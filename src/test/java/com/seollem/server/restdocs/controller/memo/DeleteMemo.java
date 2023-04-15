@@ -77,7 +77,7 @@ public class DeleteMemo extends WebMvcTestSetUpUtil {
                 headerWithName("Authorization").description("Bearer JWT Access Token")
             ),
             pathParameters(
-                parameterWithName("memo-id").description("삭제할 메모 id")
+                parameterWithName("memo-id").description("삭제할 메모 ID")
             )
         ));
 

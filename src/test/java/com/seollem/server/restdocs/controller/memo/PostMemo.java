@@ -16,7 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.google.gson.Gson;
-import com.seollem.server.book.Book;
 import com.seollem.server.book.BookService;
 import com.seollem.server.file.FileUploadService;
 import com.seollem.server.member.MemberService;
@@ -78,13 +77,14 @@ public class PostMemo extends WebMvcTestSetUpUtil {
 
     when(memoMapper.memoPostToMemo(Mockito.any())).thenReturn(new Memo());
 
-    when(bookService.findVerifiedBookById(Mockito.anyLong())).thenReturn(new Book());
+    when(bookService.findVerifiedBookById(Mockito.anyLong())).thenReturn(
+        StubDataUtil.MockBook.getBook());
 
-    when(memoMapper.memoToMemoResponse(Mockito.any())).thenReturn(
-        StubDataUtil.MockMemo.getMemoResponse());
+    when(memoMapper.memoToMemoPostResponse(Mockito.any())).thenReturn(
+        StubDataUtil.MockMemo.getMemoPostResponse());
 
     MemoDto.Post memoPost =
-        new MemoDto.Post("메모 내용입니다.", 14, MemoType.BOOK_CONTENT, MemoAuthority.PUBLIC);
+        new MemoDto.Post("새롭게 등록할 메모 내용입니다.", 255, MemoType.BOOK_CONTENT, MemoAuthority.PUBLIC);
     String content = gson.toJson(memoPost);
 
     //when, then
@@ -94,19 +94,18 @@ public class PostMemo extends WebMvcTestSetUpUtil {
                 .header("Authorization", "Bearer JWT Access Token")).andDo(print())
         .andExpect(status().isCreated()).andDo(document("PostMemo",
             requestHeaders(headerWithName("Authorization").description("Bearer JWT Access Token")),
-            pathParameters(parameterWithName("book-id").description("메모를 기록할 책의 id")),
+            pathParameters(parameterWithName("book-id").description("메모를 기록할 책 ID")),
             requestFields(fieldWithPath("memoContent").description("메모 내용"),
                 fieldWithPath("memoBookPage").description("메모와 연관된 책 페이지"),
                 fieldWithPath("memoType").description(
-                    "메모 타입 : 전체(ALL), 책 속 문장(BOOK_CONTENT), 책 내용 요약(SUMMARY), 나만의 생각(THOUGHT), 나만의 질문(QUESTION)"),
+                    "메모 타입 : 책 속 문장(BOOK_CONTENT), 책 내용 요약(SUMMARY), 나만의 생각(THOUGHT), 나만의 질문(QUESTION), 전체(ALL)"),
                 fieldWithPath("memoAuthority").description("메모 보기 권한 : PUBLIC, PRIVATE")),
-            responseFields(fieldWithPath("memoId").description("Memo-id"),
+            responseFields(fieldWithPath("memoId").description("메모 ID"),
                 fieldWithPath("memoType").description(
-                    "메모 타입 : 전체(ALL), 책 속 문장(BOOK_CONTENT), 책 내용 요약(SUMMARY), 나만의 생각(THOUGHT), 나만의 질문(QUESTION)"),
+                    "메모 타입 : 책 속 문장(BOOK_CONTENT), 책 내용 요약(SUMMARY), 나만의 생각(THOUGHT), 나만의 질문(QUESTION), 전체(ALL)"),
                 fieldWithPath("memoContent").description("메모 내용"),
                 fieldWithPath("memoBookPage").description("메모와 연관된 책 페이지"),
                 fieldWithPath("memoAuthority").description("메모 보기 권한 : PUBLIC, PRIVATE"),
-                fieldWithPath("memoLikesCount").description("메모 좋아요 개수"),
                 fieldWithPath("createdAt").description("메모 생성 일자"),
                 fieldWithPath("updatedAt").description("메모 수정 일자"))));
   }

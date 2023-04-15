@@ -72,10 +72,10 @@ public class GetRandomMemo extends WebMvcTestSetUpUtil {
     //then
     resultActions.andExpect(status().isOk()).andDo(document("GetRandomMemo",
         requestHeaders(headerWithName("Authorization").description("Bearer JWT Access Token")),
-        responseFields(fieldWithPath("memoId").type(JsonFieldType.NUMBER).description("Memo-id"),
+        responseFields(fieldWithPath("memoId").type(JsonFieldType.NUMBER).description("메모 ID"),
             fieldWithPath("memoContent").type(JsonFieldType.STRING).description("메모 내용"),
             fieldWithPath("memoType").type(JsonFieldType.STRING).description(
-                "메모 타입 : 전체(ALL), 책 속 문장(BOOK_CONTENT), 책 내용 요약(SUMMARY), 나만의 생각(THOUGHT), 나만의 질문(QUESTION)"),
+                "메모 타입 : 책 속 문장(BOOK_CONTENT), 책 내용 요약(SUMMARY), 나만의 생각(THOUGHT), 나만의 질문(QUESTION), 전체(ALL)"),
             fieldWithPath("memoBookPage").description("메모와 연관된 책 페이지"),
             fieldWithPath("createdAt").description("메모 생성 일자"),
             fieldWithPath("updatedAt").description("메모 수정 일자")
