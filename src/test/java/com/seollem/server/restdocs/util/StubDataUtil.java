@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 
 public class StubDataUtil {
 
@@ -103,9 +102,9 @@ public class StubDataUtil {
 
     public static BookDto.DetailResponse getBookDetailResponse() {
       return new BookDto.DetailResponse(1, "미움받을용기", "https://imageurl1.com", "아들러", "한빛출판사",
-          LocalDateTime.parse("2022-04-30T21:04:32"),
-          5, 214, 406, BookStatus.DONE, LocalDateTime.parse("2022-10-02T11:09:10"),
-          LocalDateTime.parse("2022-10-13T21:04:32"), null, 2);
+          LocalDateTime.parse("2022-04-30T21:04:32"), 5, 214, 406, BookStatus.DONE,
+          LocalDateTime.parse("2022-10-02T11:09:10"), LocalDateTime.parse("2022-10-13T21:04:32"),
+          null, 2);
     }
 
     public static BookDto.PostResponse getBookPostResponse() {
@@ -158,8 +157,8 @@ public class StubDataUtil {
               MemoAuthority.PUBLIC, 0, LocalDateTime.parse("2022-10-12T07:54:32"),
               LocalDateTime.parse("2022-10-12T07:54:32"));
       MemoDto.Response memoResponse2 =
-          new MemoDto.Response(4, MemoType.QUESTION, "왜 미움받아도 괜찮은걸까?", 223, MemoAuthority.PUBLIC,
-              0, LocalDateTime.parse("2022-10-13T08:55:01"),
+          new MemoDto.Response(4, MemoType.QUESTION, "왜 미움받아도 괜찮은걸까?", 223, MemoAuthority.PUBLIC, 0,
+              LocalDateTime.parse("2022-10-13T08:55:01"),
               LocalDateTime.parse("2022-10-13T08:55:01"));
       List<MemoDto.Response> list = new ArrayList<>();
       list.add(memoResponse1);
@@ -168,10 +167,16 @@ public class StubDataUtil {
     }
 
     public static PageImpl<Memo> getMemoPage() {
-      Memo memo =
-          new Memo(1, MemoType.BOOK_CONTENT, "메모4의 내용입니다.", 42, MemoAuthority.PUBLIC, null, null,
+      Memo memo1 =
+          new Memo(1, MemoType.BOOK_CONTENT, "미움받을 용기 너무 재밌다.!!", 24, MemoAuthority.PUBLIC, null,
+              null, null);
+      Memo memo2 =
+          new Memo(4, MemoType.QUESTION, "왜 미움받아도 괜찮은걸까?", 223, MemoAuthority.PUBLIC, null, null,
               null);
-      return new PageImpl<>(List.of(memo), PageRequest.of(1, 10), 0);
+      List<Memo> list = new ArrayList<>();
+      list.add(memo1);
+      list.add(memo2);
+      return new PageImpl<>(list);
     }
 
     public static MemoDto.RandomResponse getRandomMemoResponse() {

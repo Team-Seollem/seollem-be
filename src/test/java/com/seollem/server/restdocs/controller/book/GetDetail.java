@@ -95,7 +95,7 @@ public class GetDetail extends TestSetUpForBookUtil {
             fieldWithPath("readEndDate").type(JsonFieldType.STRING).description("읽기 완료한 일자"),
             fieldWithPath("memosList[].memoId").type(JsonFieldType.NUMBER).description("메모 ID"),
             fieldWithPath("memosList[].memoType").type(JsonFieldType.STRING).description(
-                "메모 타입 : 전체(ALL), 책 속 문장(BOOK_CONTENT), 책 내용 요약(SUMMARY), 나만의 생각(THOUGHT), 나만의 질문(QUESTION)"),
+                "메모 타입 : 책 속 문장(BOOK_CONTENT), 책 내용 요약(SUMMARY), 나만의 생각(THOUGHT), 나만의 질문(QUESTION), 전체(ALL)"),
             fieldWithPath("memosList[].memoContent").type(JsonFieldType.STRING)
                 .description("메모 내용"),
             fieldWithPath("memosList[].memoBookPage").type(JsonFieldType.NUMBER)
