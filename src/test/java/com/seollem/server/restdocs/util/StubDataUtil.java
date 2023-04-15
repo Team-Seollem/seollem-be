@@ -112,8 +112,9 @@ public class StubDataUtil {
     }
 
     public static BookDto.PatchResponse getBookPatchResponse() {
-      return new BookDto.PatchResponse("김지준", "한빛출판사", 221, LocalDateTime.now(),
-          LocalDateTime.now(), BookStatus.YET, 5, 220);
+      return new BookDto.PatchResponse("알프레드 아들러", "독립출판", 511,
+          LocalDateTime.parse("2022-10-02T11:09:10"), LocalDateTime.parse("2022-10-13T21:04:32"),
+          BookStatus.DONE, 5, 371);
     }
 
 
