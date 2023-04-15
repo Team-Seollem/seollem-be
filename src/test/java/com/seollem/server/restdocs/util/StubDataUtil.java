@@ -93,9 +93,9 @@ public class StubDataUtil {
     public static List<BooksHaveMemoResponse> getBooksHaveMemoResponse() {
       List<BooksHaveMemoResponse> Responses = new ArrayList<>();
       BooksHaveMemoResponse response1 =
-          new BooksHaveMemoResponse(1, "책 제목1", "https://imageurl1.com", 2);
+          new BooksHaveMemoResponse(1, "미움받을용기", "https://imageurl1.com", 2);
       BooksHaveMemoResponse response2 =
-          new BooksHaveMemoResponse(12, "책 제목12", "https://imageurl12.com", 0);
+          new BooksHaveMemoResponse(12, "차라투스트라는 이렇게 말했다.", "https://imageurl12.com", 0);
       Responses.add(response1);
       Responses.add(response2);
       return Responses;
