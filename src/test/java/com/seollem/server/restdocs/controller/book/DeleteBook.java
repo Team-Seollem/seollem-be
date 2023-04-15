@@ -12,7 +12,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.seollem.server.book.Book;
 import com.seollem.server.book.BookController;
 import com.seollem.server.restdocs.util.StubDataUtil;
 import com.seollem.server.restdocs.util.TestSetUpForBookUtil;
@@ -36,7 +35,7 @@ public class DeleteBook extends TestSetUpForBookUtil {
     when(memberService.findVerifiedMemberByEmail(Mockito.anyString())).thenReturn(
         StubDataUtil.MockMember.getMember());
 
-    when(bookService.verifyBookStatus(Mockito.any())).thenReturn(new Book());
+    when(bookService.verifyBookStatus(Mockito.any())).thenReturn(StubDataUtil.MockBook.getBook());
 
     doNothing().when(bookService).deleteBook(Mockito.anyLong());
 
@@ -50,7 +49,7 @@ public class DeleteBook extends TestSetUpForBookUtil {
                 headerWithName("Authorization").description("JWT Access Token")
             ),
             pathParameters(
-                parameterWithName("book-id").description("삭제할 책 id")
+                parameterWithName("book-id").description("책 ID")
             )
         ));
   }
