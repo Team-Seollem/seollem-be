@@ -1,7 +1,7 @@
 package com.seollem.server.restdocs.controller.book;
 
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -40,28 +40,30 @@ public class GetDetail extends TestSetUpForBookUtil {
   @Test
   public void DetailTest() throws Exception {
     //given
-    given(getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(Mockito.anyMap())).willReturn(
+    when(getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(Mockito.anyMap())).thenReturn(
         "starrypro@gmail.com");
 
-    given(memberService.findVerifiedMemberByEmail(Mockito.anyString())).willReturn(
+    when(memberService.findVerifiedMemberByEmail(Mockito.anyString())).thenReturn(
         StubDataUtil.MockMember.getMember());
 
     doNothing().when(bookService).verifyMemberHasBook(Mockito.anyLong(), Mockito.anyLong());
 
-    given(bookService.findVerifiedBookById(Mockito.anyLong())).willReturn(
+    when(bookService.findVerifiedBookById(Mockito.anyLong())).thenReturn(
         StubDataUtil.MockBook.getBook());
 
-    given(bookMapper.BookToBookDetailResponse(Mockito.any())).willReturn(
+    when(bookMapper.BookToBookDetailResponse(Mockito.any())).thenReturn(
         StubDataUtil.MockBook.getBookDetailResponse());
 
-    given(memoService.getMemos(Mockito.any())).willReturn(StubDataUtil.MockMemo.getMemos());
+    when(memoService.getMemoCountWithBook(Mockito.any())).thenReturn(2);
 
-    given(memoService.getMemoWithAuthority(Mockito.any())).willReturn(
+    when(memoService.getMemosWithBook(Mockito.any())).thenReturn(StubDataUtil.MockMemo.getMemos());
+
+    when(memoService.getMemoWithBookAndMemoAuthority(Mockito.any(), Mockito.any())).thenReturn(
         StubDataUtil.MockMemo.getMemos());
 
-    given(memoLikesService.getMemoLikesCountWithMemo(Mockito.any())).willReturn(3);
+    when(memoLikesService.getMemoLikesCountWithMemo(Mockito.any())).thenReturn(0);
 
-    given(memoMapper.memoToMemoResponses(Mockito.any())).willReturn(
+    when(memoMapper.memoToMemoResponses(Mockito.any())).thenReturn(
         StubDataUtil.MockMemo.getMemoResponses());
 
     //when
@@ -78,26 +80,26 @@ public class GetDetail extends TestSetUpForBookUtil {
         pathParameters(parameterWithName("book-id").description("조회할 책 ID")),
         requestParameters(
             parameterWithName("memoAuthority").description("메모의 보기 권한 : PUBLIC, PRIVATE, ALL")),
-        responseFields(fieldWithPath("bookId").type(JsonFieldType.NUMBER).description("Book-id"),
-            fieldWithPath("title").type(JsonFieldType.STRING).description("책 제목"),
+        responseFields(fieldWithPath("bookId").type(JsonFieldType.NUMBER).description("책 ID"),
+            fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
             fieldWithPath("cover").type(JsonFieldType.STRING).description("표지 이미지 URL"),
             fieldWithPath("author").type(JsonFieldType.STRING).description("저자"),
             fieldWithPath("publisher").type(JsonFieldType.STRING).description("출판사"),
             fieldWithPath("createdAt").type(JsonFieldType.STRING).description("등록 일자"),
             fieldWithPath("star").type(JsonFieldType.NUMBER).description("별점"),
             fieldWithPath("currentPage").type(JsonFieldType.NUMBER).description("현재 읽고 있는 페이지"),
-            fieldWithPath("itemPage").type(JsonFieldType.NUMBER).description("책 전체 페이지 수"),
+            fieldWithPath("itemPage").type(JsonFieldType.NUMBER).description("전체 페이지 수"),
             fieldWithPath("bookStatus").type(JsonFieldType.STRING)
-                .description("책 읽기 상태 : 읽기 전(YET), 읽는 중(ING), 읽기 완료(DONE)"),
+                .description("책 읽기 상태 : YET(읽기 전), ING(읽는 중), DONE(읽기 완료)"),
             fieldWithPath("readStartDate").type(JsonFieldType.STRING).description("읽기 시작한 일자"),
             fieldWithPath("readEndDate").type(JsonFieldType.STRING).description("읽기 완료한 일자"),
-            fieldWithPath("memosList[].memoId").type(JsonFieldType.NUMBER).description("Memo-id"),
+            fieldWithPath("memosList[].memoId").type(JsonFieldType.NUMBER).description("메모 ID"),
             fieldWithPath("memosList[].memoType").type(JsonFieldType.STRING).description(
                 "메모 타입 : 전체(ALL), 책 속 문장(BOOK_CONTENT), 책 내용 요약(SUMMARY), 나만의 생각(THOUGHT), 나만의 질문(QUESTION)"),
             fieldWithPath("memosList[].memoContent").type(JsonFieldType.STRING)
                 .description("메모 내용"),
             fieldWithPath("memosList[].memoBookPage").type(JsonFieldType.NUMBER)
-                .description("메모와 연관된 책의 페이지"),
+                .description("메모와 연관된 책 페이지"),
             fieldWithPath("memosList[].memoAuthority").type(JsonFieldType.STRING)
                 .description("메모 보기 권한 : PUBLIC, PRIVATE"),
             fieldWithPath("memosList[].memoLikesCount").type(JsonFieldType.NUMBER)

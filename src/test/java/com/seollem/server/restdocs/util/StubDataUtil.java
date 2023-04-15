@@ -30,8 +30,8 @@ public class StubDataUtil {
 
     public static Book getBook() {
       return new com.seollem.server.book.Book(1, "미움받을용기", "https://imageurl1.com", "아들러", "한빛출판사",
-          214, 406, 1, BookStatus.YET, LocalDateTime.now(), LocalDateTime.now(), new Member(),
-          null);
+          214, 406, 5, BookStatus.DONE, LocalDateTime.parse("2022-10-02T11:09:10"),
+          LocalDateTime.parse("2022-10-13T21:04:32"), new Member(), null);
     }
 
 
@@ -102,9 +102,10 @@ public class StubDataUtil {
     }
 
     public static BookDto.DetailResponse getBookDetailResponse() {
-      return new BookDto.DetailResponse(1, "title", "cover", "author", "publisher",
-          LocalDateTime.now(), 1, 107, 833, BookStatus.ING, LocalDateTime.now(),
-          LocalDateTime.now(), null, 2);
+      return new BookDto.DetailResponse(1, "미움받을용기", "https://imageurl1.com", "아들러", "한빛출판사",
+          LocalDateTime.parse("2022-04-30T21:04:32"),
+          5, 214, 406, BookStatus.DONE, LocalDateTime.parse("2022-10-02T11:09:10"),
+          LocalDateTime.parse("2022-10-13T21:04:32"), null, 2);
     }
 
     public static BookDto.PostResponse getBookPostResponse() {
@@ -153,11 +154,13 @@ public class StubDataUtil {
 
     public static List<MemoDto.Response> getMemoResponses() {
       MemoDto.Response memoResponse1 =
-          new MemoDto.Response(1, MemoType.BOOK_CONTENT, "메모 1의 메모한 내용입니다.", 24,
-              MemoAuthority.PUBLIC, 2, LocalDateTime.now(), LocalDateTime.now());
+          new MemoDto.Response(1, MemoType.BOOK_CONTENT, "미움받을 용기 너무 재밌다.!!", 24,
+              MemoAuthority.PUBLIC, 0, LocalDateTime.parse("2022-10-12T07:54:32"),
+              LocalDateTime.parse("2022-10-12T07:54:32"));
       MemoDto.Response memoResponse2 =
-          new MemoDto.Response(4, MemoType.QUESTION, "메모 4에 메모한 내용입니다.", 223, MemoAuthority.PUBLIC,
-              0, LocalDateTime.now(), LocalDateTime.now());
+          new MemoDto.Response(4, MemoType.QUESTION, "왜 미움받아도 괜찮은걸까?", 223, MemoAuthority.PUBLIC,
+              0, LocalDateTime.parse("2022-10-13T08:55:01"),
+              LocalDateTime.parse("2022-10-13T08:55:01"));
       List<MemoDto.Response> list = new ArrayList<>();
       list.add(memoResponse1);
       list.add(memoResponse2);
