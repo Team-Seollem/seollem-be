@@ -80,9 +80,11 @@ public class StubDataUtil {
     public static List<BookDto.AbandonResponse> getAbandonResponse() {
       List<BookDto.AbandonResponse> Responses = new ArrayList<>();
       BookDto.AbandonResponse response1 =
-          new AbandonResponse(1, LocalDateTime.now(), "책 제목1", "https://imageurl1.com");
+          new AbandonResponse(1, LocalDateTime.parse("2022-04-30T21:04:32"), "미움받을용기",
+              "https://imageurl1.com");
       BookDto.AbandonResponse response2 =
-          new AbandonResponse(12, LocalDateTime.now(), "책 제목12", "https://imageurl12.com");
+          new AbandonResponse(12, LocalDateTime.parse("2022-05-13T01:44:02"), "차라투스트라는 이렇게 말했다.",
+              "https://imageurl12.com");
       Responses.add(response1);
       Responses.add(response2);
       return Responses;
