@@ -13,7 +13,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.google.gson.Gson;
-import com.seollem.server.book.Book;
 import com.seollem.server.book.Book.BookStatus;
 import com.seollem.server.book.BookController;
 import com.seollem.server.book.BookDto;
@@ -46,46 +45,38 @@ public class PostBook extends TestSetUpForBookUtil {
     when(memberService.findVerifiedMemberByEmail(Mockito.anyString())).thenReturn(
         StubDataUtil.MockMember.getMember());
 
-    when(bookService.verifyBookStatus(Mockito.any())).thenReturn(new Book());
+    when(bookService.verifyBookStatus(Mockito.any())).thenReturn(StubDataUtil.MockBook.getBook());
 
-    when(bookService.createBook(Mockito.any())).thenReturn(new Book());
+    when(bookService.createBook(Mockito.any())).thenReturn(StubDataUtil.MockBook.getBook());
 
     when(bookMapper.BookToBookPostResponse(Mockito.any())).thenReturn(
         StubDataUtil.MockBook.getBookPostResponse());
 
     BookDto.Post post =
-        new BookDto.Post("미움받을 용기", "아들러", "https://imageurl.com", 481, 12, "한빛출판사", BookStatus.YET,
-            LocalDateTime.now(), LocalDateTime.now());
+        new BookDto.Post("미움받을용기", "아들러", "https://imageurl1.com", 406, 214, "한빛출판사",
+            BookStatus.DONE, LocalDateTime.parse("2022-10-02T11:09:10"),
+            LocalDateTime.parse("2022-10-13T21:04:32"));
     String content = gson.toJson(post);
 
     //when, then
     this.mockMvc.perform(post("/books").content(content).contentType(MediaType.APPLICATION_JSON)
             .characterEncoding(Charset.defaultCharset())
-            .header("Authorization", "Bearer JWT Access Token"))
-        .andDo(print())
-        .andExpect(status().isCreated())
-        .andDo(document("PostBook",
-            requestHeaders(
-                headerWithName("Authorization").description("JWT Access Token")
-            ),
-            requestFields(
-                fieldWithPath("title").description("책 제목"),
+            .header("Authorization", "Bearer JWT Access Token")).andDo(print())
+        .andExpect(status().isCreated()).andDo(document("PostBook",
+            requestHeaders(headerWithName("Authorization").description("Bearer JWT Access Token")),
+            requestFields(fieldWithPath("title").description("제목"),
                 fieldWithPath("author").description("저자"),
                 fieldWithPath("cover").description("표지 이미지 URL"),
-                fieldWithPath("itemPage").description("책 전체 페이지 수"),
+                fieldWithPath("itemPage").description("전체 페이지 수"),
                 fieldWithPath("currentPage").description("현재 읽고 있는 페이지"),
                 fieldWithPath("publisher").description("출판사"),
-                fieldWithPath("bookStatus").description("읽기 상태 : 읽기 전, 읽는 중, 읽기 완료"),
-                fieldWithPath("readStartDate").description("읽기 시작 일자"),
-                fieldWithPath("readEndDate").description("읽기 완료 일자")
-            ),
-            responseFields(
-                fieldWithPath("bookId").description("Book-id"),
-                fieldWithPath("title").description("책 제목"),
-                fieldWithPath("author").description("저자"),
+                fieldWithPath("bookStatus").description("책 읽기 상태 : YET(읽기 전), ING(읽는 중), DONE(읽기 완료)"),
+                fieldWithPath("readStartDate").description("읽기 시작한 일자"),
+                fieldWithPath("readEndDate").description("읽기 완료한 일자")),
+            responseFields(fieldWithPath("bookId").description("책 ID"),
+                fieldWithPath("title").description("제목"), fieldWithPath("author").description("저자"),
                 fieldWithPath("cover").description("표지 이미지 URL"),
-                fieldWithPath("bookStatus").description("읽기 상태 : 읽기 전, 읽는 중, 읽기 완료")
-            )
-        ));
+                fieldWithPath("bookStatus").description(
+                    "책 읽기 상태 : YET(읽기 전), ING(읽는 중), DONE(읽기 완료)"))));
   }
 }

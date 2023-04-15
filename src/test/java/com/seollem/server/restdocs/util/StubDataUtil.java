@@ -108,7 +108,7 @@ public class StubDataUtil {
     }
 
     public static BookDto.PostResponse getBookPostResponse() {
-      return new BookDto.PostResponse(1, "미움받을 용기", "아들러", "https://imageURL.com", BookStatus.YET);
+      return new BookDto.PostResponse(1, "미움받을용기", "아들러", "https://imageurl1.com", BookStatus.DONE);
     }
 
     public static BookDto.PatchResponse getBookPatchResponse() {
