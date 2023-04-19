@@ -14,7 +14,7 @@ public class FileUploadService {
 
   private final AmazonS3Service s3Service;
 
-  public String createImageMemo(MultipartFile file) {
+  public String createImage(MultipartFile file) {
     String fileName = createFileName(file.getOriginalFilename());
     ObjectMetadata objectMetadata = new ObjectMetadata();
     objectMetadata.setContentLength(file.getSize());

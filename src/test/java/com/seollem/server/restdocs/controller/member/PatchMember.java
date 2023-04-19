@@ -80,12 +80,17 @@ public class PatchMember extends WebMvcTestSetUpUtil {
             ),
             requestFields(
                 fieldWithPath("name").description("변경할 이름"),
-                fieldWithPath("password").description("변경할 비밀번호 : 알파벳, 숫자, 특수문자 포함 6자 이상이어야 합니다.")
+                fieldWithPath("password").description("변경할 비밀번호 : 알파벳, 숫자, 특수문자 포함 6자 이상이어야 합니다."),
+                fieldWithPath("url").description("이미지"),
+                fieldWithPath("profile").description("프로필")
+
             ),
             responseFields(
                 fieldWithPath("email").description("이메일"),
                 fieldWithPath("name").description("변경된 이름"),
-                fieldWithPath("updatedAt").description("변경된 일자")
+                fieldWithPath("updatedAt").description("변경된 일자"),
+                fieldWithPath("url").description("이미지"),
+                fieldWithPath("profile").description("프로필")
             )
         ));
 

@@ -31,6 +31,7 @@ public class MemberService {
     Optional.ofNullable(member.getName()).ifPresent(name -> findMember.setName(name));
     Optional.ofNullable(member.getPassword())
         .ifPresent(password -> findMember.setPassword(bCryptPasswordEncoder.encode(password)));
+    Optional.ofNullable(member.getUrl()).ifPresent(url ->findMember.setUrl(url));
 
     return memberRepository.save(findMember);
   }
