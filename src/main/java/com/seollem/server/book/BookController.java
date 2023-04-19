@@ -264,7 +264,7 @@ public class BookController {
 
     Book book = bookMapper.BookPatchToBook(requestBody);
 
-    Book verifiedBookStatusBook = bookService.verifyBookStatus(book);
+    Book verifiedBookStatusBook = bookService.verifyPatchBookStatus(book);
     bookService.verifyMemberHasBook(bookId, member.getMemberId());
 
     verifiedBookStatusBook.setBookId(bookId);

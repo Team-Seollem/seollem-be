@@ -150,6 +150,28 @@ public class BookService {
     return book;
   }
 
+  public Book verifyPatchBookStatus(Book book) {
+    if (book.getBookStatus() == null) {
+      book.setReadStartDate(null);
+      book.setReadEndDate(null);
+    } else if (book.getBookStatus() == Book.BookStatus.YET) {
+      book.setReadStartDate(null);
+      book.setReadEndDate(null);
+    } else if (book.getBookStatus() == Book.BookStatus.ING) {
+      book.setReadEndDate(null);
+      if (book.getReadStartDate() == null) {
+        throw new BusinessLogicException(ExceptionCode.BOOK_STATUS_WRONG);
+      }
+    } else if (book.getBookStatus() == Book.BookStatus.DONE) {
+      if (book.getReadStartDate() == null || book.getReadEndDate() == null) {
+        throw new BusinessLogicException(ExceptionCode.BOOK_STATUS_WRONG);
+      }
+    } else {
+      throw new BusinessLogicException(ExceptionCode.BOOK_STATUS_WRONG);
+    }
+    return book;
+  }
+
   public void modifyCreateDate(LocalDateTime time, long bookId) {
     bookRepository.modifyCreateDate(time, bookId);
   }
