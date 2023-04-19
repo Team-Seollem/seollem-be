@@ -42,8 +42,6 @@ public class Memo extends Auditable {
 
   private int memoBookPage;
 
-  private int memoLikesCount;
-
   @Enumerated(EnumType.STRING)
   private MemoAuthority memoAuthority;
 

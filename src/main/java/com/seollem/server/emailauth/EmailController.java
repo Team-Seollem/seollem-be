@@ -21,11 +21,12 @@ public class EmailController {
   private final EmailService emailService;
   private final MemberService memberService;
 
-  @PostMapping()
-  public ResponseEntity sendAuthCodeEmail(@Valid @RequestBody EmailRequestDto requestedEmail) {
+  @PostMapping
+  public ResponseEntity sendAuthCodeEmail(
+      @Valid @RequestBody EmailDto.JoinAuthCodeReq requestedEmail) {
     memberService.verifyExistsEmail(requestedEmail.getJoinAuthCodeEmail());
     emailService.send(requestedEmail.getJoinAuthCodeEmail());
 
-    return new ResponseEntity(HttpStatus.CREATED);
+    return new ResponseEntity<>(HttpStatus.CREATED);
   }
 }

@@ -14,6 +14,7 @@ public class BookDto {
   @Setter
   @Getter
   @NoArgsConstructor
+  @AllArgsConstructor
   public static class Post {
 
     @NotBlank
@@ -68,7 +69,7 @@ public class BookDto {
     private int itemPage;
     private LocalDateTime readStartDate;
     private LocalDateTime readEndDate;
-    private String bookStatus;
+    private Book.BookStatus bookStatus;
     private int star;
     private int currentPage;
   }
@@ -91,7 +92,6 @@ public class BookDto {
     private Book.BookStatus bookStatus;
     private LocalDateTime readStartDate;
     private LocalDateTime readEndDate;
-
     private List<MemoDto.Response> memosList;
     private int memoCount;
   }
@@ -104,7 +104,6 @@ public class BookDto {
 
     private long bookId;
     private List<MemoDto.Response> memosList;
-    private int memoCount;
   }
 
   @Setter
@@ -152,7 +151,7 @@ public class BookDto {
   @Getter
   @AllArgsConstructor
   @NoArgsConstructor
-  public static class MemoBooksResponse {
+  public static class BooksHaveMemoResponse {
 
     private long bookId;
     private String title;

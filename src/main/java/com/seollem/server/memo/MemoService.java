@@ -6,7 +6,6 @@ import com.seollem.server.exception.BusinessLogicException;
 import com.seollem.server.exception.ExceptionCode;
 import com.seollem.server.member.Member;
 import com.seollem.server.memo.Memo.MemoAuthority;
-import com.seollem.server.util.CustomBeanUtils;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +21,6 @@ public class MemoService {
 
   public final MemoRepository memoRepository;
 
-  private final CustomBeanUtils<Memo> beanUtils;
-
   private final BookService bookService;
 
   private final MemoMapper mapper;
@@ -34,23 +31,34 @@ public class MemoService {
     return saveMemo;
   }
 
-  public Memo updateMemo(Memo memo) {
-    Memo findMemo = findVerifiedMemo(memo.getMemoId());
-    Memo updatingMemo = beanUtils.copyNonNullProperties(memo, findMemo);
-    return memoRepository.save(updatingMemo);
+  public Memo updateMemo(Memo patchMemo) {
+    Memo findMemo = findVerifiedMemo(patchMemo.getMemoId());
+
+    Optional.ofNullable(patchMemo.getMemoType())
+        .ifPresent(memoType -> findMemo.setMemoType(memoType));
+    Optional.ofNullable(patchMemo.getMemoContent())
+        .ifPresent(memoContent -> findMemo.setMemoContent(memoContent));
+    Optional.ofNullable(patchMemo.getMemoAuthority())
+        .ifPresent(memoAuthority -> findMemo.setMemoAuthority(memoAuthority));
+    if (patchMemo.getMemoBookPage() != 0) {
+      findMemo.setMemoBookPage(patchMemo.getMemoBookPage());
+    }
+
+    return memoRepository.save(findMemo);
   }
 
-  public List<Memo> randomMemo(Member member) {
-    List<Memo> random = memoRepository.findRandomMemo(member);
+  public Memo randomMemo(Member member) {
+    Memo random = memoRepository.findRandomMemo(member);
     return random;
   }
 
-  public List<Memo> getMemos(Book book) {
+  public List<Memo> getMemosWithBook(Book book) {
     List<Memo> memoList = memoRepository.findAllByBook(book);
     return memoList;
   }
 
-  public Page<Memo> getBookAndMemoTypes(int page, int size, Book book, Memo.MemoType memoType) {
+  public Page<Memo> getMemosWithBookAndMemoTypes(int page, int size, Book book,
+      Memo.MemoType memoType) {
     Page<Memo> memoTypeList =
         memoRepository.findAllByBookAndMemoType(
             PageRequest.of(page, size, Sort.by("memoId").descending()), book, memoType);
@@ -58,23 +66,29 @@ public class MemoService {
     return memoTypeList;
   }
 
-  public Page<Memo> getBookAndMemo(int page, int size, Book book) {
+  public Page<Memo> getMemosWithBook(int page, int size, Book book) {
     Page<Memo> memoTypeList =
         memoRepository.findAllByBook(
             PageRequest.of(page, size, Sort.by("memoId").descending()), book);
     return memoTypeList;
   }
 
-  public List<Memo> getMemoWithAuthority(MemoAuthority memoAuthority) {
+  public List<Memo> getMemoWithBookAndMemoAuthority(Book book, MemoAuthority memoAuthority) {
     List<Memo> list =
-        memoRepository.findAllByMemoAuthority(memoAuthority);
+        memoRepository.findAllByBookAndMemoAuthority(book, memoAuthority);
     return list;
+  }
+
+  public int getMemoCountWithBook(Book book) {
+    int memoCount = memoRepository.countMemoWithBook(book);
+
+    return memoCount;
+
   }
 
   public void deleteMemo(long memoId) {
     Memo memo = findVerifiedMemo(memoId);
     Book book = memo.getBook();
-    book.setMemoCount(book.getMemoCount() - 1);
 
     memoRepository.delete(memo);
   }
@@ -92,7 +106,6 @@ public class MemoService {
   // 책이 있는지 확인
   private void verifyMemo(Memo memo) {
     Book book = bookService.findVerifiedBookById(memo.getBook().getBookId());
-    book.setMemoCount(book.getMemoCount() + 1);
     bookService.updateBook(book);
   }
 
