@@ -45,7 +45,6 @@ public class MemberController {
       @RequestHeader Map<String, Object> requestHeader,
       @Valid @RequestBody MemberDto.Patch requestBody) {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
-    System.out.println(email);
     if (email.equals("starrypro@gmail.com")) {
       return new ResponseEntity<>("게스트용 아이디는 수정할 수 없어요", HttpStatus.BAD_REQUEST);
     } else {
@@ -64,7 +63,6 @@ public class MemberController {
   @DeleteMapping("/me")
   public ResponseEntity patchMember(@RequestHeader Map<String, Object> requestHeader) {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
-    System.out.println(email);
 
     if (email.equals("starrypro@gmail.com")) {
       return new ResponseEntity<>("게스트용 아이디는 삭제할 수 없어요", HttpStatus.BAD_REQUEST);

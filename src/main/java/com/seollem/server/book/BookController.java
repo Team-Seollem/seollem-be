@@ -1,6 +1,9 @@
 package com.seollem.server.book;
 
+import com.seollem.server.book.BookDto.BooksHaveMemoResponse;
 import com.seollem.server.globaldto.MultiResponseDto;
+import com.seollem.server.globaldto.MultiResponseDtoForBooksHaveMemo;
+import com.seollem.server.globaldto.PageInfo;
 import com.seollem.server.member.Member;
 import com.seollem.server.member.MemberService;
 import com.seollem.server.memo.Memo;
@@ -9,11 +12,16 @@ import com.seollem.server.memo.MemoDto;
 import com.seollem.server.memo.MemoMapper;
 import com.seollem.server.memo.MemoService;
 import com.seollem.server.memolikes.MemoLikesService;
+import com.seollem.server.util.GetCalenderBookUtil;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -45,9 +53,10 @@ public class BookController {
   private final MemoService memoService;
   private final MemoMapper memoMapper;
   private final MemoLikesService memoLikesService;
+  private final GetCalenderBookUtil getCalenderBookUtil;
 
 
-  // 서재 뷰 조회
+  // 책 Library 조회
   @GetMapping("/library")
   public ResponseEntity getLibrary(
       @RequestHeader Map<String, Object> requestHeader,
@@ -62,10 +71,14 @@ public class BookController {
             page - 1, size, member, bookStatus, "bookId");
     List<Book> books = pageBooks.getContent();
 
-    //        List<Book> classifiedBooks = bookService.classifyByBookStatus(books, bookStatus);
+    List<BookDto.LibraryResponse> responseList = bookMapper.BooksToLibraryResponse(books);
+
+    for (int i = 0; i < books.size(); i++) {
+      responseList.get(i).setMemoCount(memoService.getMemoCountWithBook(books.get(i)));
+    }
 
     return new ResponseEntity<>(
-        new MultiResponseDto<>(bookMapper.BooksToLibraryResponse(books), pageBooks),
+        new MultiResponseDto<>(responseList, pageBooks),
         HttpStatus.OK);
   }
 
@@ -74,13 +87,18 @@ public class BookController {
   public ResponseEntity getCalender(
       @RequestHeader Map<String, Object> requestHeader,
       @Positive @RequestParam int page,
-      @Positive @RequestParam int size) {
+      @Positive @RequestParam int size,
+      @Positive @RequestParam int year, @Min(1) @Max(12) @RequestParam int month) {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
 
+    ArrayList<LocalDateTime> calenderPeriod =
+        getCalenderBookUtil.getCalenderBookPeriod(year, month);
+
     Page<Book> pageBooks =
-        bookService.findVerifiedBooksByMemberAndBookStatus(
-            page - 1, size, member, Book.BookStatus.DONE, "readEndDate");
+        bookService.findCalenderBooks(
+            page - 1, size, member, calenderPeriod.get(0), calenderPeriod.get(1),
+            Book.BookStatus.DONE, "read_end_date");
     List<Book> books = pageBooks.getContent();
 
     return new ResponseEntity<>(
@@ -93,11 +111,13 @@ public class BookController {
   public ResponseEntity getAbandon(
       @RequestHeader Map<String, Object> requestHeader,
       @Positive @RequestParam int page,
-      @Positive @RequestParam int size) {
+      @Positive @RequestParam int size
+  ) {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
 
-    Page<Book> pageBooks = bookService.findAbandonedBooks(page - 1, size, member);
+    Page<Book> pageBooks =
+        bookService.findAbandonedBooks(page - 1, size, member);
     List<Book> books = pageBooks.getContent();
 
     //        List<Book> abandonedBooks = bookService.findAbandonedBooks(books);
@@ -107,20 +127,43 @@ public class BookController {
         HttpStatus.OK);
   }
 
-  // 나만의 작은 책 전체 조회 (메모 존재하는 책들만 조회)
+  // 메모 존재하는 책 조회
   @GetMapping("/memo-books")
-  public ResponseEntity getMemoBooks(
+  public ResponseEntity getBooksHaveMemo(
       @RequestHeader Map<String, Object> requestHeader,
       @Positive @RequestParam int page,
       @Positive @RequestParam int size) {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
 
-    Page<Book> pageBooks = bookService.findMemoBooks(page - 1, size, member);
-    List<Book> books = pageBooks.getContent();
+    List<Book> books = bookService.findVerifiedBooksByMember(member);
+    List<Book> filteredBooks =
+        books.stream().filter(book -> memoService.getMemoCountWithBook(book) > 0)
+            .collect(Collectors.toList());
+
+    List<BooksHaveMemoResponse> responseList = bookMapper.BooksToMemoBooksResponse(filteredBooks);
+
+    for (int i = 0; i < filteredBooks.size(); i++) {
+      responseList.get(i).setMemoCount(memoService.getMemoCountWithBook(filteredBooks.get(i)));
+    }
+
+    List<BooksHaveMemoResponse> pagedResponseList = new ArrayList<>();
+    for (int i = size * (page - 1); i < size * (page - 1) + size; i++) {
+      if (i > responseList.size() - 1) {
+        break;
+      }
+      pagedResponseList.add(responseList.get(i));
+    }
+
+    PageInfo pageInfo = new PageInfo().builder()
+        .page(page)
+        .size(size)
+        .totalElements(responseList.size())
+        .totalPages(responseList.size() / size + 1)
+        .build();
 
     return new ResponseEntity<>(
-        new MultiResponseDto<>(bookMapper.BooksToMemoBooksResponse(books), pageBooks),
+        new MultiResponseDtoForBooksHaveMemo<>(pagedResponseList, pageInfo),
         HttpStatus.OK);
   }
 
@@ -139,22 +182,28 @@ public class BookController {
 
     BookDto.DetailResponse result = bookMapper.BookToBookDetailResponse(book);
 
+    result.setMemoCount(memoService.getMemoCountWithBook(book));
+
     List<Memo> memos;
     if (memoAuthority == MemoAuthority.ALL) {
-      memos = memoService.getMemos(book);
+      memos = memoService.getMemosWithBook(book);
     } else {
-      memos = memoService.getMemoWithAuthority(memoAuthority);
+      memos = memoService.getMemoWithBookAndMemoAuthority(book, memoAuthority);
     }
 
-    memos.stream()
-        .forEach(memo -> memo.setMemoLikesCount(memoLikesService.getMemoLikesCountWithMemo(memo)));
+    List<MemoDto.Response> responseList = memoMapper.memoToMemoResponses(memos);
 
-    result.setMemosList(memoMapper.memoToMemoResponses(memos));
+    for (int i = 0; i < memos.size(); i++) {
+      responseList.get(i)
+          .setMemoLikesCount(memoLikesService.getMemoLikesCountWithMemo(memos.get(i)));
+    }
+
+    result.setMemosList(responseList);
 
     return new ResponseEntity(result, HttpStatus.OK);
   }
 
-  // 책 메모 조회 - 타입별
+  // 책의 메모 조회 - 타입별
   @GetMapping("/{book-id}/memos")
   public ResponseEntity getBookMemos(
       @RequestHeader Map<String, Object> requestHeader,
@@ -170,20 +219,20 @@ public class BookController {
 
     Page<Memo> memoTypeList;
     if (memoType == Memo.MemoType.ALL) {
-      memoTypeList = memoService.getBookAndMemo(page - 1, size, book);
+      memoTypeList = memoService.getMemosWithBook(page - 1, size, book);
     } else {
-      memoTypeList = memoService.getBookAndMemoTypes(page - 1, size, book, memoType);
+      memoTypeList = memoService.getMemosWithBookAndMemoTypes(page - 1, size, book, memoType);
     }
     List<Memo> memos = memoTypeList.getContent();
-    List<MemoDto.Response> memoResponseList = memoMapper.memoToMemoResponses(memos);
+    List<MemoDto.Response> responseList = memoMapper.memoToMemoResponses(memos);
     for (int i = 0; i < memos.size(); i++) {
-      memoResponseList.get(i)
+      responseList.get(i)
           .setMemoLikesCount(memoLikesService.getMemoLikesCountWithMemo(memos.get(i)));
     }
     //        BookDto.MemosOfBook response = bookMapper.BookToMemosOfBookResponse(book);
     //        response.setMemosList(memoTypeList);
     return new ResponseEntity<>(
-        new MultiResponseDto<>(memoResponseList, memoTypeList),
+        new MultiResponseDto<>(responseList, memoTypeList),
         HttpStatus.OK);
   }
 
