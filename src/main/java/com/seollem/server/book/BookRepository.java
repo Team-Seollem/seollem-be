@@ -2,7 +2,6 @@ package com.seollem.server.book;
 
 import com.seollem.server.member.Member;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,24 +18,9 @@ public interface BookRepository extends JpaRepository<Book, Long> {
   Optional<Book> findByTitle(String title, long memberId);
 
   //    Optional<List<Book>>  findByMember(Member member);
-
-  @Query(
-      value =
-          "SELECT * FROM book WHERE MEMBER_ID = ?1 AND BOOK_STATUS = ?2 AND READ_END_DATE > ?3 AND READ_END_DATE < ?4",
-      countQuery =
-          "SELECT count(*) FROM book WHERE MEMBER_ID = ?1 AND BOOK_STATUS = ?2 AND READ_END_DATE > ?3 AND READ_END_DATE < ?4",
-      nativeQuery = true)
-  Optional<Page<Book>> findCalender(
-      Member member, int bookStatusToInt, LocalDateTime before, LocalDateTime after,
-      Pageable pageable);
-
   Page<Book> findAllByMemberAndBookStatus(
-      Member member, Book.BookStatus bookStatus, Pageable pageable);
+      Pageable pageable, Member member, Book.BookStatus bookStatus);
 
-
-  List<Book> findAllByMember(Member member);
-
-  //AND CREATED_AT > ?2 AND CREATED_AT < ?3
   @Query(
       value =
           "SELECT * FROM book WHERE MEMBER_ID = ?1 AND BOOK_STATUS = 0 AND NOW() >"

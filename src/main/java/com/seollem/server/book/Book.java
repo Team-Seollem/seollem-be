@@ -43,6 +43,7 @@ public class Book extends Auditable {
   private BookStatus bookStatus;
   private LocalDateTime readStartDate;
   private LocalDateTime readEndDate;
+  private int memoCount;
 
   @ManyToOne
   @JoinColumn(name = "MEMBER_ID")
