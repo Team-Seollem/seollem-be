@@ -32,6 +32,9 @@ public class MemoDto {
   @NoArgsConstructor
   public static class Patch {
 
+    private long memoId;
+
+    @NotBlank(message = "메모는 공백이 아니어야 합니다.")
     private String memoContent;
 
     private Memo.MemoType memoType;
@@ -61,22 +64,6 @@ public class MemoDto {
   @Setter
   @AllArgsConstructor
   @NoArgsConstructor
-  public static class PostResponse {
-
-    private long memoId;
-    private Memo.MemoType memoType;
-    private String memoContent;
-    private int memoBookPage;
-    private MemoAuthority memoAuthority;
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-  }
-
-  @Getter
-  @Setter
-  @AllArgsConstructor
-  @NoArgsConstructor
   public static class Response {
 
     private long memoId;
@@ -84,18 +71,9 @@ public class MemoDto {
     private String memoContent;
     private int memoBookPage;
     private MemoAuthority memoAuthority;
-    private int memoLikesCount;
+    private long memoLikesCount;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-  }
-
-  @Getter
-  @Setter
-  @AllArgsConstructor
-  @NoArgsConstructor
-  public static class ImageMemoResponse {
-
-    private String url;
   }
 }

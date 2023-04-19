@@ -10,7 +10,6 @@ import com.seollem.server.jjwt.jwt.JwtTokenizer;
 import com.seollem.server.jjwt.service.TokenService;
 import com.seollem.server.jjwt.utils.RoleAuthorityUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,8 +24,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  @Autowired
-  private CorsConfig corsConfig;
+  private final CorsConfig corsConfig;
 
   private final JwtTokenizer jwtTokenizer;
 
@@ -61,8 +59,6 @@ public class SecurityConfig {
         .antMatchers("/ext-lib/**")
         .permitAll()
         .antMatchers("/email/**")
-        .permitAll()
-        .antMatchers("/docs/**")
         .permitAll()
         //                .antMatchers("/api/v1/admin/**")
         //                .access("hasRole('ROLE_ADMIN')")
