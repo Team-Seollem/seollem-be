@@ -9,6 +9,7 @@ public enum ExceptionCode {
   BOOK_NOT_FOUND(404, "Book not found"),
   BOOK_EXISTS(400, "Book already exists"),
 
+  BOOK_NOT_FOUND_PERIOD(404, "Books not found in period"),
 
   BOOK_STATUS_WRONG(400, "Wrong value in bookStatus and readDate"),
   NOT_MEMBER_BOOK(400, "Not member's book"),

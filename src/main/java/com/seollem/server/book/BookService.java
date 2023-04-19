@@ -4,6 +4,7 @@ import com.seollem.server.exception.BusinessLogicException;
 import com.seollem.server.exception.ExceptionCode;
 import com.seollem.server.member.Member;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,18 +32,21 @@ public class BookService {
     Optional.ofNullable(book.getAuthor()).ifPresent(author -> findBook.setAuthor(author));
     Optional.ofNullable(book.getPublisher())
         .ifPresent(publisher -> findBook.setPublisher(publisher));
-    Optional.ofNullable(book.getItemPage())
-        .ifPresent(itemPage -> findBook.setItemPage(itemPage));
     Optional.ofNullable(book.getReadStartDate())
         .ifPresent(readStartDate -> findBook.setReadStartDate(readStartDate));
     Optional.ofNullable(book.getReadEndDate())
         .ifPresent(readEndDate -> findBook.setReadEndDate(readEndDate));
     Optional.ofNullable(book.getBookStatus())
         .ifPresent(bookStatus -> findBook.setBookStatus(bookStatus));
-    Optional.ofNullable(book.getStar()).ifPresent(star -> findBook.setStar(star));
-    Optional.ofNullable(book.getCurrentPage())
-        .ifPresent(currentPage -> findBook.setCurrentPage(currentPage));
-
+    if (book.getCurrentPage() != 0) {
+      findBook.setCurrentPage(book.getCurrentPage());
+    }
+    if (book.getItemPage() != 0) {
+      findBook.setItemPage(book.getItemPage());
+    }
+    if (book.getStar() != 0) {
+      findBook.setStar(book.getStar());
+    }
     return bookRepository.save(findBook);
   }
 
@@ -64,7 +68,28 @@ public class BookService {
       int page, int size, Member member, Book.BookStatus bookStatus, String sort) {
     Page<Book> books =
         bookRepository.findAllByMemberAndBookStatus(
-            PageRequest.of(page, size, Sort.by(sort).descending()), member, bookStatus);
+            member, bookStatus, PageRequest.of(page, size, Sort.by(sort).descending()));
+
+    return books;
+  }
+
+
+  public List<Book> findVerifiedBooksByMember(Member member) {
+    List<Book> books =
+        bookRepository.findAllByMember(member);
+
+    return books;
+  }
+
+  public Page<Book> findCalenderBooks(
+      int page, int size, Member member, LocalDateTime before, LocalDateTime after,
+      Book.BookStatus bookStatus, String sort) {
+    Optional<Page<Book>> optionalBooks =
+        bookRepository.findCalender(
+            member, bookStatus.ordinal(), before, after,
+            PageRequest.of(page, size, Sort.by(sort).descending()));
+    Page<Book> books = optionalBooks.orElseThrow(
+        () -> new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND_PERIOD));
 
     return books;
   }
@@ -72,7 +97,8 @@ public class BookService {
   public Page<Book> findAbandonedBooks(int page, int size, Member member) {
     Page<Book> books =
         bookRepository.findAbandon(
-            member, PageRequest.of(page, size, Sort.by("BOOK_ID").descending()));
+            member,
+            PageRequest.of(page, size, Sort.by("BOOK_ID").descending()));
 
     return books;
   }
