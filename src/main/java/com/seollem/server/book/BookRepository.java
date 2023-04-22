@@ -20,37 +20,24 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
   //    Optional<List<Book>>  findByMember(Member member);
 
-  @Query(
-      value =
-          "SELECT * FROM book WHERE MEMBER_ID = ?1 AND BOOK_STATUS = ?2 AND READ_END_DATE > ?3 AND READ_END_DATE < ?4",
-      countQuery =
-          "SELECT count(*) FROM book WHERE MEMBER_ID = ?1 AND BOOK_STATUS = ?2 AND READ_END_DATE > ?3 AND READ_END_DATE < ?4",
-      nativeQuery = true)
-  Optional<Page<Book>> findCalender(
-      Member member, int bookStatusToInt, LocalDateTime before, LocalDateTime after,
-      Pageable pageable);
+  @Query(value = "SELECT * FROM book WHERE MEMBER_ID = ?1 AND BOOK_STATUS = ?2 AND READ_END_DATE > ?3 AND READ_END_DATE < ?4 ORDER BY READ_END_DATE", nativeQuery = true)
+  Optional<List<Book>> findCalender(Member member, int bookStatusToInt, LocalDateTime before,
+      LocalDateTime after);
 
-  Page<Book> findAllByMemberAndBookStatus(
-      Member member, Book.BookStatus bookStatus, Pageable pageable);
+  Page<Book> findAllByMemberAndBookStatus(Member member, Book.BookStatus bookStatus,
+      Pageable pageable);
 
 
   List<Book> findAllByMember(Member member);
 
   //AND CREATED_AT > ?2 AND CREATED_AT < ?3
-  @Query(
-      value =
-          "SELECT * FROM book WHERE MEMBER_ID = ?1 AND BOOK_STATUS = 0 AND NOW() >"
-              + " DATE_ADD(CREATED_AT, INTERVAL +3 MONTH)",
-      countQuery =
-          "SELECT count(*) FROM book WHERE MEMBER_ID = ?1 AND BOOK_STATUS = 0 AND NOW() >"
-              + " DATE_ADD(CREATED_AT, INTERVAL +3 MONTH)",
-      nativeQuery = true)
+  @Query(value = "SELECT * FROM book WHERE MEMBER_ID = ?1 AND BOOK_STATUS = 0 AND NOW() >"
+      + " DATE_ADD(CREATED_AT, INTERVAL +3 MONTH)", countQuery =
+      "SELECT count(*) FROM book WHERE MEMBER_ID = ?1 AND BOOK_STATUS = 0 AND NOW() >"
+          + " DATE_ADD(CREATED_AT, INTERVAL +3 MONTH)", nativeQuery = true)
   Page<Book> findAbandon(Member member, Pageable pageable);
 
-  @Query(
-      value = "SELECT * FROM book WHERE MEMBER_ID = ?1 AND MEMO_COUNT != 0",
-      countQuery = "SELECT count(*) FROM book WHERE MEMBER_ID = ?1 AND MEMO_COUNT != 0",
-      nativeQuery = true)
+  @Query(value = "SELECT * FROM book WHERE MEMBER_ID = ?1 AND MEMO_COUNT != 0", countQuery = "SELECT count(*) FROM book WHERE MEMBER_ID = ?1 AND MEMO_COUNT != 0", nativeQuery = true)
   Page<Book> findBooksHaveMemo(Member member, Pageable pageable);
 
   @Transactional
