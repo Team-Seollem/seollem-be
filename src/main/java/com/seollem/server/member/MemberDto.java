@@ -48,7 +48,7 @@ public class MemberDto {
         message = "비밀번호는 알파벳, 숫자, 특수문자 포함 6자 이상이어야 합니다.")
     private String password;
 
-    private String profile;
+    private String content;
 
     private String url;
   }
@@ -74,7 +74,7 @@ public class MemberDto {
     private String email;
     private String name;
     private LocalDateTime updatedAt;
-    private String profile;
+    private String content;
     private String url;
   }
 
