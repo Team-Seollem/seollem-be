@@ -37,10 +37,8 @@ public class Member extends Auditable {
   @Column(nullable = false)
   private String password;
   private String roles;
-
- private String profile;
-
- private String url;
+  private String content;
+  private String url;
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
   private List<Book> books = new ArrayList<>();

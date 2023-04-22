@@ -1,7 +1,6 @@
 package com.seollem.server.member;
 
 import com.seollem.server.file.FileUploadService;
-import com.seollem.server.memo.MemoDto;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
 import java.util.Map;
 import javax.validation.Valid;
@@ -27,13 +26,13 @@ public class MemberController {
   private final MemberMapper memberMapper;
   private final MemberService memberService;
   private final GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil;
-
   private final FileUploadService fileUploadService;
 
   public MemberController(
       MemberMapper memberMapper,
       MemberService memberService,
-      GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil, FileUploadService fileUploadService) {
+      GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil,
+      FileUploadService fileUploadService) {
     this.memberMapper = memberMapper;
     this.memberService = memberService;
     this.getEmailFromHeaderTokenUtil = getEmailFromHeaderTokenUtil;
@@ -41,15 +40,14 @@ public class MemberController {
   }
 
 
-  @PostMapping("/image-member")
-  public ResponseEntity postImageMemo(@RequestHeader Map<String, Object> requestHeader,
-                                      @RequestPart MultipartFile file) {
+  @PostMapping("/member-image")
+  public ResponseEntity postMemberImage(@RequestHeader Map<String, Object> requestHeader,
+      @RequestPart MultipartFile file) {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
 
     String url = fileUploadService.createImage(file);
-    member.setUrl(url);
-    memberService.updateMember(member);
+    memberService.updateMemberImage(member, url);
 
     MemberDto.ImageMemberResponse imageMemberResponse = new MemberDto.ImageMemberResponse(url);
 
@@ -61,7 +59,6 @@ public class MemberController {
   public ResponseEntity getMember(@RequestHeader Map<String, Object> requestHeader) {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
-
 
     return new ResponseEntity<>(memberMapper.memberToMemberGetResponse(member), HttpStatus.OK);
   }

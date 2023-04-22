@@ -31,9 +31,15 @@ public class MemberService {
     Optional.ofNullable(member.getName()).ifPresent(name -> findMember.setName(name));
     Optional.ofNullable(member.getPassword())
         .ifPresent(password -> findMember.setPassword(bCryptPasswordEncoder.encode(password)));
-    Optional.ofNullable(member.getUrl()).ifPresent(url ->findMember.setUrl(url));
+    Optional.ofNullable(member.getUrl()).ifPresent(url -> findMember.setUrl(url));
+    Optional.ofNullable(member.getContent()).ifPresent(content -> findMember.setContent(content));
 
     return memberRepository.save(findMember);
+  }
+
+  public Member updateMemberImage(Member member, String url) {
+    member.setUrl(url);
+    return memberRepository.save(member);
   }
 
   public void deleteMember(String email) {
