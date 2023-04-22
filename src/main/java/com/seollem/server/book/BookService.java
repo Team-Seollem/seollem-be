@@ -57,30 +57,39 @@ public class BookService {
 
   public Book findVerifiedBookById(long bookId) {
     Optional<Book> optionalBookDetail = bookRepository.findById(bookId);
-    Book book =
-        optionalBookDetail.orElseThrow(
-            () -> new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND));
+    Book book = optionalBookDetail.orElseThrow(
+        () -> new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND));
 
     return book;
   }
 
-  public Page<Book> findVerifiedBooksByMemberAndBookStatus(
-      int page, int size, Member member, Book.BookStatus bookStatus, String sort) {
-    Page<Book> books =
-        bookRepository.findAllByMemberAndBookStatus(
-            member, bookStatus, PageRequest.of(page, size, Sort.by(sort).descending()));
+  public Page<Book> findVerifiedBooksByMemberAndBookStatus(int page, int size, Member member,
+      Book.BookStatus bookStatus, String sort) {
+    Page<Book> books = bookRepository.findAllByMemberAndBookStatus(member, bookStatus,
+        PageRequest.of(page, size, Sort.by(sort).descending()));
 
     return books;
   }
 
 
   public List<Book> findVerifiedBooksByMember(Member member) {
-    List<Book> books =
-        bookRepository.findAllByMember(member);
+    List<Book> books = bookRepository.findAllByMember(member);
 
     return books;
   }
 
+  public List<Book> findCalenderBooks(Member member, LocalDateTime before, LocalDateTime after,
+      Book.BookStatus bookStatus) {
+    Optional<List<Book>> optionalBooks =
+        bookRepository.findCalender(member, bookStatus.ordinal(), before, after);
+    List<Book> books = optionalBooks.orElseThrow(
+        () -> new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND_PERIOD));
+
+    return books;
+  }
+
+  // 책 Calender 조회에서 페이지네이션 기능이 제거되면서 deprecated 된 메소드
+  /*
   public Page<Book> findCalenderBooks(
       int page, int size, Member member, LocalDateTime before, LocalDateTime after,
       Book.BookStatus bookStatus, String sort) {
@@ -93,20 +102,18 @@ public class BookService {
 
     return books;
   }
+  */
 
   public Page<Book> findAbandonedBooks(int page, int size, Member member) {
-    Page<Book> books =
-        bookRepository.findAbandon(
-            member,
-            PageRequest.of(page, size, Sort.by("BOOK_ID").descending()));
+    Page<Book> books = bookRepository.findAbandon(member,
+        PageRequest.of(page, size, Sort.by("BOOK_ID").descending()));
 
     return books;
   }
 
   public Page<Book> findMemoBooks(int page, int size, Member member) {
-    Page<Book> books =
-        bookRepository.findBooksHaveMemo(
-            member, PageRequest.of(page, size, Sort.by("BOOK_ID").descending()));
+    Page<Book> books = bookRepository.findBooksHaveMemo(member,
+        PageRequest.of(page, size, Sort.by("BOOK_ID").descending()));
 
     return books;
   }
