@@ -55,7 +55,7 @@ public class PatchMember extends TestSetUpForMemberUtil {
         StubDataUtil.MockMember.getMemberPatchResponse());
 
     MemberDto.Patch patch =
-        new Patch("이슬", "modi!@#pas1", "안녕하세요. 김형섭입니다.", "https://profileImage.com");
+        new Patch("이슬", "modi!@#pas1", "안녕하세요. 이슬입니다.", "https://profileImage.com");
     String content = gson.toJson(patch);
 
     //when, then

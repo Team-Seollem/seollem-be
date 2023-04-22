@@ -136,7 +136,7 @@ public class StubDataUtil {
 
     public static MemberDto.PatchResponse getMemberPatchResponse() {
       return new MemberDto.PatchResponse("starrypro@gmail.com", "이슬", LocalDateTime.now(),
-          "안녕하세요. 김형섭입니다.", "https://profileImage.com");
+          "안녕하세요. 이슬입니다.", "https://profileImage.com");
     }
   }
 
