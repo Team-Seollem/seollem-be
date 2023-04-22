@@ -61,7 +61,7 @@ public class MemberDto {
 
     private String email;
     private String name;
-    private String profile;
+    private String content;
     private String url;
   }
 
