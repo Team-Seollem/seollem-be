@@ -228,6 +228,22 @@ include::{snippets}/PatchMember/http-response.adoc[]
 .response fields
 include::{snippets}/PatchMember/response-fields.adoc[]
 
+=== 회원 이미지 등록
+.request
+include::{snippets}/PostMemberImage/http-request.adoc[]
+
+.request headers
+include::{snippets}/PostMemberImage/request-headers.adoc[]
+
+.request parts
+include::{snippets}/PostMemberImage/request-parts.adoc[]
+
+.response
+include::{snippets}/PostMemberImage/http-response.adoc[]
+
+.response fields
+include::{snippets}/PostMemberImage/response-fields.adoc[]
+
 === 회원 삭제
 .request
 include::{snippets}/DeleteMember/http-request.adoc[]

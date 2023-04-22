@@ -37,6 +37,8 @@ public class PrincipalDetailsService implements UserDetailsService {
       setEmail(member.getEmail());
       setPassword(member.getPassword());
       setRoles(member.getRoles());
+      setContent(member.getContent());
+      setUrl(member.getUrl());
     }
 
 

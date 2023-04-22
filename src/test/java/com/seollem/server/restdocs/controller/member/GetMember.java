@@ -10,16 +10,12 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.seollem.server.member.MemberController;
-import com.seollem.server.member.MemberMapper;
-import com.seollem.server.member.MemberService;
 import com.seollem.server.restdocs.util.StubDataUtil;
-import com.seollem.server.restdocs.util.WebMvcTestSetUpUtil;
-import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
+import com.seollem.server.restdocs.util.TestSetUpForMemberUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
@@ -30,14 +26,8 @@ import org.springframework.test.web.servlet.ResultActions;
 
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 @WebMvcTest(MemberController.class)
-public class GetMember extends WebMvcTestSetUpUtil {
+public class GetMember extends TestSetUpForMemberUtil {
 
-  @MockBean
-  private MemberMapper memberMapper;
-  @MockBean
-  private MemberService memberService;
-  @MockBean
-  private GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil;
 
   @Test
   public void getMemberTest() throws Exception {
@@ -58,7 +48,9 @@ public class GetMember extends WebMvcTestSetUpUtil {
             headerWithName("Authorization").description("Bearer JWT Access Token")),
         responseFields(
             fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
-            fieldWithPath("name").type(JsonFieldType.STRING).description("이름")
+            fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
+            fieldWithPath("url").type(JsonFieldType.STRING).description("이미지"),
+            fieldWithPath("profile").type(JsonFieldType.STRING).description("프로필")
 
         )));
   }
