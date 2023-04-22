@@ -34,6 +34,25 @@ public class StubDataUtil {
           LocalDateTime.parse("2022-10-13T21:04:32"), new Member(), null);
     }
 
+    public static List<Book> getBookList() {
+
+      List<Book> books = new ArrayList<>();
+
+      Book book1 =
+          new com.seollem.server.book.Book(1, "미움받을용기", "https://imageurl1.com", "아들러", "한빛출판사",
+              214, 406, 5, BookStatus.DONE, LocalDateTime.parse("2022-10-02T11:09:10"),
+              LocalDateTime.parse("2022-10-13T21:04:32"), new Member(), null);
+      Book book2 =
+          new com.seollem.server.book.Book(12, "차라투스트라는 이렇게 말했다.", "https://imageurl12.com", "니체",
+              "원호출판사", 15, 898, 0, BookStatus.DONE, LocalDateTime.parse("2022-09-03T10:15:30"),
+              LocalDateTime.parse("2022-10-04T12:15:33"), new Member(), null);
+
+      books.add(book1);
+      books.add(book2);
+
+      return books;
+    }
+
 
     public static PageImpl<Book> getBookPage() {
       List<Book> list = new ArrayList<>();
