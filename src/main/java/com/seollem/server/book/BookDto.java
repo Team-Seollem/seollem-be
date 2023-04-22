@@ -1,5 +1,6 @@
 package com.seollem.server.book;
 
+import com.seollem.server.globaldto.PageInfo;
 import com.seollem.server.memo.MemoDto;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -157,5 +158,21 @@ public class BookDto {
     private String title;
     private String cover;
     private int memoCount;
+  }
+
+
+  @Setter
+  @Getter
+  @NoArgsConstructor
+  public static class BooksHaveMemoResponseDto<T> {
+
+    private List<T> item;
+    private PageInfo pageInfo;
+
+    public BooksHaveMemoResponseDto(List<T> item, PageInfo pageInfo) {
+      this.item = item;
+      this.pageInfo = pageInfo;
+    }
+
   }
 }
