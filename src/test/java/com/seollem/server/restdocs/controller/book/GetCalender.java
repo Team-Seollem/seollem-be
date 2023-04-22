@@ -53,9 +53,8 @@ public class GetCalender extends TestSetUpForBookUtil {
     when(getAbandonPeriodUtil.getCalenderBookPeriod(Mockito.anyInt(), Mockito.anyInt())).thenReturn(
         tempList);
 
-    when(bookService.findCalenderBooks(Mockito.anyInt(), Mockito.anyInt(), Mockito.any(),
-        Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyString())).thenReturn(
-        StubDataUtil.MockBook.getBookPage());
+    when(bookService.findCalenderBooks(Mockito.any(), Mockito.any(), Mockito.any(),
+        Mockito.any())).thenReturn(StubDataUtil.MockBook.getBookList());
 
     given(bookMapper.BooksToCalenderResponse(Mockito.any())).willReturn(
         StubDataUtil.MockBook.getCalenderResponse());
@@ -64,25 +63,17 @@ public class GetCalender extends TestSetUpForBookUtil {
     ResultActions resultActions = mockMvc.perform(
         MockMvcRequestBuilders.get("/books/calender").accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
-            .header("Authorization", "Bearer JWT Access Token").queryParam("page", "1")
-            .queryParam("size", "2").queryParam("year", "2022").queryParam("month", "10"));
+            .header("Authorization", "Bearer JWT Access Token").queryParam("year", "2022")
+            .queryParam("month", "10"));
 
     //then
     resultActions.andExpect(status().isOk()).andDo(print()).andDo(document("Calender",
         requestHeaders(headerWithName("Authorization").description("Bearer JWT Access Token")),
-        requestParameters(parameterWithName("page").description("원하는 page"),
-            parameterWithName("size").description("페이지 별 책 개수"),
-            parameterWithName("year").description("조회할 읽기 완료 년도"),
+        requestParameters(parameterWithName("year").description("조회할 읽기 완료 년도"),
             parameterWithName("month").description("조회할 읽기 완료 월")), responseFields(
-            fieldWithPath("item[].bookId").type(JsonFieldType.NUMBER).description("책 ID"),
-            fieldWithPath("item[].readEndDate").type(JsonFieldType.STRING).description("읽기 완료한 일자"),
-            fieldWithPath("item[].cover").type(JsonFieldType.STRING).description("표지 이미지 url"),
-            fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("조회 페이지"),
-            fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("페이지별 책 개수"),
-            fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER)
-                .description("조회된 책의 총 개수"),
-            fieldWithPath("pageInfo.totalPages").type(JsonFieldType.NUMBER)
-                .description("조회된 총 페이지 수")
+            fieldWithPath("[]bookId").type(JsonFieldType.NUMBER).description("책 ID"),
+            fieldWithPath("[]readEndDate").type(JsonFieldType.STRING).description("읽기 완료한 일자"),
+            fieldWithPath("[]cover").type(JsonFieldType.STRING).description("표지 이미지 url")
 
         )));
   }

@@ -49,8 +49,8 @@ public class GetMember extends TestSetUpForMemberUtil {
         responseFields(
             fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
             fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
-            fieldWithPath("url").type(JsonFieldType.STRING).description("이미지"),
-            fieldWithPath("profile").type(JsonFieldType.STRING).description("프로필")
+            fieldWithPath("content").type(JsonFieldType.STRING).description("자기 소개"),
+            fieldWithPath("url").type(JsonFieldType.STRING).description("이미지")
 
         )));
   }

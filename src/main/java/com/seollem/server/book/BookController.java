@@ -86,8 +86,6 @@ public class BookController {
   @GetMapping("/calender")
   public ResponseEntity getCalender(
       @RequestHeader Map<String, Object> requestHeader,
-      @Positive @RequestParam int page,
-      @Positive @RequestParam int size,
       @Positive @RequestParam int year, @Min(1) @Max(12) @RequestParam int month) {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
@@ -95,15 +93,11 @@ public class BookController {
     ArrayList<LocalDateTime> calenderPeriod =
         getCalenderBookUtil.getCalenderBookPeriod(year, month);
 
-    Page<Book> pageBooks =
-        bookService.findCalenderBooks(
-            page - 1, size, member, calenderPeriod.get(0), calenderPeriod.get(1),
-            Book.BookStatus.DONE, "read_end_date");
-    List<Book> books = pageBooks.getContent();
+    List<Book> books =
+        bookService.findCalenderBooks(member, calenderPeriod.get(0), calenderPeriod.get(1),
+            Book.BookStatus.DONE);
 
-    return new ResponseEntity<>(
-        new MultiResponseDto<>(bookMapper.BooksToCalenderResponse(books), pageBooks),
-        HttpStatus.OK);
+    return new ResponseEntity<>(bookMapper.BooksToCalenderResponse(books), HttpStatus.OK);
   }
 
   // 오래된 책 조회
