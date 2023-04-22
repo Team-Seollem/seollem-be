@@ -16,18 +16,14 @@ import com.seollem.server.member.Member;
 import com.seollem.server.member.MemberController;
 import com.seollem.server.member.MemberDto;
 import com.seollem.server.member.MemberDto.Patch;
-import com.seollem.server.member.MemberMapper;
-import com.seollem.server.member.MemberService;
 import com.seollem.server.restdocs.util.GsonCustomConfig;
 import com.seollem.server.restdocs.util.StubDataUtil;
-import com.seollem.server.restdocs.util.WebMvcTestSetUpUtil;
-import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
+import com.seollem.server.restdocs.util.TestSetUpForMemberUtil;
 import java.nio.charset.Charset;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -35,15 +31,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 @WebMvcTest(MemberController.class)
-public class PatchMember extends WebMvcTestSetUpUtil {
+public class PatchMember extends TestSetUpForMemberUtil {
 
   private final GsonCustomConfig gsonCustomConfig = new GsonCustomConfig();
-  @MockBean
-  private MemberMapper memberMapper;
-  @MockBean
-  private MemberService memberService;
-  @MockBean
-  private GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil;
 
   @Test
   public void patchMemberTest() throws Exception {
@@ -64,7 +54,8 @@ public class PatchMember extends WebMvcTestSetUpUtil {
     when(memberMapper.memberToMemberPatchResponse(Mockito.any())).thenReturn(
         StubDataUtil.MockMember.getMemberPatchResponse());
 
-    MemberDto.Patch patch = new Patch("이슬", "modi!@#pas1");
+    MemberDto.Patch patch =
+        new Patch("이슬", "modi!@#pas1", "안녕하세요. 김형섭입니다.", "https://profileImage.com");
     String content = gson.toJson(patch);
 
     //when, then
@@ -81,16 +72,16 @@ public class PatchMember extends WebMvcTestSetUpUtil {
             requestFields(
                 fieldWithPath("name").description("변경할 이름"),
                 fieldWithPath("password").description("변경할 비밀번호 : 알파벳, 숫자, 특수문자 포함 6자 이상이어야 합니다."),
-                fieldWithPath("url").description("이미지"),
-                fieldWithPath("profile").description("프로필")
+                fieldWithPath("url").description("프로필 이미지 URL"),
+                fieldWithPath("profile").description("자기 소개")
 
             ),
             responseFields(
                 fieldWithPath("email").description("이메일"),
                 fieldWithPath("name").description("변경된 이름"),
                 fieldWithPath("updatedAt").description("변경된 일자"),
-                fieldWithPath("url").description("이미지"),
-                fieldWithPath("profile").description("프로필")
+                fieldWithPath("url").description("프로필 이미지 URL"),
+                fieldWithPath("profile").description("자기 소개")
             )
         ));
 

@@ -124,16 +124,19 @@ public class StubDataUtil {
   public static class MockMember {
 
     public static Member getMember() {
-      return new Member(1, "starrypro@gmail.com", "김형섭", "password", "ROLE_USER",
+      return new Member(1, "starrypro@gmail.com", "김형섭", "password", "ROLE_USER", "안녕하세요. 김형섭입니다.",
+          "https://profileImage.com",
           new ArrayList<Book>(), new ArrayList<MemoLikes>());
     }
 
     public static MemberDto.GetResponse getMemberGetResponse() {
-      return new MemberDto.GetResponse("starrypro@gmail.com", "김형섭");
+      return new MemberDto.GetResponse("starrypro@gmail.com", "김형섭", "안녕하세요. 김형섭입니다.",
+          "https://profileImage.com");
     }
 
     public static MemberDto.PatchResponse getMemberPatchResponse() {
-      return new MemberDto.PatchResponse("starrypro@gmail.com", "이슬", LocalDateTime.now());
+      return new MemberDto.PatchResponse("starrypro@gmail.com", "이슬", LocalDateTime.now(),
+          "안녕하세요. 김형섭입니다.", "https://profileImage.com");
     }
   }
 
