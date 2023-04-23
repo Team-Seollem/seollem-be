@@ -1,8 +1,8 @@
 package com.seollem.server.book;
 
 import com.seollem.server.book.BookDto.BooksHaveMemoResponse;
+import com.seollem.server.book.BookDto.BooksHaveMemoResponseDto;
 import com.seollem.server.globaldto.MultiResponseDto;
-import com.seollem.server.globaldto.MultiResponseDtoForBooksHaveMemo;
 import com.seollem.server.globaldto.PageInfo;
 import com.seollem.server.member.Member;
 import com.seollem.server.member.MemberService;
@@ -157,7 +157,7 @@ public class BookController {
         .build();
 
     return new ResponseEntity<>(
-        new MultiResponseDtoForBooksHaveMemo<>(pagedResponseList, pageInfo),
+        new BooksHaveMemoResponseDto<>(pagedResponseList, pageInfo),
         HttpStatus.OK);
   }
 

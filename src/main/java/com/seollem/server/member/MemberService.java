@@ -3,8 +3,11 @@ package com.seollem.server.member;
 import com.seollem.server.emailauth.EmailRedisUtil;
 import com.seollem.server.exception.BusinessLogicException;
 import com.seollem.server.exception.ExceptionCode;
+import com.seollem.server.member.dto.HallOfFameInnerDto;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -67,6 +70,22 @@ public class MemberService {
     if (!redisUtil.getData(email).equals(authenticationCode)) {
       throw new BusinessLogicException(ExceptionCode.MEMBER_AUTHENTICATIONCODE_INVALID);
     }
+  }
+
+  public List<HallOfFameInnerDto> getHallOfFameWithBook() {
+
+    List<HallOfFameInnerDto> list = memberRepository.findHallOfFameWithBook(PageRequest.of(0, 10));
+
+    return list;
+
+  }
+
+  public List<HallOfFameInnerDto> getHallOfFameWithMemo() {
+
+    List<HallOfFameInnerDto> list = memberRepository.findHallOfFameWithMemo(PageRequest.of(0, 10));
+
+    return list;
+
   }
 
 }

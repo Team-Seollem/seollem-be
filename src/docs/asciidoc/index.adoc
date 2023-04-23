@@ -254,6 +254,20 @@ include::{snippets}/DeleteMember/request-headers.adoc[]
 .response
 include::{snippets}/DeleteMember/http-response.adoc[]
 
+=== 명예의 전당 조회
+.request
+include::{snippets}/GetHallOfFame/http-request.adoc[]
+
+.request headers
+include::{snippets}/GetHallOfFame/request-headers.adoc[]
+
+.response
+include::{snippets}/GetHallOfFame/http-response.adoc[]
+
+.response fields
+include::{snippets}/GetHallOfFame/response-fields.adoc[]
+
+
 == 메모 도메인
 === 메모 랜덤 조회
 .request

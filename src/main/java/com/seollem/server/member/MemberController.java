@@ -1,7 +1,10 @@
 package com.seollem.server.member;
 
 import com.seollem.server.file.FileUploadService;
+import com.seollem.server.member.dto.HallOfFameInnerDto;
+import com.seollem.server.member.dto.MemberDto;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
+import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -28,9 +31,7 @@ public class MemberController {
   private final GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil;
   private final FileUploadService fileUploadService;
 
-  public MemberController(
-      MemberMapper memberMapper,
-      MemberService memberService,
+  public MemberController(MemberMapper memberMapper, MemberService memberService,
       GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil,
       FileUploadService fileUploadService) {
     this.memberMapper = memberMapper;
@@ -63,9 +64,20 @@ public class MemberController {
     return new ResponseEntity<>(memberMapper.memberToMemberGetResponse(member), HttpStatus.OK);
   }
 
+
+  @GetMapping(path = "/hall-of-fame")
+  public ResponseEntity getHallOfFame() {
+
+    List<HallOfFameInnerDto> dtosWithBook = memberService.getHallOfFameWithBook();
+    List<HallOfFameInnerDto> dtosWithMemo = memberService.getHallOfFameWithMemo();
+
+    return new ResponseEntity(new MemberDto.HallOfFameResponse<>(dtosWithBook, dtosWithMemo),
+        HttpStatus.OK);
+  }
+
+
   @PatchMapping("/me")
-  public ResponseEntity patchMember(
-      @RequestHeader Map<String, Object> requestHeader,
+  public ResponseEntity patchMember(@RequestHeader Map<String, Object> requestHeader,
       @Valid @RequestBody MemberDto.Patch requestBody) {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     if (email.equals("starrypro@gmail.com")) {
@@ -78,8 +90,7 @@ public class MemberController {
 
       Member member = memberService.updateMember(patchMember);
 
-      return new ResponseEntity<>(
-          memberMapper.memberToMemberPatchResponse(member), HttpStatus.OK);
+      return new ResponseEntity<>(memberMapper.memberToMemberPatchResponse(member), HttpStatus.OK);
     }
   }
 

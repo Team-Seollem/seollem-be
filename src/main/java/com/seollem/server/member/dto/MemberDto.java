@@ -1,6 +1,7 @@
-package com.seollem.server.member;
+package com.seollem.server.member.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -25,9 +26,7 @@ public class MemberDto {
     private String name;
 
     @NotBlank(message = "회원 비밀번호가 입력되어야 합니다.")
-    @Pattern(
-        regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{6,}$",
-        message = "회원 비밀번호는 알파벳, 숫자, 특수문자 포함 6자 이상이어야 합니다.")
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{6,}$", message = "회원 비밀번호는 알파벳, 숫자, 특수문자 포함 6자 이상이어야 합니다.")
     private String password;
 
     @NotBlank(message = "인증번호가 입력되어야 합니다.")
@@ -43,9 +42,7 @@ public class MemberDto {
     private String name;
 
     // Client에서 아예 null 보내는 것은 허용하나, password 필드가 존재한다면 정규식에 맞춰야함.
-    @Pattern(
-        regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{6,}$",
-        message = "비밀번호는 알파벳, 숫자, 특수문자 포함 6자 이상이어야 합니다.")
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{6,}$", message = "비밀번호는 알파벳, 숫자, 특수문자 포함 6자 이상이어야 합니다.")
     private String password;
 
     private String content;
@@ -86,4 +83,19 @@ public class MemberDto {
 
     private String url;
   }
+
+  @Getter
+  @Setter
+  @NoArgsConstructor
+  public static class HallOfFameResponse<T> {
+
+    private List<T> mostReadMember;
+    private List<T> mostMemoedMember;
+
+    public HallOfFameResponse(List<T> mostReadMember, List<T> mostMemoedMember) {
+      this.mostReadMember = mostReadMember;
+      this.mostMemoedMember = mostMemoedMember;
+    }
+  }
+
 }

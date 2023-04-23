@@ -14,8 +14,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.google.gson.Gson;
 import com.seollem.server.member.Member;
 import com.seollem.server.member.MemberController;
-import com.seollem.server.member.MemberDto;
-import com.seollem.server.member.MemberDto.Patch;
+import com.seollem.server.member.dto.MemberDto;
+import com.seollem.server.member.dto.MemberDto.Patch;
 import com.seollem.server.restdocs.util.GsonCustomConfig;
 import com.seollem.server.restdocs.util.StubDataUtil;
 import com.seollem.server.restdocs.util.TestSetUpForMemberUtil;
