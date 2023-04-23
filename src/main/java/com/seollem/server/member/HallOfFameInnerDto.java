@@ -10,15 +10,15 @@ public class HallOfFameInnerDto {
   private long memberId;
   private String url;
   private String name;
-  private long booksCount;
+  private long count;
 
   public HallOfFameInnerDto() {
   }
 
-  public HallOfFameInnerDto(long memberId, String url, String name, long booksCount) {
+  public HallOfFameInnerDto(long memberId, String url, String name, long count) {
     this.memberId = memberId;
     this.url = url;
     this.name = name;
-    this.booksCount = booksCount;
+    this.count = count;
   }
 }

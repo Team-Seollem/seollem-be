@@ -66,9 +66,11 @@ public class MemberController {
   @GetMapping(path = "/hall-of-fame")
   public ResponseEntity getHallOfFame() {
 
-    List<HallOfFameInnerDto> dtoWithBook = memberService.getHallOfFameWithBook();
+    List<HallOfFameInnerDto> dtosWithBook = memberService.getHallOfFameWithBook();
+    List<HallOfFameInnerDto> dtosWithMemo = memberService.getHallOfFameWithMemo();
 
-    return new ResponseEntity(dtoWithBook, HttpStatus.OK);
+    return new ResponseEntity(new MemberDto.HallOfFameResponse<>(dtosWithBook, dtosWithMemo),
+        HttpStatus.OK);
   }
 
 

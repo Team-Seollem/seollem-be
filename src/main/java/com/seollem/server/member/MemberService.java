@@ -78,9 +78,13 @@ public class MemberService {
     return list;
 
   }
-//
-//  public HallOfFameInnerDto getHallOfFameWithMemo() {
-//
-//  }
+
+  public List<HallOfFameInnerDto> getHallOfFameWithMemo() {
+
+    List<HallOfFameInnerDto> list = memberRepository.findHallOfFameWithMemo(PageRequest.of(0, 10));
+
+    return list;
+
+  }
 
 }

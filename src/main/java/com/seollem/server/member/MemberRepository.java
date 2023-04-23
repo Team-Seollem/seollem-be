@@ -19,4 +19,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
   List<HallOfFameInnerDto> findHallOfFameWithBook(Pageable pageable);
 
 
+  @Query(value = "select "
+      + "new com.seollem.server.member.HallOfFameInnerDto(m1.memberId, m1.url, m1.name, count(m2.memoId)) "
+      + "from Member m1 " + "left outer join Memo m2 " + "on m1 = m2.member "
+      + "group by m1.memberId "
+      + "order by count(m2.memoId) desc")
+  List<HallOfFameInnerDto> findHallOfFameWithMemo(Pageable pageable);
+
 }
