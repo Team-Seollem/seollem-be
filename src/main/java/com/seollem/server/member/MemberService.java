@@ -3,6 +3,7 @@ package com.seollem.server.member;
 import com.seollem.server.emailauth.EmailRedisUtil;
 import com.seollem.server.exception.BusinessLogicException;
 import com.seollem.server.exception.ExceptionCode;
+import com.seollem.server.member.dto.HallOfFameInnerDto;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

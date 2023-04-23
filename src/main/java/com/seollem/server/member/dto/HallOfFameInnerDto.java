@@ -1,4 +1,4 @@
-package com.seollem.server.member;
+package com.seollem.server.member.dto;
 
 import lombok.Getter;
 import lombok.Setter;

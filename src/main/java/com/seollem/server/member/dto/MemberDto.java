@@ -1,4 +1,4 @@
-package com.seollem.server.member;
+package com.seollem.server.member.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -9,7 +9,7 @@ import com.seollem.server.book.BookDto.CalenderResponse;
 import com.seollem.server.book.BookDto.LibraryResponse;
 import com.seollem.server.externallibrary.AladdinResponseDto;
 import com.seollem.server.member.Member;
-import com.seollem.server.member.MemberDto;
+import com.seollem.server.member.dto.MemberDto;
 import com.seollem.server.memo.Memo;
 import com.seollem.server.memo.Memo.MemoAuthority;
 import com.seollem.server.memo.Memo.MemoType;

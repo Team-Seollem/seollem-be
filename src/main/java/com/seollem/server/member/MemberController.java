@@ -1,6 +1,8 @@
 package com.seollem.server.member;
 
 import com.seollem.server.file.FileUploadService;
+import com.seollem.server.member.dto.HallOfFameInnerDto;
+import com.seollem.server.member.dto.MemberDto;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
 import java.util.List;
 import java.util.Map;

@@ -1,5 +1,6 @@
 package com.seollem.server.member;
 
+import com.seollem.server.member.dto.MemberDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
