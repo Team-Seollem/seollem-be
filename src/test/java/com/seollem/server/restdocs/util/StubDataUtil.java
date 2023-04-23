@@ -9,6 +9,7 @@ import com.seollem.server.book.BookDto.CalenderResponse;
 import com.seollem.server.book.BookDto.LibraryResponse;
 import com.seollem.server.externallibrary.AladdinResponseDto;
 import com.seollem.server.member.Member;
+import com.seollem.server.member.dto.HallOfFameInnerDto;
 import com.seollem.server.member.dto.MemberDto;
 import com.seollem.server.memo.Memo;
 import com.seollem.server.memo.Memo.MemoAuthority;
@@ -156,6 +157,38 @@ public class StubDataUtil {
     public static MemberDto.PatchResponse getMemberPatchResponse() {
       return new MemberDto.PatchResponse("starrypro@gmail.com", "이슬", LocalDateTime.now(),
           "안녕하세요. 이슬입니다.", "https://profileImage.com");
+    }
+
+    public static List<HallOfFameInnerDto> getHallOfFameWithBook() {
+      HallOfFameInnerDto dto1 = new HallOfFameInnerDto(25, "https://imageUrl25.com", "김형섭", 24);
+      HallOfFameInnerDto dto2 = new HallOfFameInnerDto(3, "https://imageUrl3.com", "한성욱", 21);
+      HallOfFameInnerDto dto3 = new HallOfFameInnerDto(46, "https://imageUrl46.com", "김주현", 2);
+      HallOfFameInnerDto dto4 = new HallOfFameInnerDto(22, "https://imageUrl22.com", "이슬", 1);
+
+      List<HallOfFameInnerDto> list = new ArrayList<>();
+
+      list.add(dto1);
+      list.add(dto2);
+      list.add(dto3);
+      list.add(dto4);
+
+      return list;
+    }
+
+    public static List<HallOfFameInnerDto> getHallOfFameWithMemo() {
+      HallOfFameInnerDto dto1 = new HallOfFameInnerDto(25, "https://imageUrl25.com", "김형섭", 15);
+      HallOfFameInnerDto dto2 = new HallOfFameInnerDto(36, "https://imageUrl36.com", "뽐므", 3);
+      HallOfFameInnerDto dto3 = new HallOfFameInnerDto(86, "https://imageUrl86.com", "최민석", 3);
+      HallOfFameInnerDto dto4 = new HallOfFameInnerDto(3, "https://imageUrl3.com", "한성욱", 1);
+
+      List<HallOfFameInnerDto> list = new ArrayList<>();
+
+      list.add(dto1);
+      list.add(dto2);
+      list.add(dto3);
+      list.add(dto4);
+
+      return list;
     }
   }
 
