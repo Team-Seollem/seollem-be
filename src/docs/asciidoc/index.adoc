@@ -267,6 +267,25 @@ include::{snippets}/GetHallOfFame/http-response.adoc[]
 .response fields
 include::{snippets}/GetHallOfFame/response-fields.adoc[]
 
+=== 다른 회원 프로필 조회
+.request
+include::{snippets}/GetOtherMemberProfile/http-request.adoc[]
+
+.request headers
+include::{snippets}/GetOtherMemberProfile/request-headers.adoc[]
+
+.request path parameters
+include::{snippets}/GetOtherMemberProfile/path-parameters.adoc[]
+
+.request query string
+include::{snippets}/GetOtherMemberProfile/request-parameters.adoc[]
+
+.response
+include::{snippets}/GetOtherMemberProfile/http-response.adoc[]
+
+.response fields
+include::{snippets}/GetOtherMemberProfile/response-fields.adoc[]
+
 
 == 메모 도메인
 === 메모 랜덤 조회

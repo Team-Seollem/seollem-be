@@ -4,9 +4,13 @@ import com.seollem.server.emailauth.EmailRedisUtil;
 import com.seollem.server.exception.BusinessLogicException;
 import com.seollem.server.exception.ExceptionCode;
 import com.seollem.server.member.dto.HallOfFameInnerDto;
+import com.seollem.server.member.dto.OtherLibraryDto;
+import com.seollem.server.member.dto.OtherMemberDto;
+import com.seollem.server.member.dto.OtherMemberProfileResponse;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -86,6 +90,20 @@ public class MemberService {
 
     return list;
 
+  }
+
+  public OtherMemberProfileResponse getOtherMemberProfile(int page, int size, Member member) {
+    Page<OtherLibraryDto> pageOtherLibraryDtos =
+        memberRepository.findOtherLibrary(member, PageRequest.of(page, size));
+    List<OtherLibraryDto> otherLibraryDtos = pageOtherLibraryDtos.getContent();
+
+    OtherMemberDto otherMemberDto = memberRepository.findOtherMember(member.getMemberId());
+
+    OtherMemberProfileResponse response =
+        new OtherMemberProfileResponse(otherMemberDto.getName(), otherMemberDto.getUrl(),
+            otherMemberDto.getContent(), otherLibraryDtos, pageOtherLibraryDtos);
+
+    return response;
   }
 
 }

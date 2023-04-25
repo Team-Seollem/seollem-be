@@ -8,9 +8,12 @@ import com.seollem.server.book.BookDto.BooksHaveMemoResponse;
 import com.seollem.server.book.BookDto.CalenderResponse;
 import com.seollem.server.book.BookDto.LibraryResponse;
 import com.seollem.server.externallibrary.AladdinResponseDto;
+import com.seollem.server.globaldto.PageInfo;
 import com.seollem.server.member.Member;
 import com.seollem.server.member.dto.HallOfFameInnerDto;
 import com.seollem.server.member.dto.MemberDto;
+import com.seollem.server.member.dto.OtherLibraryDto;
+import com.seollem.server.member.dto.OtherMemberProfileResponse;
 import com.seollem.server.memo.Memo;
 import com.seollem.server.memo.Memo.MemoAuthority;
 import com.seollem.server.memo.Memo.MemoType;
@@ -189,6 +192,22 @@ public class StubDataUtil {
       list.add(dto4);
 
       return list;
+    }
+
+    public static OtherMemberProfileResponse getOtherMemberProfile() {
+      OtherLibraryDto libraryDto1 = new OtherLibraryDto(1, "미움받을용기", "아들러", "https://imageurl.com");
+      OtherLibraryDto libraryDto2 =
+          new OtherLibraryDto(12, "차라투스트라는 이렇게 말했다.", "니체", "https://imageurl.com");
+
+      List<OtherLibraryDto> list = new ArrayList<>();
+      list.add(libraryDto1);
+      list.add(libraryDto2);
+
+      OtherMemberProfileResponse response =
+          new OtherMemberProfileResponse("김형섭", "https://memberimageurl.com",
+              "안녕하세요. 저는 김형섭입니다. 반갑습니다.", list, new PageInfo(1, 2, 2, 1));
+
+      return response;
     }
   }
 
