@@ -10,6 +10,7 @@ import com.seollem.server.member.dto.OtherMemberProfileResponse;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -92,13 +93,15 @@ public class MemberService {
   }
 
   public OtherMemberProfileResponse getOtherMemberProfile(int page, int size, Member member) {
-    List<OtherLibraryDto> otherLibraryDtos =
+    Page<OtherLibraryDto> pageOtherLibraryDtos =
         memberRepository.findOtherLibrary(member, PageRequest.of(page, size));
+    List<OtherLibraryDto> otherLibraryDtos = pageOtherLibraryDtos.getContent();
+
     OtherMemberDto otherMemberDto = memberRepository.findOtherMember(member.getMemberId());
 
     OtherMemberProfileResponse response =
         new OtherMemberProfileResponse(otherMemberDto.getName(), otherMemberDto.getUrl(),
-            otherMemberDto.getContent(), otherLibraryDtos);
+            otherMemberDto.getContent(), otherLibraryDtos, pageOtherLibraryDtos);
 
     return response;
   }

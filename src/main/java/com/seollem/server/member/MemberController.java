@@ -93,7 +93,7 @@ public class MemberController {
 
     OtherMemberProfileResponse result = memberService.getOtherMemberProfile(page - 1, size, member);
 
-    return new ResponseEntity(result, HttpStatus.OK);
+    return new ResponseEntity<>(result, HttpStatus.OK);
   }
 
 
