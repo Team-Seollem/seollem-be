@@ -70,7 +70,9 @@ public class MemberController {
 
 
   @GetMapping(path = "/hall-of-fame")
-  public ResponseEntity getHallOfFame() {
+  public ResponseEntity getHallOfFame(@RequestHeader Map<String, Object> requestHeader) {
+    String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+    Member member = memberService.findVerifiedMemberByEmail(email);
 
     List<HallOfFameInnerDto> dtosWithBook = memberService.getHallOfFameWithBook();
     List<HallOfFameInnerDto> dtosWithMemo = memberService.getHallOfFameWithMemo();
