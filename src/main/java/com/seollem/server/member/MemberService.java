@@ -4,6 +4,9 @@ import com.seollem.server.emailauth.EmailRedisUtil;
 import com.seollem.server.exception.BusinessLogicException;
 import com.seollem.server.exception.ExceptionCode;
 import com.seollem.server.member.dto.HallOfFameInnerDto;
+import com.seollem.server.member.dto.OtherLibraryDto;
+import com.seollem.server.member.dto.OtherMemberDto;
+import com.seollem.server.member.dto.OtherMemberProfileResponse;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -86,6 +89,18 @@ public class MemberService {
 
     return list;
 
+  }
+
+  public OtherMemberProfileResponse getOtherMemberProfile(int page, int size, Member member) {
+    List<OtherLibraryDto> otherLibraryDtos =
+        memberRepository.findOtherLibrary(member, PageRequest.of(page, size));
+    OtherMemberDto otherMemberDto = memberRepository.findOtherMember(member.getMemberId());
+
+    OtherMemberProfileResponse response =
+        new OtherMemberProfileResponse(otherMemberDto.getName(), otherMemberDto.getUrl(),
+            otherMemberDto.getContent(), otherLibraryDtos);
+
+    return response;
   }
 
 }
