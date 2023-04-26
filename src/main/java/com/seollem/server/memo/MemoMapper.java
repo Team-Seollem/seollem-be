@@ -22,4 +22,6 @@ public interface MemoMapper {
 
   @Mapping(target = "memoLikesCount", ignore = true)
   List<MemoDto.Response> memoToMemoResponses(List<Memo> memos);
+
+
 }

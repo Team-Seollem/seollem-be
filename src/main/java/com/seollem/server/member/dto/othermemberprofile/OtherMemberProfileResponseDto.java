@@ -1,4 +1,4 @@
-package com.seollem.server.member.dto;
+package com.seollem.server.member.dto.othermemberprofile;
 
 import com.seollem.server.globaldto.PageInfo;
 import java.util.List;
@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page;
 @Getter
 @Setter
 @NoArgsConstructor
-public class OtherMemberProfileResponse<T> {
+public class OtherMemberProfileResponseDto<T> {
 
   private String name;
   private String url;
@@ -18,7 +18,8 @@ public class OtherMemberProfileResponse<T> {
   private List<T> otherLibrary;
   private PageInfo pageInfo;
 
-  public OtherMemberProfileResponse(String name, String url, String content, List<T> otherLibrary,
+  public OtherMemberProfileResponseDto(String name, String url, String content,
+      List<T> otherLibrary,
       PageInfo pageInfo) {
     this.name = name;
     this.url = url;
@@ -27,7 +28,8 @@ public class OtherMemberProfileResponse<T> {
     this.pageInfo = pageInfo;
   }
 
-  public OtherMemberProfileResponse(String name, String url, String content, List<T> otherLibrary,
+  public OtherMemberProfileResponseDto(String name, String url, String content,
+      List<T> otherLibrary,
       Page page) {
     this.name = name;
     this.url = url;

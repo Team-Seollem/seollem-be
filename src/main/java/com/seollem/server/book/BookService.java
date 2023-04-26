@@ -3,6 +3,7 @@ package com.seollem.server.book;
 import com.seollem.server.exception.BusinessLogicException;
 import com.seollem.server.exception.ExceptionCode;
 import com.seollem.server.member.Member;
+import com.seollem.server.member.dto.othermemberbook.OtherMemberBookDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -181,6 +182,14 @@ public class BookService {
 
   public void modifyCreateDate(LocalDateTime time, long bookId) {
     bookRepository.modifyCreateDate(time, bookId);
+  }
+
+
+  public OtherMemberBookDto getOtherMemberBook(long bookId) {
+
+    OtherMemberBookDto otherMemberBookDto = bookRepository.findOtherMemberBook(bookId);
+
+    return otherMemberBookDto;
   }
 
 }

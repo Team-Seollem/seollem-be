@@ -2,6 +2,7 @@ package com.seollem.server.memo;
 
 import com.seollem.server.book.Book;
 import com.seollem.server.member.Member;
+import com.seollem.server.member.dto.othermemberbook.OtherMemberBookMemoDto;
 import com.seollem.server.memo.Memo.MemoAuthority;
 import java.util.List;
 import java.util.Optional;
@@ -30,4 +31,10 @@ public interface MemoRepository extends JpaRepository<Memo, Long> {
 
   @Query("SELECT COUNT(*) FROM Memo m WHERE m.member = ?1")
   int countMemoWithMember(Member member);
+
+  @Query("SELECT COUNT(*) FROM Memo m WHERE m.book = ?1 and m.memoAuthority = ?2")
+  int countMemoWithBookAndMemoAuthority(Book book, MemoAuthority memoAuthority);
+
+  @Query("SELECT new com.seollem.server.member.dto.othermemberbook.OtherMemberBookMemoDto(m.memoId, m.memoType, m.memoContent, m.memoBookPage) FROM Memo m WHERE m.book = ?1 and m.memoAuthority = 'PUBLIC' ")
+  List<OtherMemberBookMemoDto> findAllOtherMemberBookMemosWithBook(Book book);
 }

@@ -1,4 +1,4 @@
-package com.seollem.server.member.dto;
+package com.seollem.server.member.dto.othermemberprofile;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

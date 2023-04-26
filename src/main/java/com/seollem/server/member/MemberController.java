@@ -1,14 +1,25 @@
 package com.seollem.server.member;
 
+import com.seollem.server.book.Book;
+import com.seollem.server.book.BookService;
 import com.seollem.server.file.FileUploadService;
 import com.seollem.server.member.dto.HallOfFameInnerDto;
 import com.seollem.server.member.dto.MemberDto;
-import com.seollem.server.member.dto.OtherMemberProfileResponse;
+import com.seollem.server.member.dto.othermemberbook.OtherMemberBookDto;
+import com.seollem.server.member.dto.othermemberbook.OtherMemberBookMemoDto;
+import com.seollem.server.member.dto.othermemberbook.OtherMemberBookResponseDto;
+import com.seollem.server.member.dto.othermemberprofile.OtherMemberProfileResponseDto;
+import com.seollem.server.memo.Memo;
+import com.seollem.server.memo.Memo.MemoAuthority;
+import com.seollem.server.memo.MemoService;
+import com.seollem.server.memolikes.MemoLikes;
+import com.seollem.server.memolikes.MemoLikesService;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
 import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -28,21 +39,16 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/members")
 @Validated
+@RequiredArgsConstructor
 public class MemberController {
 
   private final MemberMapper memberMapper;
   private final MemberService memberService;
+  private final MemoService memoService;
+  private final BookService bookService;
+  private final MemoLikesService memoLikesService;
   private final GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil;
   private final FileUploadService fileUploadService;
-
-  public MemberController(MemberMapper memberMapper, MemberService memberService,
-      GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil,
-      FileUploadService fileUploadService) {
-    this.memberMapper = memberMapper;
-    this.memberService = memberService;
-    this.getEmailFromHeaderTokenUtil = getEmailFromHeaderTokenUtil;
-    this.fileUploadService = fileUploadService;
-  }
 
 
   @PostMapping("/member-image")
@@ -83,17 +89,41 @@ public class MemberController {
 
 
   @GetMapping(path = "/other/{member-id}")
-  public ResponseEntity getOtherMemberProfile(
-      @RequestHeader Map<String, Object> requestHeader,
-      @Positive @PathVariable("member-id") long memberId,
-      @Positive @RequestParam int page,
+  public ResponseEntity getOtherMemberProfile(@RequestHeader Map<String, Object> requestHeader,
+      @Positive @PathVariable("member-id") long memberId, @Positive @RequestParam int page,
       @Positive @RequestParam int size) {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
 
-    OtherMemberProfileResponse result = memberService.getOtherMemberProfile(page - 1, size, member);
+    OtherMemberProfileResponseDto result =
+        memberService.getOtherMemberProfile(page - 1, size, member);
 
     return new ResponseEntity<>(result, HttpStatus.OK);
+  }
+
+
+  @GetMapping(path = "/other/books/{book-id}")
+  public ResponseEntity getOtherMemberBook(@RequestHeader Map<String, Object> requestHeader,
+      @Positive @PathVariable("book-id") long bookId, @Positive @RequestParam int page,
+      @Positive @RequestParam int size) {
+    String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+    Member member = memberService.findVerifiedMemberByEmail(email);
+    Book book = bookService.findVerifiedBookById(bookId);
+
+    OtherMemberBookDto otherMemberBookDto = bookService.getOtherMemberBook(bookId);
+    List<OtherMemberBookMemoDto> otherMemberBookMemoDtos =
+        memoService.getOtherMemberBookMemosWithBook(book);
+    List<Memo> memoList = memoService.getMemoWithBookAndMemoAuthority(book, MemoAuthority.PUBLIC);
+    List<MemoLikes> doneMemoLikesList = memoLikesService.findMemoLikesDone(memoList, member);
+    List<Integer> memoLikesCountList = memoLikesService.getMemoLikesCountWithMemos(memoList);
+    int memoCount = memoService.getMemoCountWithBookAndMemoAuthority(book, MemoAuthority.PUBLIC);
+
+    OtherMemberBookResponseDto result =
+        memberMapper.toOtherMemberBookResponseDto(otherMemberBookDto, otherMemberBookMemoDtos,
+            doneMemoLikesList,
+            memoLikesCountList, memoCount);
+
+    return new ResponseEntity(result, HttpStatus.OK);
   }
 
 

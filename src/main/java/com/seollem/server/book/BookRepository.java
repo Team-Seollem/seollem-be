@@ -1,6 +1,7 @@
 package com.seollem.server.book;
 
 import com.seollem.server.member.Member;
+import com.seollem.server.member.dto.othermemberbook.OtherMemberBookDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -44,4 +45,11 @@ public interface BookRepository extends JpaRepository<Book, Long> {
   @Modifying(clearAutomatically = true)
   @Query(value = "UPDATE Book b SET b.createdAt = :time WHERE b.bookId = :bookId")
   void modifyCreateDate(LocalDateTime time, long bookId);
+
+
+  @Query(value = "select "
+      + "new com.seollem.server.member.dto.othermemberbook.OtherMemberBookDto(b.title, b.author, b.cover, b.publisher, b.itemPage, b.currentPage, b.star, b.bookStatus) "
+      + "from Book b where b.bookId = ?1")
+  OtherMemberBookDto findOtherMemberBook(long bookId);
+
 }

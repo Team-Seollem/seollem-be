@@ -5,6 +5,7 @@ import com.seollem.server.book.BookService;
 import com.seollem.server.exception.BusinessLogicException;
 import com.seollem.server.exception.ExceptionCode;
 import com.seollem.server.member.Member;
+import com.seollem.server.member.dto.othermemberbook.OtherMemberBookMemoDto;
 import com.seollem.server.memo.Memo.MemoAuthority;
 import java.util.List;
 import java.util.Optional;
@@ -57,6 +58,13 @@ public class MemoService {
     return memoList;
   }
 
+
+  public List<OtherMemberBookMemoDto> getOtherMemberBookMemosWithBook(Book book) {
+    List<OtherMemberBookMemoDto> list = memoRepository.findAllOtherMemberBookMemosWithBook(book);
+    return list;
+  }
+
+
   public Page<Memo> getMemosWithBookAndMemoTypes(int page, int size, Book book,
       Memo.MemoType memoType) {
     Page<Memo> memoTypeList =
@@ -81,6 +89,13 @@ public class MemoService {
 
   public int getMemoCountWithBook(Book book) {
     int memoCount = memoRepository.countMemoWithBook(book);
+
+    return memoCount;
+
+  }
+
+  public int getMemoCountWithBookAndMemoAuthority(Book book, MemoAuthority memoAuthority) {
+    int memoCount = memoRepository.countMemoWithBookAndMemoAuthority(book, memoAuthority);
 
     return memoCount;
 

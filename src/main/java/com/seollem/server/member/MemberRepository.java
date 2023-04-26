@@ -1,8 +1,8 @@
 package com.seollem.server.member;
 
 import com.seollem.server.member.dto.HallOfFameInnerDto;
-import com.seollem.server.member.dto.OtherLibraryDto;
-import com.seollem.server.member.dto.OtherMemberDto;
+import com.seollem.server.member.dto.othermemberprofile.OtherLibraryDto;
+import com.seollem.server.member.dto.othermemberprofile.OtherMemberDto;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -30,10 +30,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
   List<HallOfFameInnerDto> findHallOfFameWithMemo(Pageable pageable);
 
 
-  @Query(value = "select new com.seollem.server.member.dto.OtherLibraryDto(b.bookId, b.title, b.author, b.cover) from Book b where b.member = ?1 ")
+  @Query(value = "select new com.seollem.server.member.dto.othermemberprofile.OtherLibraryDto(b.bookId, b.title, b.author, b.cover) from Book b where b.member = ?1 ")
   Page<OtherLibraryDto> findOtherLibrary(Member member, Pageable pageable);
 
-  @Query(value = "select new com.seollem.server.member.dto.OtherMemberDto(m.name, m.url, m.content) from Member m where m.memberId = ?1")
+  @Query(value = "select new com.seollem.server.member.dto.othermemberprofile.OtherMemberDto(m.name, m.url, m.content) from Member m where m.memberId = ?1")
   OtherMemberDto findOtherMember(long memberId);
+
 
 }
