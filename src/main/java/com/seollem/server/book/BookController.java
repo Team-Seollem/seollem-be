@@ -182,7 +182,7 @@ public class BookController {
     if (memoAuthority == MemoAuthority.ALL) {
       memos = memoService.getMemosWithBook(book);
     } else {
-      memos = memoService.getMemoWithBookAndMemoAuthority(book, memoAuthority);
+      memos = memoService.getMemosWithBookAndMemoAuthority(book, memoAuthority);
     }
 
     List<MemoDto.Response> responseList = memoMapper.memoToMemoResponses(memos);

@@ -58,7 +58,7 @@ public class GetDetail extends TestSetUpForBookUtil {
 
     when(memoService.getMemosWithBook(Mockito.any())).thenReturn(StubDataUtil.MockMemo.getMemos());
 
-    when(memoService.getMemoWithBookAndMemoAuthority(Mockito.any(), Mockito.any())).thenReturn(
+    when(memoService.getMemosWithBookAndMemoAuthority(Mockito.any(), Mockito.any())).thenReturn(
         StubDataUtil.MockMemo.getMemos());
 
     when(memoLikesService.getMemoLikesCountWithMemo(Mockito.any())).thenReturn(0);
