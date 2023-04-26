@@ -1,5 +1,6 @@
 package com.seollem.server.member;
 
+import com.seollem.server.globaldto.PageInfo;
 import com.seollem.server.member.dto.MemberDto;
 import com.seollem.server.member.dto.othermemberbook.OtherMemberBookDto;
 import com.seollem.server.member.dto.othermemberbook.OtherMemberBookMemoDto;
@@ -8,6 +9,7 @@ import com.seollem.server.memolikes.MemoLikes;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
+import org.springframework.data.domain.Page;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MemberMapper {
@@ -34,8 +36,7 @@ public interface MemberMapper {
 
   default OtherMemberBookResponseDto toOtherMemberBookResponseDto(
       OtherMemberBookDto otherMemberBookDto, List<OtherMemberBookMemoDto> otherMemberBookMemoDtos,
-      List<MemoLikes> memoLikes,
-      List<Integer> memoLikesCount, int memoCount) {
+      List<MemoLikes> memoLikes, List<Integer> memoLikesCount, Page page) {
     OtherMemberBookResponseDto result = new OtherMemberBookResponseDto();
     result.setTitle(otherMemberBookDto.getTitle());
     result.setAuthor(otherMemberBookDto.getAuthor());
@@ -56,7 +57,9 @@ public interface MemberMapper {
       }
     }
     result.setMemoList(otherMemberBookMemoDtos);
-    result.setMemoCount(memoCount);
+    PageInfo pageInfo = new PageInfo(page.getNumber() + 1, page.getSize(), page.getTotalElements(),
+        page.getTotalPages());
+    result.setPageInfo(pageInfo);
 
     return result;
   }

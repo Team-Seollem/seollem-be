@@ -1,6 +1,7 @@
 package com.seollem.server.member.dto.othermemberbook;
 
 import com.seollem.server.book.Book.BookStatus;
+import com.seollem.server.globaldto.PageInfo;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,5 +21,7 @@ public class OtherMemberBookResponseDto {
 
   private List<OtherMemberBookMemoDto> memoList;
 
-  private int memoCount;
+  private PageInfo pageInfo;
+
+
 }

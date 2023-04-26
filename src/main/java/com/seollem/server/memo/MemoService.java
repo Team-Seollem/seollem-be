@@ -59,8 +59,10 @@ public class MemoService {
   }
 
 
-  public List<OtherMemberBookMemoDto> getOtherMemberBookMemosWithBook(Book book) {
-    List<OtherMemberBookMemoDto> list = memoRepository.findAllOtherMemberBookMemosWithBook(book);
+  public Page<OtherMemberBookMemoDto> getOtherMemberBookMemosWithBook(int page, int size,
+      Book book) {
+    Page<OtherMemberBookMemoDto> list =
+        memoRepository.findAllOtherMemberBookMemosWithBook(PageRequest.of(page, size), book);
     return list;
   }
 
@@ -81,11 +83,21 @@ public class MemoService {
     return memoTypeList;
   }
 
-  public List<Memo> getMemoWithBookAndMemoAuthority(Book book, MemoAuthority memoAuthority) {
+  public List<Memo> getMemosWithBookAndMemoAuthority(Book book, MemoAuthority memoAuthority) {
     List<Memo> list =
         memoRepository.findAllByBookAndMemoAuthority(book, memoAuthority);
     return list;
   }
+
+  public List<Memo> getPageMemosWithBookAndMemoAuthority(int page, int size, Book book,
+      MemoAuthority memoAuthority) {
+    Page<Memo> pageList =
+        memoRepository.findAllByBookAndMemoAuthority(PageRequest.of(page, size), book,
+            memoAuthority);
+    List<Memo> list = pageList.getContent();
+    return list;
+  }
+
 
   public int getMemoCountWithBook(Book book) {
     int memoCount = memoRepository.countMemoWithBook(book);

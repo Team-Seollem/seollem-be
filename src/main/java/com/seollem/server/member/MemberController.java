@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -111,17 +112,20 @@ public class MemberController {
     Book book = bookService.findVerifiedBookById(bookId);
 
     OtherMemberBookDto otherMemberBookDto = bookService.getOtherMemberBook(bookId);
-    List<OtherMemberBookMemoDto> otherMemberBookMemoDtos =
-        memoService.getOtherMemberBookMemosWithBook(book);
-    List<Memo> memoList = memoService.getMemoWithBookAndMemoAuthority(book, MemoAuthority.PUBLIC);
+
+    Page<OtherMemberBookMemoDto> pageOtherMemberBookMemoDtos =
+        memoService.getOtherMemberBookMemosWithBook(page - 1, size, book);
+    List<OtherMemberBookMemoDto> otherMemberBookMemoDtos = pageOtherMemberBookMemoDtos.getContent();
+
+    List<Memo> memoList = memoService.getPageMemosWithBookAndMemoAuthority(page - 1, size, book,
+        MemoAuthority.PUBLIC);
     List<MemoLikes> doneMemoLikesList = memoLikesService.findMemoLikesDone(memoList, member);
     List<Integer> memoLikesCountList = memoLikesService.getMemoLikesCountWithMemos(memoList);
-    int memoCount = memoService.getMemoCountWithBookAndMemoAuthority(book, MemoAuthority.PUBLIC);
 
     OtherMemberBookResponseDto result =
         memberMapper.toOtherMemberBookResponseDto(otherMemberBookDto, otherMemberBookMemoDtos,
             doneMemoLikesList,
-            memoLikesCountList, memoCount);
+            memoLikesCountList, pageOtherMemberBookMemoDtos);
 
     return new ResponseEntity(result, HttpStatus.OK);
   }

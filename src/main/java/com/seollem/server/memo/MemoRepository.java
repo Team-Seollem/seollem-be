@@ -21,6 +21,10 @@ public interface MemoRepository extends JpaRepository<Memo, Long> {
 
   List<Memo> findAllByBookAndMemoAuthority(Book book, MemoAuthority memoAuthority);
 
+  Page<Memo> findAllByBookAndMemoAuthority(Pageable pageable, Book book,
+      MemoAuthority memoAuthority);
+
+
   Page<Memo> findAllByBook(Pageable pageable, Book book);
 
   @Query(value = "SELECT * FROM memo WHERE MEMBER_ID = ?1 order by RAND() limit 1", nativeQuery = true)
@@ -36,5 +40,5 @@ public interface MemoRepository extends JpaRepository<Memo, Long> {
   int countMemoWithBookAndMemoAuthority(Book book, MemoAuthority memoAuthority);
 
   @Query("SELECT new com.seollem.server.member.dto.othermemberbook.OtherMemberBookMemoDto(m.memoId, m.memoType, m.memoContent, m.memoBookPage) FROM Memo m WHERE m.book = ?1 and m.memoAuthority = 'PUBLIC' ")
-  List<OtherMemberBookMemoDto> findAllOtherMemberBookMemosWithBook(Book book);
+  Page<OtherMemberBookMemoDto> findAllOtherMemberBookMemosWithBook(Pageable pageable, Book book);
 }
