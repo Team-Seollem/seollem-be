@@ -286,6 +286,24 @@ include::{snippets}/GetOtherMemberProfile/http-response.adoc[]
 .response fields
 include::{snippets}/GetOtherMemberProfile/response-fields.adoc[]
 
+=== 다른 회원 메모 조회
+.request
+include::{snippets}/GetOtherMemberBooks/http-request.adoc[]
+
+.request headers
+include::{snippets}/GetOtherMemberBooks/request-headers.adoc[]
+
+.request path parameters
+include::{snippets}/GetOtherMemberBooks/path-parameters.adoc[]
+
+.request query string
+include::{snippets}/GetOtherMemberBooks/request-parameters.adoc[]
+
+.response
+include::{snippets}/GetOtherMemberBooks/http-response.adoc[]
+
+.response fields
+include::{snippets}/GetOtherMemberBooks/response-fields.adoc[]
 
 == 메모 도메인
 === 메모 랜덤 조회

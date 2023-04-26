@@ -12,6 +12,9 @@ import com.seollem.server.globaldto.PageInfo;
 import com.seollem.server.member.Member;
 import com.seollem.server.member.dto.HallOfFameInnerDto;
 import com.seollem.server.member.dto.MemberDto;
+import com.seollem.server.member.dto.othermemberbook.OtherMemberBookDto;
+import com.seollem.server.member.dto.othermemberbook.OtherMemberBookMemoDto;
+import com.seollem.server.member.dto.othermemberbook.OtherMemberBookResponseDto;
 import com.seollem.server.member.dto.othermemberprofile.OtherLibraryDto;
 import com.seollem.server.member.dto.othermemberprofile.OtherMemberProfileResponseDto;
 import com.seollem.server.memo.Memo;
@@ -141,6 +144,25 @@ public class StubDataUtil {
           BookStatus.DONE, 5, 371);
     }
 
+    public static OtherMemberBookDto getOtherMemberBookDto() {
+      return new OtherMemberBookDto("미움받을용기", "아들러", "https://imageurl1.com", "한빛출판사", 406, 214, 3,
+          BookStatus.DONE);
+    }
+
+    public static PageImpl<OtherMemberBookMemoDto> getPageOtherMemberBookMemoDto() {
+      OtherMemberBookMemoDto dto1 =
+          new OtherMemberBookMemoDto(1, MemoType.BOOK_CONTENT, "메모 1의 메모한 내용입니다.", 24);
+      OtherMemberBookMemoDto dto2 =
+          new OtherMemberBookMemoDto(4, MemoType.QUESTION, "메모 4에 메모한 내용입니다.", 223);
+
+      List<OtherMemberBookMemoDto> list = new ArrayList<>();
+      list.add(dto1);
+      list.add(dto2);
+
+      return new PageImpl<>(list);
+
+    }
+
 
   }
 
@@ -208,6 +230,35 @@ public class StubDataUtil {
               "안녕하세요. 저는 김형섭입니다. 반갑습니다.", list, new PageInfo(1, 2, 2, 1));
 
       return response;
+    }
+
+    public static OtherMemberBookResponseDto getOtherMemberBookResponse() {
+
+      OtherMemberBookMemoDto memoDto1 =
+          new OtherMemberBookMemoDto(1, MemoType.BOOK_CONTENT, "메모 1의 메모한 내용입니다.", 24, 0, false);
+      OtherMemberBookMemoDto memoDto2 =
+          new OtherMemberBookMemoDto(4, MemoType.QUESTION, "메모 4에 메모한 내용입니다.", 223, 2, true);
+
+      List<OtherMemberBookMemoDto> list = new ArrayList<>();
+      list.add(memoDto1);
+      list.add(memoDto2);
+
+      PageInfo pageInfo = new PageInfo(1, 2, 2, 1);
+
+      OtherMemberBookResponseDto result = new OtherMemberBookResponseDto();
+      result.setTitle("미움받을용기");
+      result.setAuthor("아들러");
+      result.setCover("https://imageurl1.com");
+      result.setPublisher("한빛출판사");
+      result.setItemPage(406);
+      result.setCurrentPage(214);
+      result.setStar(3);
+      result.setBookStatus(BookStatus.DONE);
+      result.setMemoList(list);
+      result.setPageInfo(pageInfo);
+
+      return result;
+
     }
   }
 

@@ -1,11 +1,13 @@
 package com.seollem.server.member.dto.othermemberbook;
 
 import com.seollem.server.memo.Memo.MemoType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
+@AllArgsConstructor
 public class OtherMemberBookMemoDto {
 
   private long memoId;
