@@ -8,8 +8,15 @@ import com.seollem.server.book.BookDto.BooksHaveMemoResponse;
 import com.seollem.server.book.BookDto.CalenderResponse;
 import com.seollem.server.book.BookDto.LibraryResponse;
 import com.seollem.server.externallibrary.AladdinResponseDto;
+import com.seollem.server.globaldto.PageInfo;
 import com.seollem.server.member.Member;
-import com.seollem.server.member.MemberDto;
+import com.seollem.server.member.dto.HallOfFameInnerDto;
+import com.seollem.server.member.dto.MemberDto;
+import com.seollem.server.member.dto.othermemberbook.OtherMemberBookDto;
+import com.seollem.server.member.dto.othermemberbook.OtherMemberBookMemoDto;
+import com.seollem.server.member.dto.othermemberbook.OtherMemberBookResponseDto;
+import com.seollem.server.member.dto.othermemberprofile.OtherLibraryDto;
+import com.seollem.server.member.dto.othermemberprofile.OtherMemberProfileResponseDto;
 import com.seollem.server.memo.Memo;
 import com.seollem.server.memo.Memo.MemoAuthority;
 import com.seollem.server.memo.Memo.MemoType;
@@ -17,7 +24,7 @@ import com.seollem.server.memo.MemoDto;
 import com.seollem.server.memo.MemoDto.PostResponse;
 import com.seollem.server.memo.MemoDto.RandomResponse;
 import com.seollem.server.memo.MemoDto.Response;
-import com.seollem.server.memolikes.MemoLikes;
+import com.seollem.server.memolike.MemoLike;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +39,25 @@ public class StubDataUtil {
       return new com.seollem.server.book.Book(1, "미움받을용기", "https://imageurl1.com", "아들러", "한빛출판사",
           214, 406, 5, BookStatus.DONE, LocalDateTime.parse("2022-10-02T11:09:10"),
           LocalDateTime.parse("2022-10-13T21:04:32"), new Member(), null);
+    }
+
+    public static List<Book> getBookList() {
+
+      List<Book> books = new ArrayList<>();
+
+      Book book1 =
+          new com.seollem.server.book.Book(1, "미움받을용기", "https://imageurl1.com", "아들러", "한빛출판사",
+              214, 406, 5, BookStatus.DONE, LocalDateTime.parse("2022-10-02T11:09:10"),
+              LocalDateTime.parse("2022-10-13T21:04:32"), new Member(), null);
+      Book book2 =
+          new com.seollem.server.book.Book(12, "차라투스트라는 이렇게 말했다.", "https://imageurl12.com", "니체",
+              "원호출판사", 15, 898, 0, BookStatus.DONE, LocalDateTime.parse("2022-09-03T10:15:30"),
+              LocalDateTime.parse("2022-10-04T12:15:33"), new Member(), null);
+
+      books.add(book1);
+      books.add(book2);
+
+      return books;
     }
 
 
@@ -118,22 +144,121 @@ public class StubDataUtil {
           BookStatus.DONE, 5, 371);
     }
 
+    public static OtherMemberBookDto getOtherMemberBookDto() {
+      return new OtherMemberBookDto("미움받을용기", "아들러", "https://imageurl1.com", "한빛출판사", 406, 214, 3,
+          BookStatus.DONE);
+    }
+
+    public static PageImpl<OtherMemberBookMemoDto> getPageOtherMemberBookMemoDto() {
+      OtherMemberBookMemoDto dto1 =
+          new OtherMemberBookMemoDto(1, MemoType.BOOK_CONTENT, "메모 1의 메모한 내용입니다.", 24);
+      OtherMemberBookMemoDto dto2 =
+          new OtherMemberBookMemoDto(4, MemoType.QUESTION, "메모 4에 메모한 내용입니다.", 223);
+
+      List<OtherMemberBookMemoDto> list = new ArrayList<>();
+      list.add(dto1);
+      list.add(dto2);
+
+      return new PageImpl<>(list);
+
+    }
+
 
   }
 
   public static class MockMember {
 
     public static Member getMember() {
-      return new Member(1, "starrypro@gmail.com", "김형섭", "password", "ROLE_USER",
-          new ArrayList<Book>(), new ArrayList<MemoLikes>());
+      return new Member(1, "starrypro@gmail.com", "김형섭", "password", "ROLE_USER", "안녕하세요. 김형섭입니다.",
+          "https://profileImage.com",
+          new ArrayList<Book>(), new ArrayList<MemoLike>());
     }
 
     public static MemberDto.GetResponse getMemberGetResponse() {
-      return new MemberDto.GetResponse("starrypro@gmail.com", "김형섭");
+      return new MemberDto.GetResponse("starrypro@gmail.com", "김형섭", "안녕하세요. 김형섭입니다.",
+          "https://profileImage.com");
     }
 
     public static MemberDto.PatchResponse getMemberPatchResponse() {
-      return new MemberDto.PatchResponse("starrypro@gmail.com", "이슬", LocalDateTime.now());
+      return new MemberDto.PatchResponse("starrypro@gmail.com", "이슬", LocalDateTime.now(),
+          "안녕하세요. 이슬입니다.", "https://profileImage.com");
+    }
+
+    public static List<HallOfFameInnerDto> getHallOfFameWithBook() {
+      HallOfFameInnerDto dto1 = new HallOfFameInnerDto(25, "https://imageUrl25.com", "김형섭", 24);
+      HallOfFameInnerDto dto2 = new HallOfFameInnerDto(3, "https://imageUrl3.com", "한성욱", 21);
+      HallOfFameInnerDto dto3 = new HallOfFameInnerDto(46, "https://imageUrl46.com", "김주현", 2);
+      HallOfFameInnerDto dto4 = new HallOfFameInnerDto(22, "https://imageUrl22.com", "이슬", 1);
+
+      List<HallOfFameInnerDto> list = new ArrayList<>();
+
+      list.add(dto1);
+      list.add(dto2);
+      list.add(dto3);
+      list.add(dto4);
+
+      return list;
+    }
+
+    public static List<HallOfFameInnerDto> getHallOfFameWithMemo() {
+      HallOfFameInnerDto dto1 = new HallOfFameInnerDto(25, "https://imageUrl25.com", "김형섭", 15);
+      HallOfFameInnerDto dto2 = new HallOfFameInnerDto(36, "https://imageUrl36.com", "뽐므", 3);
+      HallOfFameInnerDto dto3 = new HallOfFameInnerDto(86, "https://imageUrl86.com", "최민석", 3);
+      HallOfFameInnerDto dto4 = new HallOfFameInnerDto(3, "https://imageUrl3.com", "한성욱", 1);
+
+      List<HallOfFameInnerDto> list = new ArrayList<>();
+
+      list.add(dto1);
+      list.add(dto2);
+      list.add(dto3);
+      list.add(dto4);
+
+      return list;
+    }
+
+    public static OtherMemberProfileResponseDto getOtherMemberProfile() {
+      OtherLibraryDto libraryDto1 = new OtherLibraryDto(1, "미움받을용기", "아들러", "https://imageurl.com");
+      OtherLibraryDto libraryDto2 =
+          new OtherLibraryDto(12, "차라투스트라는 이렇게 말했다.", "니체", "https://imageurl.com");
+
+      List<OtherLibraryDto> list = new ArrayList<>();
+      list.add(libraryDto1);
+      list.add(libraryDto2);
+
+      OtherMemberProfileResponseDto response =
+          new OtherMemberProfileResponseDto("김형섭", "https://memberimageurl.com",
+              "안녕하세요. 저는 김형섭입니다. 반갑습니다.", list, new PageInfo(1, 2, 2, 1));
+
+      return response;
+    }
+
+    public static OtherMemberBookResponseDto getOtherMemberBookResponse() {
+
+      OtherMemberBookMemoDto memoDto1 =
+          new OtherMemberBookMemoDto(1, MemoType.BOOK_CONTENT, "메모 1의 메모한 내용입니다.", 24, 0, false);
+      OtherMemberBookMemoDto memoDto2 =
+          new OtherMemberBookMemoDto(4, MemoType.QUESTION, "메모 4에 메모한 내용입니다.", 223, 2, true);
+
+      List<OtherMemberBookMemoDto> list = new ArrayList<>();
+      list.add(memoDto1);
+      list.add(memoDto2);
+
+      PageInfo pageInfo = new PageInfo(1, 2, 2, 1);
+
+      OtherMemberBookResponseDto result = new OtherMemberBookResponseDto();
+      result.setTitle("미움받을용기");
+      result.setAuthor("아들러");
+      result.setCover("https://imageurl1.com");
+      result.setPublisher("한빛출판사");
+      result.setItemPage(406);
+      result.setCurrentPage(214);
+      result.setStar(3);
+      result.setBookStatus(BookStatus.DONE);
+      result.setMemoList(list);
+      result.setPageInfo(pageInfo);
+
+      return result;
+
     }
   }
 
@@ -221,6 +346,13 @@ public class StubDataUtil {
           "[{\"cover\":\"https://image.aladin.co.kr/product/16/80/cover/s8937460033_1.jpg\",\"author\":\"윌리엄 셰익스피어 (지은이), 최종철 (옮긴이)\",\"publisher\":\"민음사\",\"title\":\"햄릿\",\"itemPage\":\"226\"},{\"cover\":\"https://image.aladin.co.kr/product/2090/86/cover/s402638427_1.jpg\",\"author\":\"윌리엄 셰익스피어 (지은이), 최종철 (옮긴이)\",\"publisher\":\"민음사\",\"title\":\"셰익스피어 4대 비극 세트 : 햄릿.오셀로.맥베스.리어 왕 - 전4권\",\"itemPage\":\"900\"},{\"cover\":\"https://image.aladin.co.kr/product/25861/77/cover/8968332886_1.jpg\",\"author\":\"대니얼 조슈아 루빈 (지은이), 이한이 (옮긴이)\",\"publisher\":\"블랙피쉬\",\"title\":\"스토리텔링 바이블 - 작가라면 알아야 할 이야기 창작 완벽 가이드\",\"itemPage\":\"520\"},{\"cover\":\"https://image.aladin.co.kr/product/47/66/cover/8937460998_3.jpg\",\"author\":\"윌리엄 셰익스피어 (지은이), 최종철 (옮긴이)\",\"publisher\":\"민음사\",\"title\":\"맥베스\",\"itemPage\":\"151\"},{\"cover\":\"https://image.aladin.co.kr/product/60/14/cover/8937461277_2.jpg\",\"author\":\"윌리엄 셰익스피어 (지은이), 최종철 (옮긴이)\",\"publisher\":\"민음사\",\"title\":\"리어 왕\",\"itemPage\":\"228\"},{\"cover\":\"https://image.aladin.co.kr/product/28485/41/cover/8937416786_1.jpg\",\"author\":\"윌리엄 셰익스피어 (지은이), 최종철 (옮긴이)\",\"publisher\":\"민음사\",\"title\":\"셰익스피어 4대 비극 에디션 세트 - 전4권 (리커버 특별판) - 햄릿 + 오셀로 + 리어 왕 + 맥베스\",\"itemPage\":\"900\"},{\"cover\":\"https://image.aladin.co.kr/product/193/34/cover/8937461730_2.jpg\",\"author\":\"윌리엄 셰익스피어 (지은이), 최종철 (옮긴이)\",\"publisher\":\"민음사\",\"title\":\"로미오와 줄리엣\",\"itemPage\":\"200\"},{\"cover\":\"https://image.aladin.co.kr/product/14954/28/cover/8937475308_1.jpg\",\"author\":\"윌리엄 셰익스피어 (지은이), 피천득 (옮긴이)\",\"publisher\":\"민음사\",\"title\":\"셰익스피어 소네트\",\"itemPage\":\"337\"},{\"cover\":\"https://image.aladin.co.kr/product/857/94/cover/8937462621_2.jpg\",\"author\":\"윌리엄 셰익스피어 (지은이), 최종철 (옮긴이)\",\"publisher\":\"민음사\",\"title\":\"베니스의 상인\",\"itemPage\":\"162\"},{\"cover\":\"https://image.aladin.co.kr/product/29/51/cover/893746053x_3.jpg\",\"author\":\"윌리엄 셰익스피어 (지은이), 최종철 (옮긴이)\",\"publisher\":\"민음사\",\"title\":\"오셀로\",\"itemPage\":\"244\"}]".replace(
               "\\", "");
       return new AladdinResponseDto(response);
+    }
+  }
+
+  public static class MockMemoLike {
+
+    public static MemoLike getMemoLike() {
+      return new MemoLike(1, null, null);
     }
   }
 }

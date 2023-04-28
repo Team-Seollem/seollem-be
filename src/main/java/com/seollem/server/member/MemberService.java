@@ -3,8 +3,15 @@ package com.seollem.server.member;
 import com.seollem.server.emailauth.EmailRedisUtil;
 import com.seollem.server.exception.BusinessLogicException;
 import com.seollem.server.exception.ExceptionCode;
+import com.seollem.server.member.dto.HallOfFameInnerDto;
+import com.seollem.server.member.dto.othermemberprofile.OtherLibraryDto;
+import com.seollem.server.member.dto.othermemberprofile.OtherMemberDto;
+import com.seollem.server.member.dto.othermemberprofile.OtherMemberProfileResponseDto;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +38,15 @@ public class MemberService {
     Optional.ofNullable(member.getName()).ifPresent(name -> findMember.setName(name));
     Optional.ofNullable(member.getPassword())
         .ifPresent(password -> findMember.setPassword(bCryptPasswordEncoder.encode(password)));
+    Optional.ofNullable(member.getUrl()).ifPresent(url -> findMember.setUrl(url));
+    Optional.ofNullable(member.getContent()).ifPresent(content -> findMember.setContent(content));
 
     return memberRepository.save(findMember);
+  }
+
+  public Member updateMemberImage(Member member, String url) {
+    member.setUrl(url);
+    return memberRepository.save(member);
   }
 
   public void deleteMember(String email) {
@@ -45,6 +59,13 @@ public class MemberService {
     if (optionalMember.isPresent()) {
       throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
     }
+  }
+
+  public Member findVerifiedMemberById(long memberId) {
+    Optional<Member> optionalMember = memberRepository.findById(memberId);
+    Member member = optionalMember.orElseThrow(
+        () -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+    return member;
   }
 
   public Member findVerifiedMemberByEmail(String email) {
@@ -61,5 +82,37 @@ public class MemberService {
       throw new BusinessLogicException(ExceptionCode.MEMBER_AUTHENTICATIONCODE_INVALID);
     }
   }
+
+  public List<HallOfFameInnerDto> getHallOfFameWithBook() {
+
+    List<HallOfFameInnerDto> list = memberRepository.findHallOfFameWithBook(PageRequest.of(0, 10));
+
+    return list;
+
+  }
+
+  public List<HallOfFameInnerDto> getHallOfFameWithMemo() {
+
+    List<HallOfFameInnerDto> list = memberRepository.findHallOfFameWithMemo(PageRequest.of(0, 10));
+
+    return list;
+
+  }
+
+  public OtherMemberProfileResponseDto getOtherMemberProfile(int page, int size, Member member) {
+    Page<OtherLibraryDto> pageOtherLibraryDtos =
+        memberRepository.findOtherLibrary(member, PageRequest.of(page, size));
+    List<OtherLibraryDto> otherLibraryDtos = pageOtherLibraryDtos.getContent();
+
+    OtherMemberDto otherMemberDto = memberRepository.findOtherMember(member.getMemberId());
+
+    OtherMemberProfileResponseDto response =
+        new OtherMemberProfileResponseDto(otherMemberDto.getName(), otherMemberDto.getUrl(),
+            otherMemberDto.getContent(), otherLibraryDtos, pageOtherLibraryDtos);
+
+    return response;
+  }
+
+
 
 }

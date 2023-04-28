@@ -10,9 +10,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.google.gson.Gson;
 import com.seollem.server.auth.controller.AuthController;
 import com.seollem.server.member.Member;
-import com.seollem.server.member.MemberDto;
 import com.seollem.server.member.MemberMapper;
 import com.seollem.server.member.MemberService;
+import com.seollem.server.member.dto.MemberDto;
 import com.seollem.server.restdocs.util.WebMvcTestSetUpUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

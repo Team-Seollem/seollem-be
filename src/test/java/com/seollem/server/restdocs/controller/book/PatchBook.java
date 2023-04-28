@@ -50,7 +50,8 @@ public class PatchBook extends TestSetUpForBookUtil {
     when(memberService.findVerifiedMemberByEmail(Mockito.anyString())).thenReturn(
         StubDataUtil.MockMember.getMember());
 
-    when(bookService.verifyBookStatus(Mockito.any())).thenReturn(StubDataUtil.MockBook.getBook());
+    when(bookService.verifyPatchBookStatus(Mockito.any())).thenReturn(
+        StubDataUtil.MockBook.getBook());
 
     doNothing().when(bookService).verifyMemberHasBook(Mockito.anyLong(), Mockito.anyLong());
 

@@ -1,8 +1,8 @@
 package com.seollem.server.book;
 
 import com.seollem.server.book.BookDto.BooksHaveMemoResponse;
+import com.seollem.server.book.BookDto.BooksHaveMemoResponseDto;
 import com.seollem.server.globaldto.MultiResponseDto;
-import com.seollem.server.globaldto.MultiResponseDtoForBooksHaveMemo;
 import com.seollem.server.globaldto.PageInfo;
 import com.seollem.server.member.Member;
 import com.seollem.server.member.MemberService;
@@ -11,7 +11,7 @@ import com.seollem.server.memo.Memo.MemoAuthority;
 import com.seollem.server.memo.MemoDto;
 import com.seollem.server.memo.MemoMapper;
 import com.seollem.server.memo.MemoService;
-import com.seollem.server.memolikes.MemoLikesService;
+import com.seollem.server.memolike.MemoLikeService;
 import com.seollem.server.util.GetCalenderBookUtil;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
 import java.time.LocalDateTime;
@@ -52,7 +52,7 @@ public class BookController {
   private final BookMapper bookMapper;
   private final MemoService memoService;
   private final MemoMapper memoMapper;
-  private final MemoLikesService memoLikesService;
+  private final MemoLikeService memoLikeService;
   private final GetCalenderBookUtil getCalenderBookUtil;
 
 
@@ -86,8 +86,6 @@ public class BookController {
   @GetMapping("/calender")
   public ResponseEntity getCalender(
       @RequestHeader Map<String, Object> requestHeader,
-      @Positive @RequestParam int page,
-      @Positive @RequestParam int size,
       @Positive @RequestParam int year, @Min(1) @Max(12) @RequestParam int month) {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
@@ -95,15 +93,11 @@ public class BookController {
     ArrayList<LocalDateTime> calenderPeriod =
         getCalenderBookUtil.getCalenderBookPeriod(year, month);
 
-    Page<Book> pageBooks =
-        bookService.findCalenderBooks(
-            page - 1, size, member, calenderPeriod.get(0), calenderPeriod.get(1),
-            Book.BookStatus.DONE, "read_end_date");
-    List<Book> books = pageBooks.getContent();
+    List<Book> books =
+        bookService.findCalenderBooks(member, calenderPeriod.get(0), calenderPeriod.get(1),
+            Book.BookStatus.DONE);
 
-    return new ResponseEntity<>(
-        new MultiResponseDto<>(bookMapper.BooksToCalenderResponse(books), pageBooks),
-        HttpStatus.OK);
+    return new ResponseEntity<>(bookMapper.BooksToCalenderResponse(books), HttpStatus.OK);
   }
 
   // 오래된 책 조회
@@ -163,7 +157,7 @@ public class BookController {
         .build();
 
     return new ResponseEntity<>(
-        new MultiResponseDtoForBooksHaveMemo<>(pagedResponseList, pageInfo),
+        new BooksHaveMemoResponseDto<>(pagedResponseList, pageInfo),
         HttpStatus.OK);
   }
 
@@ -188,14 +182,14 @@ public class BookController {
     if (memoAuthority == MemoAuthority.ALL) {
       memos = memoService.getMemosWithBook(book);
     } else {
-      memos = memoService.getMemoWithBookAndMemoAuthority(book, memoAuthority);
+      memos = memoService.getMemosWithBookAndMemoAuthority(book, memoAuthority);
     }
 
     List<MemoDto.Response> responseList = memoMapper.memoToMemoResponses(memos);
 
     for (int i = 0; i < memos.size(); i++) {
       responseList.get(i)
-          .setMemoLikesCount(memoLikesService.getMemoLikesCountWithMemo(memos.get(i)));
+          .setMemoLikesCount(memoLikeService.getMemoLikesCountWithMemo(memos.get(i)));
     }
 
     result.setMemosList(responseList);
@@ -227,7 +221,7 @@ public class BookController {
     List<MemoDto.Response> responseList = memoMapper.memoToMemoResponses(memos);
     for (int i = 0; i < memos.size(); i++) {
       responseList.get(i)
-          .setMemoLikesCount(memoLikesService.getMemoLikesCountWithMemo(memos.get(i)));
+          .setMemoLikesCount(memoLikeService.getMemoLikesCountWithMemo(memos.get(i)));
     }
     //        BookDto.MemosOfBook response = bookMapper.BookToMemosOfBookResponse(book);
     //        response.setMemosList(memoTypeList);
@@ -283,7 +277,7 @@ public class BookController {
 
     bookService.verifyMemberHasBook(bookId, member.getMemberId());
 
-    bookService.deleteBook(bookId);
+    bookService.deleteBookWithId(bookId);
 
     return new ResponseEntity(HttpStatus.NO_CONTENT);
   }

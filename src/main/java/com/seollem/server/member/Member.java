@@ -2,7 +2,7 @@ package com.seollem.server.member;
 
 import com.seollem.server.audit.Auditable;
 import com.seollem.server.book.Book;
-import com.seollem.server.memolikes.MemoLikes;
+import com.seollem.server.memolike.MemoLike;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,13 +37,15 @@ public class Member extends Auditable {
   @Column(nullable = false)
   private String password;
   private String roles;
+  private String content;
+  private String url;
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
   private List<Book> books = new ArrayList<>();
 
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-  private List<MemoLikes> memoLikes;
+  private List<MemoLike> memoLikes;
 
   public List<String> getRoleList() {
     if (this.roles.length() > 0) {

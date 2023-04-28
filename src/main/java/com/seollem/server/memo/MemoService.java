@@ -5,6 +5,7 @@ import com.seollem.server.book.BookService;
 import com.seollem.server.exception.BusinessLogicException;
 import com.seollem.server.exception.ExceptionCode;
 import com.seollem.server.member.Member;
+import com.seollem.server.member.dto.othermemberbook.OtherMemberBookMemoDto;
 import com.seollem.server.memo.Memo.MemoAuthority;
 import java.util.List;
 import java.util.Optional;
@@ -57,6 +58,15 @@ public class MemoService {
     return memoList;
   }
 
+
+  public Page<OtherMemberBookMemoDto> getOtherMemberBookMemosWithBook(int page, int size,
+      Book book) {
+    Page<OtherMemberBookMemoDto> list =
+        memoRepository.findAllOtherMemberBookMemosWithBook(PageRequest.of(page, size), book);
+    return list;
+  }
+
+
   public Page<Memo> getMemosWithBookAndMemoTypes(int page, int size, Book book,
       Memo.MemoType memoType) {
     Page<Memo> memoTypeList =
@@ -73,14 +83,31 @@ public class MemoService {
     return memoTypeList;
   }
 
-  public List<Memo> getMemoWithBookAndMemoAuthority(Book book, MemoAuthority memoAuthority) {
+  public List<Memo> getMemosWithBookAndMemoAuthority(Book book, MemoAuthority memoAuthority) {
     List<Memo> list =
         memoRepository.findAllByBookAndMemoAuthority(book, memoAuthority);
     return list;
   }
 
+  public List<Memo> getPageMemosWithBookAndMemoAuthority(int page, int size, Book book,
+      MemoAuthority memoAuthority) {
+    Page<Memo> pageList =
+        memoRepository.findAllByBookAndMemoAuthority(PageRequest.of(page, size), book,
+            memoAuthority);
+    List<Memo> list = pageList.getContent();
+    return list;
+  }
+
+
   public int getMemoCountWithBook(Book book) {
     int memoCount = memoRepository.countMemoWithBook(book);
+
+    return memoCount;
+
+  }
+
+  public int getMemoCountWithBookAndMemoAuthority(Book book, MemoAuthority memoAuthority) {
+    int memoCount = memoRepository.countMemoWithBookAndMemoAuthority(book, memoAuthority);
 
     return memoCount;
 

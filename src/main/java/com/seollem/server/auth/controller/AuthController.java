@@ -1,9 +1,9 @@
 package com.seollem.server.auth.controller;
 
 import com.seollem.server.member.Member;
-import com.seollem.server.member.MemberDto;
 import com.seollem.server.member.MemberMapper;
 import com.seollem.server.member.MemberService;
+import com.seollem.server.member.dto.MemberDto;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
