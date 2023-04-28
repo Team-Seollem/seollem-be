@@ -348,4 +348,11 @@ public class StubDataUtil {
       return new AladdinResponseDto(response);
     }
   }
+
+  public static class MockMemoLike {
+
+    public static MemoLike getMemoLike() {
+      return new MemoLike(1, null, null);
+    }
+  }
 }
