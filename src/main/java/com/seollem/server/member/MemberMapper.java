@@ -5,7 +5,7 @@ import com.seollem.server.member.dto.MemberDto;
 import com.seollem.server.member.dto.othermemberbook.OtherMemberBookDto;
 import com.seollem.server.member.dto.othermemberbook.OtherMemberBookMemoDto;
 import com.seollem.server.member.dto.othermemberbook.OtherMemberBookResponseDto;
-import com.seollem.server.memolikes.MemoLikes;
+import com.seollem.server.memolike.MemoLike;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -36,7 +36,7 @@ public interface MemberMapper {
 
   default OtherMemberBookResponseDto toOtherMemberBookResponseDto(
       OtherMemberBookDto otherMemberBookDto, List<OtherMemberBookMemoDto> otherMemberBookMemoDtos,
-      List<MemoLikes> memoLikes, List<Integer> memoLikesCount, Page page) {
+      List<MemoLike> memoLikes, List<Integer> memoLikesCount, Page page) {
     OtherMemberBookResponseDto result = new OtherMemberBookResponseDto();
     result.setTitle(otherMemberBookDto.getTitle());
     result.setAuthor(otherMemberBookDto.getAuthor());
@@ -50,7 +50,7 @@ public interface MemberMapper {
       otherMemberBookMemoDtos.get(i).setMemoLikesCount(memoLikesCount.get(i));
     }
     for (OtherMemberBookMemoDto otherMemberBookMemoDtoItem : otherMemberBookMemoDtos) {
-      for (MemoLikes memoLikesItem : memoLikes) {
+      for (MemoLike memoLikesItem : memoLikes) {
         if (otherMemberBookMemoDtoItem.getMemoId() == memoLikesItem.getMemo().getMemoId()) {
           otherMemberBookMemoDtoItem.setMemoLikeDone(true);
         }

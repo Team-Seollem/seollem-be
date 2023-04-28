@@ -24,7 +24,7 @@ import com.seollem.server.memo.MemoDto;
 import com.seollem.server.memo.MemoDto.PostResponse;
 import com.seollem.server.memo.MemoDto.RandomResponse;
 import com.seollem.server.memo.MemoDto.Response;
-import com.seollem.server.memolikes.MemoLikes;
+import com.seollem.server.memolike.MemoLike;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -171,7 +171,7 @@ public class StubDataUtil {
     public static Member getMember() {
       return new Member(1, "starrypro@gmail.com", "김형섭", "password", "ROLE_USER", "안녕하세요. 김형섭입니다.",
           "https://profileImage.com",
-          new ArrayList<Book>(), new ArrayList<MemoLikes>());
+          new ArrayList<Book>(), new ArrayList<MemoLike>());
     }
 
     public static MemberDto.GetResponse getMemberGetResponse() {
@@ -346,6 +346,13 @@ public class StubDataUtil {
           "[{\"cover\":\"https://image.aladin.co.kr/product/16/80/cover/s8937460033_1.jpg\",\"author\":\"윌리엄 셰익스피어 (지은이), 최종철 (옮긴이)\",\"publisher\":\"민음사\",\"title\":\"햄릿\",\"itemPage\":\"226\"},{\"cover\":\"https://image.aladin.co.kr/product/2090/86/cover/s402638427_1.jpg\",\"author\":\"윌리엄 셰익스피어 (지은이), 최종철 (옮긴이)\",\"publisher\":\"민음사\",\"title\":\"셰익스피어 4대 비극 세트 : 햄릿.오셀로.맥베스.리어 왕 - 전4권\",\"itemPage\":\"900\"},{\"cover\":\"https://image.aladin.co.kr/product/25861/77/cover/8968332886_1.jpg\",\"author\":\"대니얼 조슈아 루빈 (지은이), 이한이 (옮긴이)\",\"publisher\":\"블랙피쉬\",\"title\":\"스토리텔링 바이블 - 작가라면 알아야 할 이야기 창작 완벽 가이드\",\"itemPage\":\"520\"},{\"cover\":\"https://image.aladin.co.kr/product/47/66/cover/8937460998_3.jpg\",\"author\":\"윌리엄 셰익스피어 (지은이), 최종철 (옮긴이)\",\"publisher\":\"민음사\",\"title\":\"맥베스\",\"itemPage\":\"151\"},{\"cover\":\"https://image.aladin.co.kr/product/60/14/cover/8937461277_2.jpg\",\"author\":\"윌리엄 셰익스피어 (지은이), 최종철 (옮긴이)\",\"publisher\":\"민음사\",\"title\":\"리어 왕\",\"itemPage\":\"228\"},{\"cover\":\"https://image.aladin.co.kr/product/28485/41/cover/8937416786_1.jpg\",\"author\":\"윌리엄 셰익스피어 (지은이), 최종철 (옮긴이)\",\"publisher\":\"민음사\",\"title\":\"셰익스피어 4대 비극 에디션 세트 - 전4권 (리커버 특별판) - 햄릿 + 오셀로 + 리어 왕 + 맥베스\",\"itemPage\":\"900\"},{\"cover\":\"https://image.aladin.co.kr/product/193/34/cover/8937461730_2.jpg\",\"author\":\"윌리엄 셰익스피어 (지은이), 최종철 (옮긴이)\",\"publisher\":\"민음사\",\"title\":\"로미오와 줄리엣\",\"itemPage\":\"200\"},{\"cover\":\"https://image.aladin.co.kr/product/14954/28/cover/8937475308_1.jpg\",\"author\":\"윌리엄 셰익스피어 (지은이), 피천득 (옮긴이)\",\"publisher\":\"민음사\",\"title\":\"셰익스피어 소네트\",\"itemPage\":\"337\"},{\"cover\":\"https://image.aladin.co.kr/product/857/94/cover/8937462621_2.jpg\",\"author\":\"윌리엄 셰익스피어 (지은이), 최종철 (옮긴이)\",\"publisher\":\"민음사\",\"title\":\"베니스의 상인\",\"itemPage\":\"162\"},{\"cover\":\"https://image.aladin.co.kr/product/29/51/cover/893746053x_3.jpg\",\"author\":\"윌리엄 셰익스피어 (지은이), 최종철 (옮긴이)\",\"publisher\":\"민음사\",\"title\":\"오셀로\",\"itemPage\":\"244\"}]".replace(
               "\\", "");
       return new AladdinResponseDto(response);
+    }
+  }
+
+  public static class MockMemoLike {
+
+    public static MemoLike getMemoLike() {
+      return new MemoLike(1, null, null);
     }
   }
 }

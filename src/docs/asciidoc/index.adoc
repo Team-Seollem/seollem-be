@@ -386,6 +386,38 @@ include::{snippets}/DeleteMemo/path-parameters.adoc[]
 .response
 include::{snippets}/DeleteMemo/http-response.adoc[]
 
+== 메모 좋아요 도메인
+=== 메모 좋아요 등록
+.request
+include::{snippets}/PostMemoLike/http-request.adoc[]
+
+.request headers
+include::{snippets}/PostMemoLike/request-headers.adoc[]
+
+.request path parameters
+include::{snippets}/PostMemoLike/path-parameters.adoc[]
+
+.response
+include::{snippets}/PostMemoLike/http-response.adoc[]
+
+.response fields
+include::{snippets}/PostMemoLike/response-fields.adoc[]
+
+=== 메모 좋아요 삭제
+.request
+include::{snippets}/DeleteMemoLike/http-request.adoc[]
+
+.request headers
+include::{snippets}/DeleteMemoLike/request-headers.adoc[]
+
+.request path parameters
+include::{snippets}/DeleteMemoLike/path-parameters.adoc[]
+
+.response
+include::{snippets}/DeleteMemoLike/http-response.adoc[]
+
+
+
 == 알라딘 API 조회 도메인
 === 베스트셀러 조회
 .request

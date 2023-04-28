@@ -12,8 +12,8 @@ import com.seollem.server.member.dto.othermemberprofile.OtherMemberProfileRespon
 import com.seollem.server.memo.Memo;
 import com.seollem.server.memo.Memo.MemoAuthority;
 import com.seollem.server.memo.MemoService;
-import com.seollem.server.memolikes.MemoLikes;
-import com.seollem.server.memolikes.MemoLikesService;
+import com.seollem.server.memolike.MemoLike;
+import com.seollem.server.memolike.MemoLikeService;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +47,7 @@ public class MemberController {
   private final MemberService memberService;
   private final MemoService memoService;
   private final BookService bookService;
-  private final MemoLikesService memoLikesService;
+  private final MemoLikeService memoLikeService;
   private final GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil;
   private final FileUploadService fileUploadService;
 
@@ -121,8 +121,8 @@ public class MemberController {
 
     List<Memo> memoList = memoService.getPageMemosWithBookAndMemoAuthority(page - 1, size, book,
         MemoAuthority.PUBLIC);
-    List<MemoLikes> doneMemoLikesList = memoLikesService.findMemoLikesDone(memoList, member);
-    List<Integer> memoLikesCountList = memoLikesService.getMemoLikesCountWithMemos(memoList);
+    List<MemoLike> doneMemoLikesList = memoLikeService.findMemoLikesDone(memoList, member);
+    List<Integer> memoLikesCountList = memoLikeService.getMemoLikesCountWithMemos(memoList);
 
     OtherMemberBookResponseDto result =
         memberMapper.toOtherMemberBookResponseDto(otherMemberBookDto, otherMemberBookMemoDtos,

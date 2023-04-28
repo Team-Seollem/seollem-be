@@ -61,7 +61,7 @@ public class GetMemos extends TestSetUpForBookUtil {
     when(memoMapper.memoToMemoResponses(Mockito.any())).thenReturn(
         StubDataUtil.MockMemo.getMemoResponses());
 
-    when(memoLikesService.getMemoLikesCountWithMemo(Mockito.any())).thenReturn(2);
+    when(memoLikeService.getMemoLikesCountWithMemo(Mockito.any())).thenReturn(2);
 
     //when
     ResultActions resultActions = mockMvc.perform(
