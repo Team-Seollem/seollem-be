@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -39,8 +40,23 @@ public class MemoLikeController {
 
     Memo memo = memoService.findVerifiedMemo(memoId);
 
-    memoLikeService.createLike(memo, member);
+    memoLikeService.createMemoLike(memo, member);
 
     return new ResponseEntity(HttpStatus.CREATED);
+  }
+
+  @DeleteMapping(path = "/{memo-like-id}")
+  public ResponseEntity cancelLike(
+      @RequestHeader Map<String, Object> requestHeader,
+      @Positive @PathVariable("memo-like-id") long memoLikeId) {
+
+    String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
+    Member member = memberService.findVerifiedMemberByEmail(email);
+
+    MemoLike memoLike = memoLikeService.findVerifiedMemoLikeById(memoLikeId);
+    memoLikeService.verifyMemberHasMemoLike(member, memoLike);
+    memoLikeService.deleteMemoLikeWithMemoLike(memoLike);
+
+    return new ResponseEntity(HttpStatus.NO_CONTENT);
   }
 }

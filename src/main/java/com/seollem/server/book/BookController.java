@@ -277,7 +277,7 @@ public class BookController {
 
     bookService.verifyMemberHasBook(bookId, member.getMemberId());
 
-    bookService.deleteBook(bookId);
+    bookService.deleteBookWithId(bookId);
 
     return new ResponseEntity(HttpStatus.NO_CONTENT);
   }

@@ -16,7 +16,10 @@ public enum ExceptionCode {
 
   IMAGE_UPLOAD_FAIL(500, "Image upload failed."),
 
-  MEMOLIKE_ALREADY_DONE(400, "Member already did MemoLike in this memo.");
+  MEMOLIKE_ALREADY_DONE(400, "Member already did MemoLike in this memo."),
+
+  MEMOLIKE_NOT_FOUND(404, "MemoLike not found"),
+  NOT_MEMBER_MEMOLIKE(400, "Not member's MemoLike.");
 
   @Getter
   private final int status;

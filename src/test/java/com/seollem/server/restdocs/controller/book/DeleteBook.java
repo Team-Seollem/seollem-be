@@ -37,7 +37,7 @@ public class DeleteBook extends TestSetUpForBookUtil {
 
     when(bookService.verifyBookStatus(Mockito.any())).thenReturn(StubDataUtil.MockBook.getBook());
 
-    doNothing().when(bookService).deleteBook(Mockito.anyLong());
+    doNothing().when(bookService).deleteBookWithId(Mockito.anyLong());
 
     //when, then
     this.mockMvc.perform(delete("/books/{book-id}", 1)

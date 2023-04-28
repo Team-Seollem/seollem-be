@@ -23,7 +23,7 @@ public class MemoLike extends Auditable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int memoLikeId;
+  private long memoLikeId;
 
   @ManyToOne
   @JoinColumn(name = "MEMO_ID")

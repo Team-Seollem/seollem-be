@@ -51,7 +51,7 @@ public class BookService {
     return bookRepository.save(findBook);
   }
 
-  public void deleteBook(long bookId) {
+  public void deleteBookWithId(long bookId) {
     Book book = findVerifiedBookById(bookId);
     bookRepository.delete(book);
   }

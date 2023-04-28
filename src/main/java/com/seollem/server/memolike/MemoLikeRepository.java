@@ -18,4 +18,6 @@ public interface MemoLikeRepository extends JpaRepository<MemoLike, Long> {
   List<MemoLike> findMemoLikesDone(List<Memo> memoList, Member member);
 
   List<MemoLike> findAllByMemoAndMember(Memo memo, Member member);
+
+  List<MemoLike> findAllByMemberAndMemoLikeId(Member member, long memoLikeId);
 }
