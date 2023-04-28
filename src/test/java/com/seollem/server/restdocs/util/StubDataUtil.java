@@ -24,7 +24,7 @@ import com.seollem.server.memo.MemoDto;
 import com.seollem.server.memo.MemoDto.PostResponse;
 import com.seollem.server.memo.MemoDto.RandomResponse;
 import com.seollem.server.memo.MemoDto.Response;
-import com.seollem.server.memolikes.MemoLikes;
+import com.seollem.server.memolike.MemoLike;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -171,7 +171,7 @@ public class StubDataUtil {
     public static Member getMember() {
       return new Member(1, "starrypro@gmail.com", "김형섭", "password", "ROLE_USER", "안녕하세요. 김형섭입니다.",
           "https://profileImage.com",
-          new ArrayList<Book>(), new ArrayList<MemoLikes>());
+          new ArrayList<Book>(), new ArrayList<MemoLike>());
     }
 
     public static MemberDto.GetResponse getMemberGetResponse() {

@@ -6,7 +6,7 @@ import com.seollem.server.file.FileUploadService;
 import com.seollem.server.member.Member;
 import com.seollem.server.member.MemberService;
 import com.seollem.server.memo.MemoDto.ImageMemoResponse;
-import com.seollem.server.memolikes.MemoLikesService;
+import com.seollem.server.memolike.MemoLikeService;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
 import java.util.Map;
 import javax.validation.Valid;
@@ -41,7 +41,7 @@ public class MemoController {
   private final GetEmailFromHeaderTokenUtil getEmailFromHeaderTokenUtil;
   private final BookService bookService;
   private final FileUploadService fileUploadService;
-  private final MemoLikesService memoLikesService;
+  private final MemoLikeService memoLikeService;
 
   @PostMapping("/{book-id}")
   public ResponseEntity postMemo(@RequestHeader Map<String, Object> requestHeader,
@@ -90,7 +90,7 @@ public class MemoController {
 
     Memo updatedMemo = memoService.updateMemo(patchMemo);
     MemoDto.Response response = memoMapper.memoToMemoResponse(updatedMemo);
-    response.setMemoLikesCount(memoLikesService.getMemoLikesCountWithMemo(updatedMemo));
+    response.setMemoLikesCount(memoLikeService.getMemoLikesCountWithMemo(updatedMemo));
 
     return new ResponseEntity<>(response, HttpStatus.OK);
   }

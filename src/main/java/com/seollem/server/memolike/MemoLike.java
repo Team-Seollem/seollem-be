@@ -1,4 +1,4 @@
-package com.seollem.server.memolikes;
+package com.seollem.server.memolike;
 
 import com.seollem.server.audit.Auditable;
 import com.seollem.server.member.Member;
@@ -19,11 +19,11 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemoLikes extends Auditable {
+public class MemoLike extends Auditable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int memoLikesId;
+  private int memoLikeId;
 
   @ManyToOne
   @JoinColumn(name = "MEMO_ID")
@@ -32,5 +32,6 @@ public class MemoLikes extends Auditable {
   @ManyToOne
   @JoinColumn(name = "MEMBER_ID")
   private Member member;
+
 
 }

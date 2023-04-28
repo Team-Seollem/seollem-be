@@ -3,7 +3,7 @@ package com.seollem.server.memo;
 import com.seollem.server.audit.Auditable;
 import com.seollem.server.book.Book;
 import com.seollem.server.member.Member;
-import com.seollem.server.memolikes.MemoLikes;
+import com.seollem.server.memolike.MemoLike;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -54,7 +54,7 @@ public class Memo extends Auditable {
   private Member member;
 
   @OneToMany(mappedBy = "memo", cascade = CascadeType.ALL)
-  private List<MemoLikes> memoLikes;
+  private List<MemoLike> memoLikes;
 
   public void setBook(Book book) {
     this.book = book;

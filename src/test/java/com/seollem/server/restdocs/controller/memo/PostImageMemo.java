@@ -20,7 +20,7 @@ import com.seollem.server.member.MemberService;
 import com.seollem.server.memo.MemoController;
 import com.seollem.server.memo.MemoMapper;
 import com.seollem.server.memo.MemoService;
-import com.seollem.server.memolikes.MemoLikesService;
+import com.seollem.server.memolike.MemoLikeService;
 import com.seollem.server.restdocs.util.StubDataUtil;
 import com.seollem.server.restdocs.util.WebMvcTestSetUpUtil;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
@@ -49,7 +49,7 @@ public class PostImageMemo extends WebMvcTestSetUpUtil {
   @MockBean
   private FileUploadService fileUploadService;
   @MockBean
-  private MemoLikesService memoLikesService;
+  private MemoLikeService memoLikeService;
 
   @Test
   public void postImageMemoTest() throws Exception {

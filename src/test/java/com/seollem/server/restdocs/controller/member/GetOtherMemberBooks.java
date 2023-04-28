@@ -53,10 +53,10 @@ public class GetOtherMemberBooks extends TestSetUpForMemberUtil {
         Mockito.any(),
         Mockito.any())).thenReturn(new ArrayList<>());
 
-    when(memoLikesService.findMemoLikesDone(Mockito.any(), Mockito.any())).thenReturn(
+    when(memoLikeService.findMemoLikesDone(Mockito.any(), Mockito.any())).thenReturn(
         new ArrayList<>());
 
-    when(memoLikesService.getMemoLikesCountWithMemos(Mockito.any())).thenReturn(new ArrayList<>());
+    when(memoLikeService.getMemoLikesCountWithMemos(Mockito.any())).thenReturn(new ArrayList<>());
 
     when(memberMapper.toOtherMemberBookResponseDto(Mockito.any(), Mockito.any(), Mockito.any(),
         Mockito.any(), Mockito.any())).thenReturn(

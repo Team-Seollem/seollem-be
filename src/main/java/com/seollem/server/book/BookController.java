@@ -11,7 +11,7 @@ import com.seollem.server.memo.Memo.MemoAuthority;
 import com.seollem.server.memo.MemoDto;
 import com.seollem.server.memo.MemoMapper;
 import com.seollem.server.memo.MemoService;
-import com.seollem.server.memolikes.MemoLikesService;
+import com.seollem.server.memolike.MemoLikeService;
 import com.seollem.server.util.GetCalenderBookUtil;
 import com.seollem.server.util.GetEmailFromHeaderTokenUtil;
 import java.time.LocalDateTime;
@@ -52,7 +52,7 @@ public class BookController {
   private final BookMapper bookMapper;
   private final MemoService memoService;
   private final MemoMapper memoMapper;
-  private final MemoLikesService memoLikesService;
+  private final MemoLikeService memoLikeService;
   private final GetCalenderBookUtil getCalenderBookUtil;
 
 
@@ -189,7 +189,7 @@ public class BookController {
 
     for (int i = 0; i < memos.size(); i++) {
       responseList.get(i)
-          .setMemoLikesCount(memoLikesService.getMemoLikesCountWithMemo(memos.get(i)));
+          .setMemoLikesCount(memoLikeService.getMemoLikesCountWithMemo(memos.get(i)));
     }
 
     result.setMemosList(responseList);
@@ -221,7 +221,7 @@ public class BookController {
     List<MemoDto.Response> responseList = memoMapper.memoToMemoResponses(memos);
     for (int i = 0; i < memos.size(); i++) {
       responseList.get(i)
-          .setMemoLikesCount(memoLikesService.getMemoLikesCountWithMemo(memos.get(i)));
+          .setMemoLikesCount(memoLikeService.getMemoLikesCountWithMemo(memos.get(i)));
     }
     //        BookDto.MemosOfBook response = bookMapper.BookToMemosOfBookResponse(book);
     //        response.setMemosList(memoTypeList);
