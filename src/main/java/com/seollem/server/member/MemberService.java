@@ -61,6 +61,13 @@ public class MemberService {
     }
   }
 
+  public Member findVerifiedMemberById(long memberId) {
+    Optional<Member> optionalMember = memberRepository.findById(memberId);
+    Member member = optionalMember.orElseThrow(
+        () -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+    return member;
+  }
+
   public Member findVerifiedMemberByEmail(String email) {
     Optional<Member> optionalMember = memberRepository.findByEmail(email);
     Member member = optionalMember.orElseThrow(

@@ -96,8 +96,10 @@ public class MemberController {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
 
+    Member findMember = memberService.findVerifiedMemberById(memberId);
+
     OtherMemberProfileResponseDto result =
-        memberService.getOtherMemberProfile(page - 1, size, member);
+        memberService.getOtherMemberProfile(page - 1, size, findMember);
 
     return new ResponseEntity<>(result, HttpStatus.OK);
   }
