@@ -49,14 +49,15 @@ public class MemoLikeService {
     return result;
   }
 
-  public void createMemoLike(Memo memo, Member member) {
+  public MemoLike createMemoLike(Memo memo, Member member) {
     // 해당 메모의 메모좋아요 객체 중에서 이미 해당 회원의 객체가 있는 지 확인합니다.
     List<MemoLike> memoLikes = memoLikeRepository.findAllByMemoAndMember(memo, member);
     if (!memoLikes.isEmpty()) {
       throw new BusinessLogicException(ExceptionCode.MEMOLIKE_ALREADY_DONE);
     } else {
       MemoLike memoLike = memoLikeMapper.toMemoLike(memo, member);
-      memoLikeRepository.save(memoLike);
+      MemoLike savedMemoLike = memoLikeRepository.save(memoLike);
+      return savedMemoLike;
     }
   }
 
