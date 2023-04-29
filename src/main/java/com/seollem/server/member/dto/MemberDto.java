@@ -56,6 +56,7 @@ public class MemberDto {
   @NoArgsConstructor
   public static class GetResponse {
 
+    private long memberId;
     private String email;
     private String name;
     private String content;

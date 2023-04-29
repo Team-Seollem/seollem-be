@@ -47,6 +47,7 @@ public class GetMember extends TestSetUpForMemberUtil {
         requestHeaders(
             headerWithName("Authorization").description("Bearer JWT Access Token")),
         responseFields(
+            fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 ID"),
             fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
             fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
             fieldWithPath("content").type(JsonFieldType.STRING).description("자기 소개"),

@@ -173,7 +173,7 @@ public class StubDataUtil {
     }
 
     public static MemberDto.GetResponse getMemberGetResponse() {
-      return new MemberDto.GetResponse("starrypro@gmail.com", "김형섭", "안녕하세요. 김형섭입니다.",
+      return new MemberDto.GetResponse(34, "starrypro@gmail.com", "김형섭", "안녕하세요. 김형섭입니다.",
           "https://profileImage.com");
     }
 
