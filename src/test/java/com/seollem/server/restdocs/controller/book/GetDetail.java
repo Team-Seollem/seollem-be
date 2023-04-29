@@ -9,7 +9,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -54,32 +53,17 @@ public class GetDetail extends TestSetUpForBookUtil {
     when(bookMapper.BookToBookDetailResponse(Mockito.any())).thenReturn(
         StubDataUtil.MockBook.getBookDetailResponse());
 
-    when(memoService.getMemoCountWithBook(Mockito.any())).thenReturn(2);
-
-    when(memoService.getMemosWithBook(Mockito.any())).thenReturn(StubDataUtil.MockMemo.getMemos());
-
-    when(memoService.getMemosWithBookAndMemoAuthority(Mockito.any(), Mockito.any())).thenReturn(
-        StubDataUtil.MockMemo.getMemos());
-
-    when(memoLikeService.getMemoLikesCountWithMemo(Mockito.any())).thenReturn(0);
-
-    when(memoMapper.memoToMemoResponses(Mockito.any())).thenReturn(
-        StubDataUtil.MockMemo.getMemoResponses());
-
     //when
     ResultActions resultActions = mockMvc.perform(
         RestDocumentationRequestBuilders.get("/books/{book-id}", 1)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON).header("Authorization",
-                "Bearer JWT Access Token")
-            .queryParam("memoAuthority", "PUBLIC"));
+                "Bearer JWT Access Token"));
 
     //then
     resultActions.andExpect(status().isOk()).andDo(print()).andDo(document("BookDetail",
         requestHeaders(headerWithName("Authorization").description("Bearer JWT Access Token")),
         pathParameters(parameterWithName("book-id").description("조회할 책 ID")),
-        requestParameters(
-            parameterWithName("memoAuthority").description("메모의 보기 권한 : PUBLIC, PRIVATE, ALL")),
         responseFields(fieldWithPath("bookId").type(JsonFieldType.NUMBER).description("책 ID"),
             fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
             fieldWithPath("cover").type(JsonFieldType.STRING).description("표지 이미지 URL"),
@@ -92,24 +76,7 @@ public class GetDetail extends TestSetUpForBookUtil {
             fieldWithPath("bookStatus").type(JsonFieldType.STRING)
                 .description("책 읽기 상태 : YET(읽기 전), ING(읽는 중), DONE(읽기 완료)"),
             fieldWithPath("readStartDate").type(JsonFieldType.STRING).description("읽기 시작한 일자"),
-            fieldWithPath("readEndDate").type(JsonFieldType.STRING).description("읽기 완료한 일자"),
-            fieldWithPath("memosList[].memoId").type(JsonFieldType.NUMBER).description("메모 ID"),
-            fieldWithPath("memosList[].memoType").type(JsonFieldType.STRING).description(
-                "메모 타입 : 책 속 문장(BOOK_CONTENT), 책 내용 요약(SUMMARY), 나만의 생각(THOUGHT), 나만의 질문(QUESTION), 전체(ALL)"),
-            fieldWithPath("memosList[].memoContent").type(JsonFieldType.STRING)
-                .description("메모 내용"),
-            fieldWithPath("memosList[].memoBookPage").type(JsonFieldType.NUMBER)
-                .description("메모와 연관된 책 페이지"),
-            fieldWithPath("memosList[].memoAuthority").type(JsonFieldType.STRING)
-                .description("메모 보기 권한 : PUBLIC, PRIVATE"),
-            fieldWithPath("memosList[].memoLikesCount").type(JsonFieldType.NUMBER)
-                .description("메모에 달린 좋아요 수"),
-            fieldWithPath("memosList[].createdAt").type(JsonFieldType.STRING)
-                .description("메모 생성 일자"),
-            fieldWithPath("memosList[].updatedAt").type(JsonFieldType.STRING)
-                .description("메모 수정 일자"),
-            fieldWithPath("memoCount").type(JsonFieldType.NUMBER).description("책에 달린 메모의 총 개수")
-
+            fieldWithPath("readEndDate").type(JsonFieldType.STRING).description("읽기 완료한 일자")
         )));
   }
 }

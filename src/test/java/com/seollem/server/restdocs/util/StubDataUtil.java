@@ -130,8 +130,7 @@ public class StubDataUtil {
     public static BookDto.DetailResponse getBookDetailResponse() {
       return new BookDto.DetailResponse(1, "미움받을용기", "https://imageurl1.com", "아들러", "한빛출판사",
           LocalDateTime.parse("2022-04-30T21:04:32"), 5, 214, 406, BookStatus.DONE,
-          LocalDateTime.parse("2022-10-02T11:09:10"), LocalDateTime.parse("2022-10-13T21:04:32"),
-          null, 2);
+          LocalDateTime.parse("2022-10-02T11:09:10"), LocalDateTime.parse("2022-10-13T21:04:32"));
     }
 
     public static BookDto.PostResponse getBookPostResponse() {

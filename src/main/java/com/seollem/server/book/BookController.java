@@ -166,8 +166,7 @@ public class BookController {
   @GetMapping("/{book-id}")
   public ResponseEntity getBookDetail(
       @RequestHeader Map<String, Object> requestHeader,
-      @Positive @PathVariable("book-id") long bookId,
-      @RequestParam Memo.MemoAuthority memoAuthority) {
+      @Positive @PathVariable("book-id") long bookId) {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
 
@@ -176,24 +175,6 @@ public class BookController {
     Book book = bookService.findVerifiedBookById(bookId);
 
     BookDto.DetailResponse result = bookMapper.BookToBookDetailResponse(book);
-
-    result.setMemoCount(memoService.getMemoCountWithBook(book));
-
-    List<Memo> memos;
-    if (memoAuthority == MemoAuthority.ALL) {
-      memos = memoService.getMemosWithBook(book);
-    } else {
-      memos = memoService.getMemosWithBookAndMemoAuthority(book, memoAuthority);
-    }
-
-    List<MemoDto.Response> responseList = memoMapper.memoToMemoResponses(memos);
-
-    for (int i = 0; i < memos.size(); i++) {
-      responseList.get(i)
-          .setMemoLikesCount(memoLikeService.getMemoLikesCountWithMemo(memos.get(i)));
-    }
-
-    result.setMemosList(responseList);
 
     return new ResponseEntity(result, HttpStatus.OK);
   }
