@@ -9,9 +9,11 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class MemoLikeService {
 
   private final MemoLikeRepository memoLikeRepository;
@@ -24,6 +26,16 @@ public class MemoLikeService {
         () -> new BusinessLogicException(ExceptionCode.MEMOLIKE_NOT_FOUND));
     return memoLike;
   }
+
+  public MemoLike findVerifiedMemoLikeByMemoAndMember(Memo memo, Member member) {
+    List<MemoLike> memoLikes = memoLikeRepository.findAllByMemoAndMember(memo, member);
+    if (!memoLikes.isEmpty()) {
+      return memoLikes.get(0);
+    } else {
+      throw new BusinessLogicException(ExceptionCode.MEMOLIKE_NOT_FOUND);
+    }
+  }
+
 
   public void verifyMemberHasMemoLike(Member member, MemoLike memoLike) {
     if (!(memoLike.getMember() == member)) {
@@ -49,19 +61,18 @@ public class MemoLikeService {
     return result;
   }
 
-  public MemoLike createMemoLike(Memo memo, Member member) {
+  public void createMemoLike(Memo memo, Member member) {
     // 해당 메모의 메모좋아요 객체 중에서 이미 해당 회원의 객체가 있는 지 확인합니다.
     List<MemoLike> memoLikes = memoLikeRepository.findAllByMemoAndMember(memo, member);
     if (!memoLikes.isEmpty()) {
       throw new BusinessLogicException(ExceptionCode.MEMOLIKE_ALREADY_DONE);
     } else {
       MemoLike memoLike = memoLikeMapper.toMemoLike(memo, member);
-      MemoLike savedMemoLike = memoLikeRepository.save(memoLike);
-      return savedMemoLike;
+      memoLikeRepository.save(memoLike);
     }
   }
 
-  public void deleteMemoLikeWithMemoLike(MemoLike memoLike) {
+  public void deleteMemoLike(MemoLike memoLike) {
     memoLikeRepository.delete(memoLike);
   }
 

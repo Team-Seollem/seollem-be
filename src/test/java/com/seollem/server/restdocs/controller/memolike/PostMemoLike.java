@@ -1,12 +1,11 @@
 package com.seollem.server.restdocs.controller.memolike;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -42,8 +41,7 @@ public class PostMemoLike extends TestSetUpForMemoLikeUtil {
 
     when(memoService.findVerifiedMemo(Mockito.anyLong())).thenReturn(new Memo());
 
-    when(memoLikeService.createMemoLike(Mockito.any(), Mockito.any())).thenReturn(
-        StubDataUtil.MockMemoLike.getMemoLike());
+    doNothing().when(memoLikeService).createMemoLike(Mockito.any(), Mockito.any());
 
     //when, then
     this.mockMvc.perform(
@@ -52,8 +50,7 @@ public class PostMemoLike extends TestSetUpForMemoLikeUtil {
                 .header("Authorization", "Bearer JWT Access Token")).andDo(print())
         .andExpect(status().isCreated()).andDo(document("PostMemoLike",
             requestHeaders(headerWithName("Authorization").description("Bearer JWT Access Token")),
-            pathParameters(parameterWithName("memo-id").description("메모 좋아요를 등록할 메모 ID")),
-            responseFields(fieldWithPath("memoLikeId").description("등록된 메모 좋아요 ID"))));
+            pathParameters(parameterWithName("memo-id").description("메모 좋아요를 등록할 메모 ID"))));
 
   }
 

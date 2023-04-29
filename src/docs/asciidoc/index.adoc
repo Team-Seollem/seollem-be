@@ -400,9 +400,6 @@ include::{snippets}/PostMemoLike/path-parameters.adoc[]
 .response
 include::{snippets}/PostMemoLike/http-response.adoc[]
 
-.response fields
-include::{snippets}/PostMemoLike/response-fields.adoc[]
-
 === 메모 좋아요 삭제
 .request
 include::{snippets}/DeleteMemoLike/http-request.adoc[]
