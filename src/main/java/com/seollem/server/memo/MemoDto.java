@@ -94,6 +94,24 @@ public class MemoDto {
   @Setter
   @AllArgsConstructor
   @NoArgsConstructor
+  public static class BookMemosResponse {
+
+    private long memoId;
+    private Memo.MemoType memoType;
+    private String memoContent;
+    private int memoBookPage;
+    private MemoAuthority memoAuthority;
+    private int memoLikesCount;
+    private boolean memoLikeDone;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+  }
+
+  @Getter
+  @Setter
+  @AllArgsConstructor
+  @NoArgsConstructor
   public static class ImageMemoResponse {
 
     private String url;

@@ -51,7 +51,7 @@ public class GetOtherMemberBooks extends TestSetUpForMemberUtil {
 
     when(memoService.getPageMemosWithBookAndMemoAuthority(Mockito.anyInt(), Mockito.anyInt(),
         Mockito.any(),
-        Mockito.any())).thenReturn(new ArrayList<>());
+        Mockito.any())).thenReturn(StubDataUtil.MockMemo.getMemoPage());
 
     when(memoLikeService.findMemoLikesDone(Mockito.any(), Mockito.any())).thenReturn(
         new ArrayList<>());

@@ -130,8 +130,7 @@ public class StubDataUtil {
     public static BookDto.DetailResponse getBookDetailResponse() {
       return new BookDto.DetailResponse(1, "미움받을용기", "https://imageurl1.com", "아들러", "한빛출판사",
           LocalDateTime.parse("2022-04-30T21:04:32"), 5, 214, 406, BookStatus.DONE,
-          LocalDateTime.parse("2022-10-02T11:09:10"), LocalDateTime.parse("2022-10-13T21:04:32"),
-          null, 2);
+          LocalDateTime.parse("2022-10-02T11:09:10"), LocalDateTime.parse("2022-10-13T21:04:32"));
     }
 
     public static BookDto.PostResponse getBookPostResponse() {
@@ -170,8 +169,7 @@ public class StubDataUtil {
 
     public static Member getMember() {
       return new Member(1, "starrypro@gmail.com", "김형섭", "password", "ROLE_USER", "안녕하세요. 김형섭입니다.",
-          "https://profileImage.com",
-          new ArrayList<Book>(), new ArrayList<MemoLike>());
+          "https://profileImage.com", new ArrayList<Book>(), new ArrayList<MemoLike>());
     }
 
     public static MemberDto.GetResponse getMemberGetResponse() {
@@ -293,6 +291,22 @@ public class StubDataUtil {
       return list;
     }
 
+    public static List<MemoDto.BookMemosResponse> getBookMemosResponses() {
+      MemoDto.BookMemosResponse bookMemosResponse1 =
+          new MemoDto.BookMemosResponse(1, MemoType.BOOK_CONTENT, "미움받을 용기 너무 재밌다.!!", 24,
+              MemoAuthority.PUBLIC, 0, true, LocalDateTime.parse("2022-10-12T07:54:32"),
+              LocalDateTime.parse("2022-10-12T07:54:32"));
+      MemoDto.BookMemosResponse bookMemosResponse2 =
+          new MemoDto.BookMemosResponse(4, MemoType.QUESTION, "왜 미움받아도 괜찮은걸까?", 223,
+              MemoAuthority.PUBLIC, 0, false, LocalDateTime.parse("2022-10-13T08:55:01"),
+              LocalDateTime.parse("2022-10-13T08:55:01"));
+      List<MemoDto.BookMemosResponse> list = new ArrayList<>();
+      list.add(bookMemosResponse1);
+      list.add(bookMemosResponse2);
+      return list;
+    }
+
+
     public static PageImpl<Memo> getMemoPage() {
       Memo memo1 =
           new Memo(1, MemoType.BOOK_CONTENT, "미움받을 용기 너무 재밌다.!!", 24, MemoAuthority.PUBLIC, null,
@@ -319,8 +333,7 @@ public class StubDataUtil {
 
     public static MemoDto.PostResponse getMemoPostResponse() {
       return new PostResponse(3, MemoType.BOOK_CONTENT, "새롭게 등록할 메모 내용입니다.", 255,
-          MemoAuthority.PUBLIC,
-          LocalDateTime.now(), LocalDateTime.now());
+          MemoAuthority.PUBLIC, LocalDateTime.now(), LocalDateTime.now());
     }
   }
 

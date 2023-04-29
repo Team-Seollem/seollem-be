@@ -11,6 +11,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.google.gson.Gson;
@@ -58,8 +59,19 @@ public class GetMemos extends TestSetUpForBookUtil {
     when(memoService.getMemosWithBookAndMemoTypes(Mockito.anyInt(), Mockito.anyInt(), Mockito.any(),
         Mockito.any())).thenReturn(StubDataUtil.MockMemo.getMemoPage());
 
-    when(memoMapper.memoToMemoResponses(Mockito.any())).thenReturn(
-        StubDataUtil.MockMemo.getMemoResponses());
+    when(memoService.getPageMemosWithBookAndMemoAuthority(Mockito.anyInt(), Mockito.anyInt(),
+        Mockito.any(),
+        Mockito.any())).thenReturn(StubDataUtil.MockMemo.getMemoPage());
+
+    when(memoService.getPageMemosWithBookAndMemoTypeAndMemoAuthority(Mockito.anyInt(),
+        Mockito.anyInt(), Mockito.any(),
+        Mockito.any(), Mockito.any())).thenReturn(StubDataUtil.MockMemo.getMemoPage());
+
+    when(memoMapper.memoToBookMemosResponses(Mockito.any())).thenReturn(
+        StubDataUtil.MockMemo.getBookMemosResponses());
+
+    when(memoLikeService.setMemoLikeDoneForMemos(Mockito.any(), Mockito.any(),
+        Mockito.any())).thenReturn(StubDataUtil.MockMemo.getBookMemosResponses());
 
     when(memoLikeService.getMemoLikesCountWithMemo(Mockito.any())).thenReturn(2);
 
@@ -71,10 +83,11 @@ public class GetMemos extends TestSetUpForBookUtil {
                 "Bearer JWT Access Token")
             .queryParam("page", "1")
             .queryParam("size", "2")
-            .queryParam("memoType", "ALL"));
+            .queryParam("memoType", "ALL")
+            .queryParam("memoAuthority", "ALL"));
 
     //then
-    resultActions.andExpect(status().isOk()).andDo(document("GetMemos",
+    resultActions.andExpect(status().isOk()).andDo(print()).andDo(document("GetMemos",
         requestHeaders(
             headerWithName("Authorization").description("Bearer JWT Access Token")),
         pathParameters(
@@ -83,7 +96,9 @@ public class GetMemos extends TestSetUpForBookUtil {
             parameterWithName("page").description("원하는 페이지"),
             parameterWithName("size").description("페이지 별 책 개수"),
             parameterWithName("memoType").description(
-                "메모 타입 : BOOK_CONTENT, SUMMARY, THOUGHT, QUESTION, ALL")),
+                "조회할 메모 타입 : ALL, BOOK_CONTENT, SUMMARY, THOUGHT, QUESTION"),
+            parameterWithName("memoAuthority").description(
+                "조회할 메모 권한 : ALL, PUBLIC, PRIVATE")),
         responseFields(
             fieldWithPath("item[].memoId").type(JsonFieldType.NUMBER).description("메모 ID"),
             fieldWithPath("item[].memoType").type(JsonFieldType.STRING).description(
@@ -96,14 +111,15 @@ public class GetMemos extends TestSetUpForBookUtil {
                 .description("메모 보기 권한 : PUBLIC, PRIVATE"),
             fieldWithPath("item[].memoLikesCount").type(JsonFieldType.NUMBER)
                 .description("메모에 달린 좋아요 수"),
+            fieldWithPath("item[].memoLikeDone").description("메모 좋아요 여부 : TRUE(O), FALSE(X)"),
             fieldWithPath("item[].createdAt").type(JsonFieldType.STRING)
                 .description("메모 생성 일자"),
             fieldWithPath("item[].updatedAt").type(JsonFieldType.STRING)
                 .description("메모 수정 일자"),
             fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("조회 페이지"),
-            fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("페이지별 책 개수"),
+            fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("페이지별 메모 개수"),
             fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER)
-                .description("조회된 책의 총 개수"),
+                .description("조회된 메모의 총 개수"),
             fieldWithPath("pageInfo.totalPages").type(JsonFieldType.NUMBER)
                 .description("조회된 총 페이지 수")
 

@@ -122,9 +122,6 @@ include::{snippets}/BookDetail/request-headers.adoc[]
 .request path parameters
 include::{snippets}/BookDetail/path-parameters.adoc[]
 
-.request query string
-include::{snippets}/BookDetail/request-parameters.adoc[]
-
 .response
 include::{snippets}/BookDetail/http-response.adoc[]
 

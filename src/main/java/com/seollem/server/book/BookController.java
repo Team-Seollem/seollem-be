@@ -8,6 +8,7 @@ import com.seollem.server.member.Member;
 import com.seollem.server.member.MemberService;
 import com.seollem.server.memo.Memo;
 import com.seollem.server.memo.Memo.MemoAuthority;
+import com.seollem.server.memo.Memo.MemoType;
 import com.seollem.server.memo.MemoDto;
 import com.seollem.server.memo.MemoMapper;
 import com.seollem.server.memo.MemoService;
@@ -165,8 +166,7 @@ public class BookController {
   @GetMapping("/{book-id}")
   public ResponseEntity getBookDetail(
       @RequestHeader Map<String, Object> requestHeader,
-      @Positive @PathVariable("book-id") long bookId,
-      @RequestParam Memo.MemoAuthority memoAuthority) {
+      @Positive @PathVariable("book-id") long bookId) {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
 
@@ -175,24 +175,6 @@ public class BookController {
     Book book = bookService.findVerifiedBookById(bookId);
 
     BookDto.DetailResponse result = bookMapper.BookToBookDetailResponse(book);
-
-    result.setMemoCount(memoService.getMemoCountWithBook(book));
-
-    List<Memo> memos;
-    if (memoAuthority == MemoAuthority.ALL) {
-      memos = memoService.getMemosWithBook(book);
-    } else {
-      memos = memoService.getMemosWithBookAndMemoAuthority(book, memoAuthority);
-    }
-
-    List<MemoDto.Response> responseList = memoMapper.memoToMemoResponses(memos);
-
-    for (int i = 0; i < memos.size(); i++) {
-      responseList.get(i)
-          .setMemoLikesCount(memoLikeService.getMemoLikesCountWithMemo(memos.get(i)));
-    }
-
-    result.setMemosList(responseList);
 
     return new ResponseEntity(result, HttpStatus.OK);
   }
@@ -204,29 +186,40 @@ public class BookController {
       @Positive @PathVariable("book-id") long bookId,
       @Positive @RequestParam int page,
       @Positive @RequestParam int size,
-      @RequestParam Memo.MemoType memoType) {
+      @RequestParam Memo.MemoType memoType,
+      @RequestParam Memo.MemoAuthority memoAuthority) {
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
 
     bookService.verifyMemberHasBook(bookId, member.getMemberId());
     Book book = bookService.findVerifiedBookById(bookId);
 
-    Page<Memo> memoTypeList;
-    if (memoType == Memo.MemoType.ALL) {
-      memoTypeList = memoService.getMemosWithBook(page - 1, size, book);
+    Page<Memo> pageMemos;
+    if (memoType == Memo.MemoType.ALL && memoAuthority == MemoAuthority.ALL) {
+      pageMemos = memoService.getMemosWithBook(page - 1, size, book);
+    } else if (memoAuthority == MemoAuthority.ALL) {
+      pageMemos = memoService.getMemosWithBookAndMemoTypes(page - 1, size, book, memoType);
+    } else if (memoType == MemoType.ALL) {
+      pageMemos =
+          memoService.getPageMemosWithBookAndMemoAuthority(page - 1, size, book, memoAuthority);
     } else {
-      memoTypeList = memoService.getMemosWithBookAndMemoTypes(page - 1, size, book, memoType);
+      pageMemos = memoService.getPageMemosWithBookAndMemoTypeAndMemoAuthority(page - 1, size, book,
+          memoType, memoAuthority);
     }
-    List<Memo> memos = memoTypeList.getContent();
-    List<MemoDto.Response> responseList = memoMapper.memoToMemoResponses(memos);
+    List<Memo> memos = pageMemos.getContent();
+
+    List<MemoDto.BookMemosResponse> memosResponses = memoMapper.memoToBookMemosResponses(memos);
+
+    List<MemoDto.BookMemosResponse> resultList =
+        memoLikeService.setMemoLikeDoneForMemos(memos, memosResponses, member);
+
     for (int i = 0; i < memos.size(); i++) {
-      responseList.get(i)
+      resultList.get(i)
           .setMemoLikesCount(memoLikeService.getMemoLikesCountWithMemo(memos.get(i)));
     }
-    //        BookDto.MemosOfBook response = bookMapper.BookToMemosOfBookResponse(book);
-    //        response.setMemosList(memoTypeList);
+
     return new ResponseEntity<>(
-        new MultiResponseDto<>(responseList, memoTypeList),
+        new MultiResponseDto<>(resultList, pageMemos),
         HttpStatus.OK);
   }
 
