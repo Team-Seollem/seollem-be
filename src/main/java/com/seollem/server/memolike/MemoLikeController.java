@@ -40,11 +40,9 @@ public class MemoLikeController {
 
     Memo memo = memoService.findVerifiedMemo(memoId);
 
-    MemoLike savedMemoLike = memoLikeService.createMemoLike(memo, member);
+    memoLikeService.createMemoLike(memo, member);
 
-    MemoLikeResponseDto responseDto = new MemoLikeResponseDto(savedMemoLike.getMemoLikeId());
-
-    return new ResponseEntity(responseDto, HttpStatus.CREATED);
+    return new ResponseEntity(HttpStatus.CREATED);
   }
 
   @DeleteMapping(path = "/{memo-like-id}")
