@@ -45,17 +45,18 @@ public class MemoLikeController {
     return new ResponseEntity(HttpStatus.CREATED);
   }
 
-  @DeleteMapping(path = "/{memo-like-id}")
+  @DeleteMapping(path = "/{memo-id}")
   public ResponseEntity cancelLike(
       @RequestHeader Map<String, Object> requestHeader,
-      @Positive @PathVariable("memo-like-id") long memoLikeId) {
+      @Positive @PathVariable("memo-id") long memoId) {
 
     String email = getEmailFromHeaderTokenUtil.getEmailFromHeaderToken(requestHeader);
     Member member = memberService.findVerifiedMemberByEmail(email);
+    Memo memo = memoService.findVerifiedMemo(memoId);
 
-    MemoLike memoLike = memoLikeService.findVerifiedMemoLikeById(memoLikeId);
+    MemoLike memoLike = memoLikeService.findVerifiedMemoLikeByMemoAndMember(memo, member);
     memoLikeService.verifyMemberHasMemoLike(member, memoLike);
-    memoLikeService.deleteMemoLikeWithMemoLike(memoLike);
+    memoLikeService.deleteMemoLike(memoLike);
 
     return new ResponseEntity(HttpStatus.NO_CONTENT);
   }

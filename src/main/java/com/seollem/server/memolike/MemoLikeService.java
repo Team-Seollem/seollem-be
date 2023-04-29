@@ -27,6 +27,16 @@ public class MemoLikeService {
     return memoLike;
   }
 
+  public MemoLike findVerifiedMemoLikeByMemoAndMember(Memo memo, Member member) {
+    List<MemoLike> memoLikes = memoLikeRepository.findAllByMemoAndMember(memo, member);
+    if (!memoLikes.isEmpty()) {
+      return memoLikes.get(0);
+    } else {
+      throw new BusinessLogicException(ExceptionCode.MEMOLIKE_NOT_FOUND);
+    }
+  }
+
+
   public void verifyMemberHasMemoLike(Member member, MemoLike memoLike) {
     if (!(memoLike.getMember() == member)) {
       throw new BusinessLogicException(ExceptionCode.NOT_MEMBER_MEMOLIKE);
@@ -62,7 +72,7 @@ public class MemoLikeService {
     }
   }
 
-  public void deleteMemoLikeWithMemoLike(MemoLike memoLike) {
+  public void deleteMemoLike(MemoLike memoLike) {
     memoLikeRepository.delete(memoLike);
   }
 

@@ -38,19 +38,24 @@ public class DeleteMemoLike extends TestSetUpForMemoLikeUtil {
     when(memberService.findVerifiedMemberByEmail(Mockito.anyString())).thenReturn(
         StubDataUtil.MockMember.getMember());
 
-    when(memoLikeService.findVerifiedMemoLikeById(Mockito.anyLong())).thenReturn(new MemoLike());
+    when(memoService.findVerifiedMemo(Mockito.anyLong())).thenReturn(
+        StubDataUtil.MockMemo.getMemos()
+            .get(0));
+
+    when(memoLikeService.findVerifiedMemoLikeByMemoAndMember(Mockito.any(),
+        Mockito.any())).thenReturn(new MemoLike());
 
     doNothing().when(memoLikeService).verifyMemberHasMemoLike(Mockito.any(), Mockito.any());
-    doNothing().when(memoLikeService).deleteMemoLikeWithMemoLike(Mockito.any(MemoLike.class));
+    doNothing().when(memoLikeService).deleteMemoLike(Mockito.any(MemoLike.class));
 
     //when, then
     this.mockMvc.perform(
-            delete("/memo-like/{memo-like-id}", 1).contentType(MediaType.APPLICATION_JSON)
+            delete("/memo-like/{memo-id}", 1).contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(Charset.defaultCharset())
                 .header("Authorization", "Bearer JWT Access Token")).andDo(print())
         .andExpect(status().isNoContent()).andDo(document("DeleteMemoLike",
             requestHeaders(headerWithName("Authorization").description("Bearer JWT Access Token")),
-            pathParameters(parameterWithName("memo-like-id").description("메모좋아요 ID"))));
+            pathParameters(parameterWithName("memo-id").description("삭제할 메모 ID"))));
 
   }
 
