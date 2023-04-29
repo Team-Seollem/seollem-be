@@ -24,6 +24,9 @@ public interface MemoRepository extends JpaRepository<Memo, Long> {
   Page<Memo> findAllByBookAndMemoAuthority(Pageable pageable, Book book,
       MemoAuthority memoAuthority);
 
+  Page<Memo> findAllByBookAndMemoTypeAndMemoAuthority(Pageable pageable, Book book,
+      Memo.MemoType memoType, MemoAuthority memoAuthority);
+
 
   Page<Memo> findAllByBook(Pageable pageable, Book book);
 

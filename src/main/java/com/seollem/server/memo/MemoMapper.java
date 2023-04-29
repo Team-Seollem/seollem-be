@@ -23,5 +23,9 @@ public interface MemoMapper {
   @Mapping(target = "memoLikesCount", ignore = true)
   List<MemoDto.Response> memoToMemoResponses(List<Memo> memos);
 
+  @Mapping(target = "memoLikesCount", ignore = true)
+  @Mapping(target = "memoLikeDone", ignore = true)
+  List<MemoDto.BookMemosResponse> memoToBookMemosResponses(List<Memo> memos);
+
 
 }

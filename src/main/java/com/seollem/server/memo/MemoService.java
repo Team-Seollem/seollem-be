@@ -7,6 +7,7 @@ import com.seollem.server.exception.ExceptionCode;
 import com.seollem.server.member.Member;
 import com.seollem.server.member.dto.othermemberbook.OtherMemberBookMemoDto;
 import com.seollem.server.memo.Memo.MemoAuthority;
+import com.seollem.server.memo.Memo.MemoType;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -90,13 +91,20 @@ public class MemoService {
     return list;
   }
 
-  public List<Memo> getPageMemosWithBookAndMemoAuthority(int page, int size, Book book,
+  public Page<Memo> getPageMemosWithBookAndMemoAuthority(int page, int size, Book book,
       MemoAuthority memoAuthority) {
     Page<Memo> pageList =
         memoRepository.findAllByBookAndMemoAuthority(PageRequest.of(page, size), book,
             memoAuthority);
-    List<Memo> list = pageList.getContent();
-    return list;
+    return pageList;
+  }
+
+  public Page<Memo> getPageMemosWithBookAndMemoTypeAndMemoAuthority(int page, int size, Book book,
+      MemoType memoType, MemoAuthority memoAuthority) {
+    Page<Memo> pageList =
+        memoRepository.findAllByBookAndMemoTypeAndMemoAuthority(PageRequest.of(page, size), book,
+            memoType, memoAuthority);
+    return pageList;
   }
 
 

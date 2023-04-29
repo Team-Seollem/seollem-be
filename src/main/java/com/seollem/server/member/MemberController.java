@@ -119,8 +119,9 @@ public class MemberController {
         memoService.getOtherMemberBookMemosWithBook(page - 1, size, book);
     List<OtherMemberBookMemoDto> otherMemberBookMemoDtos = pageOtherMemberBookMemoDtos.getContent();
 
-    List<Memo> memoList = memoService.getPageMemosWithBookAndMemoAuthority(page - 1, size, book,
+    Page<Memo> pageMemoList = memoService.getPageMemosWithBookAndMemoAuthority(page - 1, size, book,
         MemoAuthority.PUBLIC);
+    List<Memo> memoList = pageMemoList.getContent();
     List<MemoLike> doneMemoLikesList = memoLikeService.findMemoLikesDone(memoList, member);
     List<Integer> memoLikesCountList = memoLikeService.getMemoLikesCountWithMemos(memoList);
 

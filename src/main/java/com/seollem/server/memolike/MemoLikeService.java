@@ -4,6 +4,7 @@ import com.seollem.server.exception.BusinessLogicException;
 import com.seollem.server.exception.ExceptionCode;
 import com.seollem.server.member.Member;
 import com.seollem.server.memo.Memo;
+import com.seollem.server.memo.MemoDto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -77,4 +78,20 @@ public class MemoLikeService {
   }
 
 
+  public List<MemoDto.BookMemosResponse> setMemoLikeDoneForMemos(List<Memo> memos,
+      List<MemoDto.BookMemosResponse> memosResponses, Member member) {
+    List<MemoLike> memoLikes = memoLikeRepository.findMemoLikesDone(memos, member);
+    if (!memoLikes.isEmpty()) {
+      for (MemoLike memoLike : memoLikes) {
+        for (MemoDto.BookMemosResponse bookMemosResponse : memosResponses) {
+          if (memoLike.getMemo().getMemoId() == bookMemosResponse.getMemoId()) {
+            bookMemosResponse.setMemoLikeDone(true);
+          }
+        }
+      }
+    } else {
+      return memosResponses;
+    }
+    return memosResponses;
+  }
 }
